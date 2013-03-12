@@ -1,0 +1,47 @@
+@mixin noselect {
+    -webkit-user-select: none;
+    cursor: default;
+}
+
+@mixin small-text {
+    font-size: 11px;
+}
+
+.hk {
+    @include noselect;
+    
+    font: 12px Arial, Helvetica, sans-serif;
+    
+    a {
+        text-decoration: none;
+    }
+    
+    * {
+        @include noselect;
+    }
+}
+
+.hk-menu-bar {
+    @include small-text;
+    
+    background: #202020;
+    padding: 7px;
+    > a {
+        display: inline-block;
+        color: white;
+        margin-right: 5px;
+        padding: 3px 5px;
+        border-radius: 3px;
+        &:hover {
+            background: #606060;
+        }
+    }
+}
+
+.hk-menu {
+    position: absolute;
+}
+
+.hk-menu-action-item {
+    display: block;
+}

@@ -1,0 +1,28 @@
+.hk {
+  -webkit-user-select: none;
+  cursor: default;
+  font: 12px Arial, Helvetica, sans-serif; }
+  .hk a {
+    text-decoration: none; }
+  .hk * {
+    -webkit-user-select: none;
+    cursor: default; }
+
+.hk-menu-bar {
+  font-size: 11px;
+  background: #202020;
+  padding: 7px; }
+  .hk-menu-bar > a {
+    display: inline-block;
+    color: white;
+    margin-right: 5px;
+    padding: 3px 5px;
+    border-radius: 3px; }
+    .hk-menu-bar > a:hover {
+      background: #606060; }
+
+.hk-menu {
+  position: absolute; }
+
+.hk-menu-action-item {
+  display: block; }
