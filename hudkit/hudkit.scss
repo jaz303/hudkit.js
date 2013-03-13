@@ -7,6 +7,10 @@
     font-size: 11px;
 }
 
+body {
+    background: #101010;
+}
+
 .hk {
     @include noselect;
     
@@ -44,4 +48,121 @@
 
 .hk-menu-action-item {
     display: block;
+}
+
+//
+// Dialog
+
+$HK_DIALOG_PADDING              : 6px;
+$HK_DIALOG_HEADER_HEIGHT        : 24px;
+$HK_DIALOG_BORDER_RADIUS        : $HK_DIALOG_PADDING;
+
+.hk-dialog {
+    background: #303030;
+    border-radius: $HK_DIALOG_BORDER_RADIUS;
+    position: absolute;
+    overflow: hidden;
+    
+    -webkit-transition-property: opacity, -webkit-transform;
+    -webkit-transition-duration: 0.2s, 0.2s;
+    -webkit-transform: translateZ(0);
+    
+    &.active-dragging { opacity: 0.6; }
+    &.hiding { opacity: 0; -webkit-transform: translateZ(0) scale(0.8); }
+    &.hidden { display: none; }
+    
+    > .hk-dialog-header {
+        position: absolute;
+        top: $HK_DIALOG_PADDING;
+        left: $HK_DIALOG_PADDING;
+        right: $HK_DIALOG_PADDING;
+        height: $HK_DIALOG_HEADER_HEIGHT;
+        background: #a0a0a0;
+        border-radius: $HK_DIALOG_BORDER_RADIUS;
+        cursor: move;
+        overflow: hidden;
+        
+        > .hk-dialog-title {
+            display: block;
+            padding: $HK_DIALOG_PADDING;
+            font-size: ($HK_DIALOG_HEADER_HEIGHT - (2 * $HK_DIALOG_PADDING));
+            line-height: 1;
+            cursor: move;
+        }
+        
+        > .hk-dialog-close {
+            position: absolute;
+            right: 20px;
+            top: 4px;
+            cursor: pointer;
+            &:after { content: "[X]"; }
+        }
+        
+        > .hk-dialog-shade {
+            position: absolute;
+            right: 40px;
+            top: 4px;
+            cursor: pointer;
+            &:after { content: "[S]"; }
+        }
+    }
+    
+    > .hk-dialog-content {
+        position: absolute;
+        top: (($HK_DIALOG_PADDING * 2) + $HK_DIALOG_HEADER_HEIGHT);
+        left: $HK_DIALOG_PADDING;
+        width: 0;
+        height: 0;
+        background: #505050;
+        border-radius: $HK_DIALOG_BORDER_RADIUS ;
+    }
+    
+    > .hk-dialog-resize-horizontal {
+        position: absolute;
+        top: $HK_DIALOG_PADDING;
+        right: 0;
+        bottom: $HK_DIALOG_PADDING;
+        width: $HK_DIALOG_PADDING;
+        cursor: e-resize;
+    }
+    
+    > .hk-dialog-resize-vertical {
+        position: absolute;
+        left: $HK_DIALOG_PADDING;
+        right: $HK_DIALOG_PADDING;
+        bottom: 0;
+        height: $HK_DIALOG_PADDING;
+        cursor: s-resize;
+    }
+    
+    > .hk-dialog-resize-any {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: $HK_DIALOG_PADDING;
+        height: $HK_DIALOG_PADDING;
+        cursor: se-resize;
+    }
+    
+    > .hk-dialog-resize-horizontal,
+    > .hk-dialog-resize-vertical,
+    > .hk-dialog-resize-any {
+        display: none;
+    }
+    
+    &.hk-dialog-resizable-horizontal > .hk-dialog-resize-horizontal,
+    &.hk-dialog-resizable-vertical > .hk-dialog-resize-vertical,
+    &.hk-dialog-resizable-any > .hk-dialog-resize-any { display: block; }
+    
+}
+
+//
+// Capture Overlay
+
+.hk-capture-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }

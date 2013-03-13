@@ -1,3 +1,6 @@
+body {
+  background: #101010; }
+
 .hk {
   -webkit-user-select: none;
   cursor: default;
@@ -26,3 +29,91 @@
 
 .hk-menu-action-item {
   display: block; }
+
+.hk-dialog {
+  background: #303030;
+  border-radius: 6px;
+  position: absolute;
+  overflow: hidden;
+  -webkit-transition-property: opacity, -webkit-transform;
+  -webkit-transition-duration: 0.2s, 0.2s;
+  -webkit-transform: translateZ(0); }
+  .hk-dialog.active-dragging {
+    opacity: 0.6; }
+  .hk-dialog.hiding {
+    opacity: 0;
+    -webkit-transform: translateZ(0) scale(0.8); }
+  .hk-dialog.hidden {
+    display: none; }
+  .hk-dialog > .hk-dialog-header {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    height: 24px;
+    background: #a0a0a0;
+    border-radius: 6px;
+    cursor: move;
+    overflow: hidden; }
+    .hk-dialog > .hk-dialog-header > .hk-dialog-title {
+      display: block;
+      padding: 6px;
+      font-size: 12px;
+      line-height: 1;
+      cursor: move; }
+    .hk-dialog > .hk-dialog-header > .hk-dialog-close {
+      position: absolute;
+      right: 20px;
+      top: 4px;
+      cursor: pointer; }
+      .hk-dialog > .hk-dialog-header > .hk-dialog-close:after {
+        content: "[X]"; }
+    .hk-dialog > .hk-dialog-header > .hk-dialog-shade {
+      position: absolute;
+      right: 40px;
+      top: 4px;
+      cursor: pointer; }
+      .hk-dialog > .hk-dialog-header > .hk-dialog-shade:after {
+        content: "[S]"; }
+  .hk-dialog > .hk-dialog-content {
+    position: absolute;
+    top: 36px;
+    left: 6px;
+    width: 0;
+    height: 0;
+    background: #505050;
+    border-radius: 6px; }
+  .hk-dialog > .hk-dialog-resize-horizontal {
+    position: absolute;
+    top: 6px;
+    right: 0;
+    bottom: 6px;
+    width: 6px;
+    cursor: e-resize; }
+  .hk-dialog > .hk-dialog-resize-vertical {
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: 0;
+    height: 6px;
+    cursor: s-resize; }
+  .hk-dialog > .hk-dialog-resize-any {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 6px;
+    height: 6px;
+    cursor: se-resize; }
+  .hk-dialog > .hk-dialog-resize-horizontal,
+  .hk-dialog > .hk-dialog-resize-vertical,
+  .hk-dialog > .hk-dialog-resize-any {
+    display: none; }
+  .hk-dialog.hk-dialog-resizable-horizontal > .hk-dialog-resize-horizontal, .hk-dialog.hk-dialog-resizable-vertical > .hk-dialog-resize-vertical, .hk-dialog.hk-dialog-resizable-any > .hk-dialog-resize-any {
+    display: block; }
+
+.hk-capture-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
