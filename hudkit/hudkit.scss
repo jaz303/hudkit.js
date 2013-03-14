@@ -118,11 +118,6 @@ $HK_DIALOG_BORDER_RADIUS        : $HK_DIALOG_PADDING;
     
     > .hk-dialog-content {
         position: absolute;
-        top: (($HK_DIALOG_PADDING * 2) + $HK_DIALOG_HEADER_HEIGHT);
-        left: $HK_DIALOG_PADDING;
-        width: 0;
-        height: 0;
-        background: #505050;
         border-radius: $HK_DIALOG_BORDER_RADIUS ;
     }
     

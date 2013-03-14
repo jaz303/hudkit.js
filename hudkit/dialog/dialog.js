@@ -13,8 +13,10 @@
       
   var ROLLED_HEIGHT       = (2 * hk.theme.DIALOG_PADDING) + hk.theme.DIALOG_HEADER_HEIGHT,
       HORIZONTAL_PADDING  = (2 * hk.theme.DIALOG_PADDING),
-      VERTICAL_PADDING    = (3 * hk.theme.DIALOG_PADDING) + hk.theme.DIALOG_HEADER_HEIGHT;
-    
+      VERTICAL_PADDING    = (3 * hk.theme.DIALOG_PADDING) + hk.theme.DIALOG_HEADER_HEIGHT,
+      CONTENT_TOP         = ROLLED_HEIGHT,
+      CONTENT_LEFT        = hk.theme.DIALOG_PADDING;
+      
   hk.DIALOG_RESIZE_NONE         = 0;  
   hk.DIALOG_RESIZE_HORIZONTAL   = 1;
   hk.DIALOG_RESIZE_VERTICAL     = 2;
@@ -39,9 +41,6 @@
     shadeButton.href = '#';
     shadeButton.className = 'hk-dialog-shade';
     
-    var content = document.createElement('div');
-    content.className = 'hk-dialog-content';
-    
     var resizeHorizontal = document.createElement('div');
     resizeHorizontal.className = 'hk-dialog-resize-handle hk-dialog-resize-horizontal';
     
@@ -55,7 +54,6 @@
     header.appendChild(closeButton);
     header.appendChild(shadeButton);
     root.appendChild(header);
-    root.appendChild(content);
     root.appendChild(resizeHorizontal);
     root.appendChild(resizeVertical);
     root.appendChild(resizeAny);
@@ -65,7 +63,6 @@
     this.closeButton = closeButton;
     this.shadeButton = shadeButton;
     this.title = title;
-    this.content = content;
     
     //
     // Event handlers
@@ -81,6 +78,8 @@
     
     this._rolled = false;
     this._shadeState = SHADE_UNROLLED;
+    
+    this._content = null;
     
     this.setPosition(0, 0);
     this.setMinimumSize(null, null);
@@ -98,6 +97,23 @@
     
     setTitle: function(title) {
       this.title.innerText = title;
+    },
+    
+    setContent: function(newContent) {
+
+      if (this._content) {
+        // TODO: remove
+        this._content = null;
+      }
+      
+      if (newContent) {
+        var contentRoot = newContent.getRoot();
+        hk.addClass(contentRoot, 'hk-dialog-content');
+        this.root.appendChild(contentRoot);
+        this._content = newContent;
+        this._adjustContentBounds();
+      }
+      
     },
     
     setResizePolicy: function(policy) {
@@ -134,13 +150,13 @@
       this.width = width;
       this.height = height;
       
-      this.content.style.width = (width - HORIZONTAL_PADDING) + 'px';
-      this.content.style.height = (height - VERTICAL_PADDING) + 'px';
-      
       this.root.style.width = width + 'px';
       if (!this._rolled) {
         this.root.style.height = height + 'px';
       }
+      
+      this._adjustContentBounds();
+      
     },
     
     show: function() {
@@ -310,6 +326,15 @@
       
       hk.addClass(this.root, resizeClass);
     },
+    
+    _adjustContentBounds: function() {
+      if (this._content) {
+        this._content.setBounds(CONTENT_LEFT,
+                                CONTENT_TOP,
+                                this.width - HORIZONTAL_PADDING,
+                                this.height - VERTICAL_PADDING);
+      }
+    }
   };
   
   hk.Dialog = Dialog;
