@@ -51,6 +51,15 @@ body {
 }
 
 //
+// Widget
+
+.hk-widget {
+    position: absolute;
+    background: red;
+    -webkit-border-sizing: border-box;
+}
+
+//
 // Dialog
 
 $HK_DIALOG_PADDING              : 6px;

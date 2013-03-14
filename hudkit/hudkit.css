@@ -30,6 +30,11 @@ body {
 .hk-menu-action-item {
   display: block; }
 
+.hk-widget {
+  position: absolute;
+  background: red;
+  -webkit-border-sizing: border-box; }
+
 .hk-dialog {
   background: #303030;
   border-radius: 6px;

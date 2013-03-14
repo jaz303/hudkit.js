@@ -5,6 +5,8 @@
 <script src='/hudkit/hudkit.js'></script>
 <script src='/hudkit/action.js'></script>
 
+<script src='/hudkit/widget.js'></script>
+
 <script src='/hudkit/dialog/dialog.js'></script>
 
 <script src='/hudkit/menu/menu-bar.js'></script>
