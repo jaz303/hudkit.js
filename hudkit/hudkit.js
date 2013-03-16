@@ -16,11 +16,15 @@
   
   var hk = {
     root: null,
+    rootPane: null,
     
     // Initialise hudkit.js with a given root element.
     init: function(root) {
+      hk.rootPane = new hk.RootPane();
       hk.root = root || document.body;
-      root.className = "hk";
+      hk.root.className = 'hk';
+      hk.root.appendChild(hk.rootPane.getRoot());
+      return hk.rootPane;
     },
     
     //

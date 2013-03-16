@@ -7,6 +7,7 @@
 
 <script src='/hudkit/widget.js'></script>
 <script src='/hudkit/box.js'></script>
+<script src='/hudkit/root-pane.js'></script>
 <script src='/hudkit/split-pane.js'></script>
 
 <script src='/hudkit/console/console.js'></script>

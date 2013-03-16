@@ -154,6 +154,12 @@ body {
   .hk-dialog.hk-dialog-resizable-horizontal > .hk-dialog-resize-horizontal, .hk-dialog.hk-dialog-resizable-vertical > .hk-dialog-resize-vertical, .hk-dialog.hk-dialog-resizable-any > .hk-dialog-resize-any {
     display: block; }
 
+.hk-root-pane {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+
 .hk-split-pane > .hk-split-pane-divider {
   position: absolute;
   background: #505050; }
