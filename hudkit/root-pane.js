@@ -24,7 +24,7 @@
         
       },
       
-      setBounds: function() {
+      setBounds: function(x, y, width, height) {
         /* no-op; root widget always fills its containing DOM element */
       },
       
