@@ -1,7 +1,6 @@
 ;(function(global, hk) {
   
   var superKlass = hk.Widget.prototype;
-  
   hk.Canvas2D = hk.Widget.extend({
     methods: {
       init: function() {

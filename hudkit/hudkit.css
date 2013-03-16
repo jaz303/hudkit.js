@@ -156,12 +156,17 @@ body {
 
 .hk-split-pane > .hk-split-pane-divider {
   position: absolute;
-  background: red; }
+  background: #505050; }
+.hk-split-pane > .hk-split-pane-ghost {
+  background: #ff3300;
+  opacity: 0.7; }
 .hk-split-pane.horizontal > .hk-split-pane-divider {
   top: 0;
   bottom: 0;
-  width: 10px; }
+  width: 10px;
+  cursor: col-resize; }
 .hk-split-pane.vertical > .hk-split-pane-divider {
   left: 0;
   right: 0;
-  height: 10px; }
+  height: 10px;
+  cursor: row-resize; }

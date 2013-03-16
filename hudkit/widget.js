@@ -3,20 +3,22 @@
   var NO_CONSTRUCT = {};
   function Widget() {}
   
-  function makeCSSClassFun(klass) {
-    return function() { return klass; }
-  }
-  
   Widget.prototype = {
-    init: function() {
+    init: function(rect) {
+      
+      this._parent = null;
       
       var root = this._buildStructure();
       if (root) this.root = root;
       if (!this.root) throw "widget root not built";
+      hk.addClass(this.root, 'hk-widget');
       
-      hk.addClass(this.root, 'hk-widget ' + this._widgetCSSClass());
-      
-      this._parent = null;
+      if (rect) {
+        this.setBounds(rect.x, rect.y, rect.width, rect.height, true);
+      } else {
+        var size = this._defaultSize();
+        this.setBounds(0, 0, size[0], size[1]);
+      }
       
     },
     
@@ -45,19 +47,31 @@
     },
     
     setBounds: function(x, y, width, height) {
+      this._setBounds(x, y, width, height);
+      this._applyBounds();
+    },
+    
+    /**
+     * A widget's implementation of this method should create that widget's
+     * HTML structure and either assign it to this.root or return it. There
+     * is no need to assign the CSS class `hk-widget`; this is done by the
+     * widget initialiser, but any additional CSS classes must be added by
+     * your code.
+     *
+     * Shortly after it has called _buildStructure(), the initialiser will
+     * call setBounds() - a method you may have overridden to perform
+     * additional layout duties - so ensure that the HTML structure is
+     * set up sufficiently for this call to complete.
+     */
+    _buildStructure: function() {
+      throw "widgets must override Widget._buildStructure()";
+    },
+    
+    _setBounds: function(x, y, width, height) {
       this.x = x;
       this.y = y;
       this.width = width;
       this.height = height;
-      this._applyBounds();
-    },
-    
-    _buildStructure: function() {
-      return document.createElement('div');
-    },
-    
-    _widgetCSSClass: function() {
-      return '';
     },
     
     _applyBounds: function() {
@@ -65,6 +79,10 @@
       this.root.style.top = this.y + 'px';
       this.root.style.width = this.width + 'px';
       this.root.style.height = this.height + 'px';
+    },
+    
+    _defaultSize: function() {
+      return [100, 100];
     }
   };
   
@@ -87,13 +105,6 @@
     var methods = features.methods || {};
     for (var m in methods) {
       widgetKlass.prototype[m] = methods[m];
-    }
-    
-    //
-    // Widget CSS class
-    
-    if ('widgetCSSClass' in features) {
-      widgetKlass.prototype._widgetCSSClass = makeCSSClassFun(features.widgetCSSClass);
     }
     
     return widgetKlass;

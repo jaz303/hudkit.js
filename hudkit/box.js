@@ -3,8 +3,6 @@
   var superKlass = hk.Widget.prototype;
   
   hk.Box = hk.Widget.extend({
-    widgetCSSClass: 'hk-box',
-    
     methods: {
       init: function() {
         superKlass.init.apply(this, arguments);
@@ -13,6 +11,11 @@
       
       setBackgroundColor: function(color) {
         this.root.style.backgroundColor = color;
+      },
+      
+      _buildStructure: function() {
+        this.root = document.createElement('div');
+        this.root.className = 'hk-box';
       }
     }
   });

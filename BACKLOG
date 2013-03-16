@@ -2,3 +2,6 @@ Stuff that I'm deliberately leaving until later:
 
 [ ] Dialog - truncate title bar when dialog is small
 [ ] Dialog - transition for rolling/unrolling
+[ ] Split pane - min/max size policy
+[ ] Split pane - preserve proportions after outer resize
+[ ] Split pane - set split in absolute pixel size rather than proportion
