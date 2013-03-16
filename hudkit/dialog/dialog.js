@@ -4,10 +4,6 @@
       SHOW_VISIBLE        = 2,
       SHOW_ANIMATING      = 3;
                           
-  var SHADE_ROLLED        = 1,
-      SHADE_UNROLLED      = 2,
-      SHADE_ANIMATING     = 3;
-                          
   var ABSOLUTE_MIN_W      = 200,
       ABSOLUTE_MIN_H      = 200;
       
@@ -77,7 +73,6 @@
     hk.addClass(this.root, 'hidden hiding');
     
     this._rolled = false;
-    this._shadeState = SHADE_UNROLLED;
     
     this._content = null;
     

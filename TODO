@@ -1,17 +1,36 @@
-[ ] Menu bar
-[ ] Menu item
-[ ] Menu
-[ ] Root view
-[ ] Vertical split
-[ ] Code editor
+Widgets
+-------
+Split pane
+Code editor
+Toolbar
+Menu system
 
-Menu algorithms
----------------
+Future
+------
+Button
+Checkbox
+Color-picker
+Slider
+Knob
+XY-pad
+Text field
+Text area
+Property inspector
+Drop-down
+Tab pane
+Pop-over
+Slide-out/over
+List view
+Grid (non-editable for now)
+Graph
+Node editor
 
-CSS classes
- - visible
- - invisible
+Behaviours
+----------
+Tooltip
 
-Menu:
- isAttached
- 
+Features
+--------
+Console auto-complete
+Console history
+

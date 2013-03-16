@@ -30,10 +30,53 @@ body {
 .hk-menu-action-item {
   display: block; }
 
+.hk-capture-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
 .hk-widget {
   position: absolute;
-  background: red;
-  -webkit-border-sizing: border-box; }
+  overflow: hidden;
+  box-sizing: border-box; }
+
+.hk-console {
+  padding: 5px;
+  background: #f0f0f0;
+  overflow: auto;
+  font: 13px/1.2 monospace; }
+  .hk-console .output-item {
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+    -webkit-box-align: stretch;
+    clear: both; }
+  .hk-console .prompt {
+    white-space: nowrap;
+    margin-right: 5px;
+    display: -webkit-box;
+    -webkit-box-back: center;
+    -webkit-box-orient: vertical; }
+  .hk-console .command-wrapper {
+    display: block;
+    -webkit-box-flex: 1; }
+  .hk-console span.command {
+    display: inline-block; }
+  .hk-console input.command {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font: inherit;
+    -webkit-appearance: textfield;
+    -webkit-user-select: text;
+    cursor: auto;
+    display: inline-block;
+    text-align: start; }
+    .hk-console input.command:focus {
+      outline: none; }
 
 .hk-dialog {
   background: #303030;
@@ -111,9 +154,14 @@ body {
   .hk-dialog.hk-dialog-resizable-horizontal > .hk-dialog-resize-horizontal, .hk-dialog.hk-dialog-resizable-vertical > .hk-dialog-resize-vertical, .hk-dialog.hk-dialog-resizable-any > .hk-dialog-resize-any {
     display: block; }
 
-.hk-capture-overlay {
+.hk-split-pane > .hk-split-pane-divider {
   position: absolute;
+  background: red; }
+.hk-split-pane.horizontal > .hk-split-pane-divider {
   top: 0;
+  bottom: 0;
+  width: 10px; }
+.hk-split-pane.vertical > .hk-split-pane-divider {
   left: 0;
-  width: 100%;
-  height: 100%; }
+  right: 0;
+  height: 10px; }

@@ -1,3 +1,17 @@
+//
+// Theme
+
+$HK_MONOSPACE_FONT                  : monospace ;
+
+$HK_DIALOG_PADDING                  : 6px ;
+$HK_DIALOG_HEADER_HEIGHT            : 24px ;
+$HK_DIALOG_BORDER_RADIUS            : $HK_DIALOG_PADDING ;
+
+$HK_SPLIT_PANE_DIVIDER_SIZE         : 10px ;
+
+//
+// Mixins
+
 @mixin noselect {
     -webkit-user-select: none;
     cursor: default;
@@ -50,21 +64,91 @@ body {
     display: block;
 }
 
+
+//
+// Capture Overlay
+
+.hk-capture-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 //
 // Widget
 
 .hk-widget {
     position: absolute;
-    background: red;
-    -webkit-border-sizing: border-box;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+//
+// Console
+
+.hk-console {
+    padding: 5px;
+    background: #f0f0f0;
+    overflow: auto;
+    font: 13px/1.2 $HK_MONOSPACE_FONT;
+    
+    output {
+        
+    }
+    
+    .output-item {
+        display: -webkit-box;
+        -webkit-box-orient: horizontal;
+        -webkit-box-align: stretch;
+        clear: both;
+    }
+    
+    .input-line {
+        
+    }
+    
+    .prompt {
+        white-space: nowrap;
+        margin-right: 5px;
+        display: -webkit-box;
+        -webkit-box-back: center;
+        -webkit-box-orient: vertical;
+    }
+    
+    .command-wrapper {
+        display: block;
+        -webkit-box-flex: 1;
+    }
+    
+    span.command {
+        display: inline-block;
+    }
+    
+    input.command {
+        border: none;
+        background: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        font: inherit;
+        -webkit-appearance: textfield;
+        -webkit-user-select: text;
+        cursor: auto;
+        display: inline-block;
+        text-align: start;
+        
+        &:focus {
+            outline: none;
+        }
+    }
 }
 
 //
 // Dialog
 
-$HK_DIALOG_PADDING              : 6px;
-$HK_DIALOG_HEADER_HEIGHT        : 24px;
-$HK_DIALOG_BORDER_RADIUS        : $HK_DIALOG_PADDING;
+
 
 .hk-dialog {
     background: #303030;
@@ -161,12 +245,23 @@ $HK_DIALOG_BORDER_RADIUS        : $HK_DIALOG_PADDING;
 }
 
 //
-// Capture Overlay
+// Split Pane
 
-.hk-capture-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+.hk-split-pane {
+    > .hk-split-pane-divider {
+        position: absolute;
+        background: red;
+    }
+    
+    &.horizontal > .hk-split-pane-divider {
+        top: 0;
+        bottom: 0;
+        width: $HK_SPLIT_PANE_DIVIDER_SIZE;
+    }
+    
+    &.vertical > .hk-split-pane-divider {
+        left: 0;
+        right: 0;
+        height: $HK_SPLIT_PANE_DIVIDER_SIZE;
+    }
 }
