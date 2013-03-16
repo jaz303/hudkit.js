@@ -1,6 +1,6 @@
 Widgets
 -------
-Split pane
+Root pane
 Code editor
 Toolbar
 Menu system
@@ -8,6 +8,7 @@ Menu system
 Improvements
 ------------
 Dialog - ghost resize
+Dialog - Z-index
 
 Future
 ------
