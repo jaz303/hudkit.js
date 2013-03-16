@@ -1,5 +1,7 @@
 ;(function(global, hk) {
   
+  var DIVIDER_SIZE = hk.theme.SPLIT_PANE_DIVIDER_SIZE;
+  
   hk.SPLIT_PANE_HORIZONTAL    = 1;
   hk.SPLIT_PANE_VERTICAL      = 2;
   
@@ -77,13 +79,10 @@
       },
       
       _layout: function() {
-        var ds = hk.theme.SPLIT_PANE_DIVIDER_SIZE,
-            ds2 = ds / 2;
-        
         if (this._orientation == hk.SPLIT_PANE_VERTICAL) {
           
-          var divt  = Math.floor(this._split * (this.height - ds)),
-              w2t   = divt + hk.theme.SPLIT_PANE_DIVIDER_SIZE,
+          var divt  = Math.floor(this._split * (this.height - DIVIDER_SIZE)),
+              w2t   = divt + DIVIDER_SIZE,
               w2h   = this.height - w2t;
           
           this._divider.style.left = '';
@@ -94,8 +93,8 @@
         
         } else if (this._orientation == hk.SPLIT_PANE_HORIZONTAL) {
           
-          var divl  = Math.floor(this._split * (this.width - ds)),
-              w2l   = divl + hk.theme.SPLIT_PANE_DIVIDER_SIZE,
+          var divl  = Math.floor(this._split * (this.width - DIVIDER_SIZE)),
+              w2l   = divl + DIVIDER_SIZE,
               w2w   = this.width - w2l;
             
           this._divider.style.left = divl + 'px';
@@ -119,11 +118,11 @@
           
           function moveGhost() {
             if (self._orientation == hk.SPLIT_PANE_HORIZONTAL) {
-              self._ghost.style.left = Math.floor(lastValidSplit * (rootPos.width - hk.theme.SPLIT_PANE_DIVIDER_SIZE)) + 'px';
+              self._ghost.style.left = Math.floor(lastValidSplit * (rootPos.width - DIVIDER_SIZE)) + 'px';
               self._ghost.style.top = '';
             } else if (self._orientation == hk.SPLIT_PANE_VERTICAL) {
               self._ghost.style.left = '';
-              self._ghost.style.top = Math.floor(lastValidSplit * (rootPos.height - hk.theme.SPLIT_PANE_DIVIDER_SIZE)) + 'px';
+              self._ghost.style.top = Math.floor(lastValidSplit * (rootPos.height - DIVIDER_SIZE)) + 'px';
             }
           }
               
@@ -136,20 +135,20 @@
               if (self._orientation == hk.SPLIT_PANE_HORIZONTAL) {
                 var left    = evt.pageX - offsetX,
                     leftMin = (rootPos.left),
-                    leftMax = (rootPos.right - hk.theme.SPLIT_PANE_DIVIDER_SIZE);
+                    leftMax = (rootPos.right - DIVIDER_SIZE);
                 if (left < leftMin) left = leftMin;
                 if (left > leftMax) left = leftMax;
                 
-                lastValidSplit = (left - leftMin) / (rootPos.width - hk.theme.SPLIT_PANE_DIVIDER_SIZE);
+                lastValidSplit = (left - leftMin) / (rootPos.width - DIVIDER_SIZE);
                 moveGhost();
               } else {
                 var top     = evt.pageY - offsetY,
                     topMin  = (rootPos.top),
-                    topMax  = (rootPos.bottom - hk.theme.SPLIT_PANE_DIVIDER_SIZE);
+                    topMax  = (rootPos.bottom - DIVIDER_SIZE);
                 if (top < topMin) top = topMin;
                 if (top > topMax) top = topMax;
                 
-                lastValidSplit = (top - topMin) / (rootPos.height - hk.theme.SPLIT_PANE_DIVIDER_SIZE);
+                lastValidSplit = (top - topMin) / (rootPos.height - DIVIDER_SIZE);
                 moveGhost();
               }
             },
