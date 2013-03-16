@@ -46,6 +46,13 @@
       return this.setBounds(rect.x, rect.y, rect.width, rect.height);
     },
     
+    /**
+     * Set the position and size of this widget
+     * Of all the public methods for manipulating a widget's size, setBounds()
+     * is the one that does the actual work. If you need to override resizing
+     * behaviour in a subclass (e.g. see hk.RootPane), this is the only method
+     * you need to override.
+     */
     setBounds: function(x, y, width, height) {
       this._setBounds(x, y, width, height);
       this._applyBounds();
