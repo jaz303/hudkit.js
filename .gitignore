@@ -1,3 +1,4 @@
 cc-ide
 .sass-cache
 vendor/ace
+.DS_Store
