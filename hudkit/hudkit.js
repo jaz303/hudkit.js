@@ -113,6 +113,13 @@
     DIALOG_HEADER_HEIGHT        : 24,
     DIALOG_TRANSITION_DURATION  : 200,
     SPLIT_PANE_DIVIDER_SIZE     : 10,
+    
+    // The following properties are defined in Javascript only...
+    TOOLBAR_HEIGHT              : 24,
+    TOOLBAR_MARGIN_TOP          : 8,
+    TOOLBAR_MARGIN_RIGHT        : 8,
+    TOOLBAR_MARGIN_BOTTOM       : 8,
+    TOOLBAR_MARGIN_LEFT         : 8,
   };
   
   exports.hk = hk;
