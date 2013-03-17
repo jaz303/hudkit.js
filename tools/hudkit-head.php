@@ -15,7 +15,8 @@ $HUDKIT_JAVASCRIPTS = array(
   'console/console.js',
   'dialog/dialog.js',
   'canvas/canvas2d.js',
-  'canvas/canvas3d.js'
+  'canvas/canvas3d.js',
+  'toolbar/toolbar.js',
 );
 ?>
 
