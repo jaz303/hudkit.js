@@ -18,6 +18,10 @@
     root: null,
     rootPane: null,
     
+    log: function() {
+      console.log.apply(console, arguments);
+    },
+    
     // Initialise hudkit.js with a given root element.
     init: function(root) {
       hk.rootPane = new hk.RootPane();
