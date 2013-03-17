@@ -1,7 +1,9 @@
 //
 // Theme
 
-$HK_MONOSPACE_FONT                  : monospace ;
+$HK_MONOSPACE_FONT                  : 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace ;
+
+$HK_CONSOLE_FONT_SIZE               : 12px ;
 
 $HK_DIALOG_PADDING                  : 6px ;
 $HK_DIALOG_HEADER_HEIGHT            : 24px ;
@@ -74,6 +76,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 30000;
 }
 
 //
@@ -86,13 +89,58 @@ body {
 }
 
 //
+// Code Editor
+
+.hk-code-editor * {
+    -webkit-user-select: auto;
+}
+
+.hk-code-editor {
+    background: #00122A;
+    
+    .ace_editor {
+        font-size: 11px;
+    }
+    
+    ::-webkit-scrollbar {
+        background: #012042;
+        width: 15px;
+        height: 15px;
+    }
+    
+    ::-webkit-scrollbar-button { }
+    
+    ::-webkit-scrollbar-track { }
+    ::-webkit-scrollbar-track:horizontal { border-top: 1px solid #01324B; }
+    ::-webkit-scrollbar-track:vertical { border-left: 1px solid #01324B; }
+    
+    ::-webkit-scrollbar-track-piece:start { }
+    
+    ::-webkit-scrollbar-thumb:vertical {
+        background: url("thumb-v.png") repeat-y center center;
+        border-radius: 10px;
+        -webkit-background-clip: padding-box;
+    }
+    
+    ::-webkit-scrollbar-thumb:horizontal {
+        background: url("thumb-h.png") repeat-x center center;
+        border-radius: 10px;
+        -webkit-background-clip: padding-box;
+    }
+    
+    ::-webkit-scrollbar-corner {
+        
+    }
+}
+
+//
 // Console
 
 .hk-console {
     padding: 5px;
     background: #f0f0f0;
     overflow: auto;
-    font: 13px/1.2 $HK_MONOSPACE_FONT;
+    font: $HK_CONSOLE_FONT_SIZE/1.2 $HK_MONOSPACE_FONT;
     
     output {
         
@@ -147,8 +195,6 @@ body {
 
 //
 // Dialog
-
-
 
 .hk-dialog {
     background: #303030;

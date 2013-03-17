@@ -35,18 +35,43 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  z-index: 30000; }
 
 .hk-widget {
   position: absolute;
   overflow: hidden;
   box-sizing: border-box; }
 
+.hk-code-editor * {
+  -webkit-user-select: auto; }
+
+.hk-code-editor {
+  background: #00122A; }
+  .hk-code-editor .ace_editor {
+    font-size: 11px; }
+  .hk-code-editor ::-webkit-scrollbar {
+    background: #012042;
+    width: 15px;
+    height: 15px; }
+  .hk-code-editor ::-webkit-scrollbar-track:horizontal {
+    border-top: 1px solid #01324B; }
+  .hk-code-editor ::-webkit-scrollbar-track:vertical {
+    border-left: 1px solid #01324B; }
+  .hk-code-editor ::-webkit-scrollbar-thumb:vertical {
+    background: url("thumb-v.png") repeat-y center center;
+    border-radius: 10px;
+    -webkit-background-clip: padding-box; }
+  .hk-code-editor ::-webkit-scrollbar-thumb:horizontal {
+    background: url("thumb-h.png") repeat-x center center;
+    border-radius: 10px;
+    -webkit-background-clip: padding-box; }
+
 .hk-console {
   padding: 5px;
   background: #f0f0f0;
   overflow: auto;
-  font: 13px/1.2 monospace; }
+  font: 10px "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "source-code-pro", monospace; }
   .hk-console .output-item {
     display: -webkit-box;
     -webkit-box-orient: horizontal;

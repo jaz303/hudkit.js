@@ -11,6 +11,7 @@ $HUDKIT_JAVASCRIPTS = array(
   'box.js',
   'root-pane.js',
   'split-pane.js',
+  'code-editor/code-editor.js',
   'console/console.js',
   'dialog/dialog.js',
   'canvas/canvas2d.js',
