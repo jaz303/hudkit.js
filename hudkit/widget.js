@@ -7,6 +7,7 @@
     init: function(rect) {
       
       this._parent = null;
+      this._hidden = false;
       
       var root = this._buildStructure();
       if (root) this.root = root;
@@ -40,6 +41,12 @@
       ele.appendChild(this.root);
       this._parent = parentWidget;
     
+    },
+    
+    isHidden: function() { return this._hidden; },
+    setHidden: function(hidden) {
+      this._hidden = !!hidden;
+      this.root.style.display = this._hidden ? 'none' : this._cssDisplayMode();
     },
     
     setRect: function(rect) {
@@ -90,6 +97,10 @@
     
     _defaultSize: function() {
       return [100, 100];
+    },
+    
+    _cssDisplayMode: function() {
+      return 'block';
     }
   };
   
