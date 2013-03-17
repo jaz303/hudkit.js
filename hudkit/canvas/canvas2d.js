@@ -16,7 +16,7 @@
       
       _buildStructure: function() {
         this.root = document.createElement('canvas');
-        this.root.className = 'hk-canvas';
+        this.root.className = 'hk-canvas hk-canvas-2d';
         this.context = this.root.getContext('2d');
       },
     }
