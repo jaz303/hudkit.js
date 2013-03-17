@@ -5,3 +5,9 @@ Stuff that I'm deliberately leaving until later:
 [ ] Split pane - min/max size policy
 [ ] Split pane - preserve proportions after outer resize
 [ ] Split pane - set split in absolute pixel size rather than proportion
+
+BUGS
+====
+[ ] Resizing split pane cursor is incorrect when code editor widget is on-screen
+    In fact, drag cursor behaviour is wrong everywhere - wtf...
+[ ] Split-pane resizing is broken on Safari
