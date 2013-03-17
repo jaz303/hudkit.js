@@ -18,10 +18,6 @@
     root: null,
     rootPane: null,
     
-    log: function() {
-      console.log.apply(console, arguments);
-    },
-    
     // Initialise hudkit.js with a given root element.
     init: function(root) {
       hk.rootPane = new hk.RootPane();
@@ -29,6 +25,16 @@
       hk.root.className = 'hk';
       hk.root.appendChild(hk.rootPane.getRoot());
       return hk.rootPane;
+    },
+    
+    log: function() {
+      console.log.apply(console, arguments);
+    },
+    
+    parseInt: function(val) {
+      var i = parseInt(val, 10);
+      if (isNaN(i)) throw "not an integer: " + i;
+      return i;
     },
     
     //
