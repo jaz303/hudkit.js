@@ -23,6 +23,10 @@
         this._layout();
       },
       
+      setBackgroundColor: function(color) {
+        this.root.style.backgroundColor = color;
+      },
+      
       setToolbar: function(widget) {
         
         if (widget == this._toolbar) {

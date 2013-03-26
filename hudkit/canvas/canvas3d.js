@@ -6,11 +6,23 @@
   hk.Canvas3D = hk.Widget.extend({
     methods: {
       init: function() {
+        this._context = null;
         superKlass.init.apply(this, arguments);
       },
       
+      /**
+       * Returns the WebGL context.
+       * This method should not be called until the widget has been added to the DOM
+       */
       getContext: function() {
+        if (!this._context) {
+          this._context = this._createContext();
+        }
         return this._context;
+      },
+      
+      getCanvas: function() {
+        return this.root;
       },
       
       _applyBounds: function() {
@@ -18,28 +30,34 @@
         this.root.style.top = this.y + 'px';
         this.root.width = this.width;
         this.root.height = this.height;
+        
+        if (this._context) {
+          this._context.viewport(0, 0, this._context.drawingBufferWidth, this._context.drawingBufferHeight);
+        }
       },
       
       _buildStructure: function() {
-        
         this.root = document.createElement('canvas');
         this.root.className = 'hk-canvas hk-canvas-3d';
-        
-        this._context = null;
+      },
+      
+      _createContext: function() {
+        var context = null;
         for (var i = 0; i < CONTEXTS.length; ++i) {
           try {
-            this._context = this.root.getContext(CONTEXTS[i]);
-            if (this._context) {
+            context = this.root.getContext(CONTEXTS[i]);
+            if (context) {
               break;
             }
           } catch (e) {}
         }
         
-        if (!this._context) {
-          throw "could not create hk.Canvas3D - WebGL not available";
+        if (!context) {
+          throw "could not create context - WebGL is not available";
         }
         
-      },
+        return context;
+      }
     }
   });
   
