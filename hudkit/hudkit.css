@@ -41,6 +41,16 @@
   overflow: hidden;
   box-sizing: border-box; }
 
+.hk-button {
+  font: 10px Helvetica, sans-serif;
+  line-height: 1;
+  border: 1px solid HK_CONTROL_BORDER_COLOR;
+  background: #929da8;
+  padding: 1px 10px 2px 10px;
+  border-radius: 7px; }
+  .hk-button:active {
+    background: #eaf20f; }
+
 .hk-canvas-2d {
   background-color: #181818; }
 

@@ -8,6 +8,7 @@ $HUDKIT_JAVASCRIPTS = array(
   'hudkit.js',
   'action.js',
   'widget.js',
+  'button.js',
   'box.js',
   'root-pane.js',
   'split-pane.js',
