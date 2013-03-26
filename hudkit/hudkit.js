@@ -42,6 +42,14 @@
       return i;
     },
     
+    remove: function(ary, obj) {
+      var ix = ary.indexOf(obj);
+      if (ix >= 0) {
+        ary.splice(ix, 1);
+      }
+      return ix;
+    },
+    
     //
     // Basic CSS stuff
     
