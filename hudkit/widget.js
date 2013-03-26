@@ -23,6 +23,21 @@
       
     },
     
+    /**
+     * Call on a widget when you're done with it and never want to use it again.
+     * Widget will be removed from its parent and reference to root node nullified.
+     * It's invalid to call any other methods on a Widget instance after it has been
+     * dispose()'d.
+     * Subclasses should override this method to unregister listeners and nullify
+     * any references likely to cause memory leaks.
+     */
+    dispose: function() {
+      if (this._parent) {
+        this.removeFromParent();
+      }
+      this.root = null;
+    },
+    
     getRoot: function() { return this.root; },
     getParent: function() { return this._parent; },
     
