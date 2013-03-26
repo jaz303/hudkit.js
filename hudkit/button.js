@@ -6,6 +6,14 @@
       init: function() {
         this._action = null;
         superKlass.init.apply(this, arguments);
+        
+        var self = this;
+        
+        this.root.addEventListener('click', function() {
+          if (self._action) self._action(self);
+        });
+        
+        this._handleActionChanged = function() { self._update(); }
       },
       
       dispose: function() {
@@ -13,25 +21,49 @@
         superKlass.dispose.apply(this);
       },
       
+      getAction: function() {
+        return this._action;
+      },
+      
       setAction: function(action) {
         
         if (this._action) {
-          // TODO: remove this as listener from action
+          this._action.removeObserver(this._handleActionChanged);
           this._action = null;
         }
         
         if (action) {
           action = hk.createAction(action);
           this._action = action;
-          // TODO: add this as listener to action
+          this._action.addObserver(this._handleActionChanged);
         }
+        
+        this._update();
       
       },
       
       _buildStructure: function() {
         this.root = document.createElement('button');
-        this.root.innerText = "Hello!";
         this.root.className = 'hk-button';
+      },
+      
+      _update: function() {
+        
+        var title   = "",
+            enabled = true;
+        
+        if (this._action) {
+          title = this._action.getTitle();
+          enabled = this._action.isEnabled();
+        }
+        
+        this.root.innerText = title;
+        if (enabled) {
+          this.root.removeAttribute('disabled');
+        } else {
+          this.root.setAttribute('disabled', 'disabled');
+        }
+        
       }
     }
   });
