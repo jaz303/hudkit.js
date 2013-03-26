@@ -7,6 +7,16 @@
         superKlass.init.apply(this, arguments);
       },
       
+      addAction: function(action) {
+        
+      },
+      
+      addSeparator: function() {
+        
+      },
+      
+      
+      
       _buildStructure: function() {
         this.root = document.createElement('div');
         this.root.className = 'hk-toolbar';

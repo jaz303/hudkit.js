@@ -7,6 +7,9 @@
         superKlass.init.apply(this, arguments);
       },
       
+      getContext: function() { return this._context; },
+      getCanvas: function() { return this.root; },
+      
       _applyBounds: function() {
         this.root.style.left = this.x + 'px';
         this.root.style.top = this.y + 'px';
@@ -17,7 +20,7 @@
       _buildStructure: function() {
         this.root = document.createElement('canvas');
         this.root.className = 'hk-canvas hk-canvas-2d';
-        this.context = this.root.getContext('2d');
+        this._context = this.root.getContext('2d');
       },
     }
   });

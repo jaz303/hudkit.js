@@ -15,8 +15,13 @@
   }
   
   var hk = {
-    root: null,
-    rootPane: null,
+    MANUAL_BOUNDS_STATIC    : 1,
+    MANUAL_BOUNDS_POSITION  : 2,
+    MANUAL_BOUNDS_SIZE      : 4,
+    MANUAL_BOUNDS_ALL       : 7,
+    
+    root                    : null,
+    rootPane                : null,
     
     // Initialise hudkit.js with a given root element.
     init: function(root) {

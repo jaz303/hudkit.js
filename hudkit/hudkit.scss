@@ -23,12 +23,10 @@ $HK_SPLIT_PANE_DIVIDER_SIZE         : 10px ;
     font-size: 11px;
 }
 
-body {
-    background: #101010;
-}
-
 .hk {
     @include noselect;
+    
+    background: #101010;
     
     font: 12px Arial, Helvetica, sans-serif;
     
@@ -86,6 +84,13 @@ body {
     position: absolute;
     overflow: hidden;
     box-sizing: border-box;
+}
+
+//
+// Canvas
+
+.hk-canvas-2d {
+    background-color: #181818;
 }
 
 //
@@ -298,6 +303,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
+    overflow: hidden;
 }
 
 //
@@ -327,4 +333,11 @@ body {
         height: $HK_SPLIT_PANE_DIVIDER_SIZE;
         cursor: row-resize;
     }
+}
+
+//
+// Toolbar
+
+.hk-toolbar {
+    background: red;
 }

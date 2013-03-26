@@ -1,9 +1,7 @@
-body {
-  background: #101010; }
-
 .hk {
   -webkit-user-select: none;
   cursor: default;
+  background: #101010;
   font: 12px Arial, Helvetica, sans-serif; }
   .hk a {
     text-decoration: none; }
@@ -42,6 +40,9 @@ body {
   position: absolute;
   overflow: hidden;
   box-sizing: border-box; }
+
+.hk-canvas-2d {
+  background-color: #181818; }
 
 .hk-code-editor * {
   -webkit-user-select: auto; }
@@ -183,7 +184,8 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0; }
+  bottom: 0;
+  overflow: hidden; }
 
 .hk-split-pane > .hk-split-pane-divider {
   position: absolute;
@@ -201,3 +203,6 @@ body {
   right: 0;
   height: 10px;
   cursor: row-resize; }
+
+.hk-toolbar {
+  background: red; }
