@@ -213,3 +213,6 @@
   right: 0;
   height: 10px;
   cursor: row-resize; }
+
+.hk-toolbar > .hk-toolbar-item {
+  margin-right: 5px; }

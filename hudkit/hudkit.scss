@@ -377,6 +377,10 @@ $HK_TOOLBAR_HEIGHT                  : 24px ;
 // Toolbar
 
 .hk-toolbar {
+    > .hk-toolbar-item {
+        margin-right: 5px;
+    }
+    
     > .hk-button {
         
     }

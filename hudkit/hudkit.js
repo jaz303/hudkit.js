@@ -18,6 +18,7 @@
     POSITION_MODE_DEFAULT   : 0,
     POSITION_MODE_AUTO_SIZE : 1,
     POSITION_MODE_FLOWING   : 2,
+    POSITION_MODE_MANUAL    : 3,
     
     root                    : null,
     rootPane                : null,
