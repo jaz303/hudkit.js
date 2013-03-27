@@ -14,6 +14,12 @@ IDEAS
 =====
 [ ] Position mode; should it be possible to make a single dimension (e.g. width/height)
     explicit, while leaving the other auto?
+[ ] Toolbar should support either fixed-size or auto-sized widgets.
+    To do this, widgets should gain a method: "supportsAutoSize" or something.
+    Non-auto-sized widgets will be wrapped in a floating container item with an explicit
+    size set.
+    Auto-sized widgets should generally detect that they are inside a toolbar (using CSS)
+    and restyle themselves appropriately.
 
 BUGS
 ====
