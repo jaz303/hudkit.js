@@ -27,6 +27,9 @@
       
       setAction: function(action) {
         
+        if (action === this._action)
+          return;
+        
         if (this._action) {
           this._action.removeObserver(this._handleActionChanged);
           this._action = null;
