@@ -376,5 +376,7 @@ $HK_SPLIT_PANE_DIVIDER_SIZE         : 10px ;
 // Toolbar
 
 .hk-toolbar {
-    background: red;
+    > .hk-button {
+        
+    }
 }
