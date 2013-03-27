@@ -2,6 +2,7 @@
 // Theme
 
 $HK_MONOSPACE_FONT                  : 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace ;
+$HK_TEXT_COLOR                      : #121729 ;
 
 $HK_CONTROL_FONT                    : Helvetica, sans-serif ;
 $HK_CONTROL_FONT_SIZE               : 10px ;
@@ -17,7 +18,8 @@ $HK_DIALOG_HEADER_HEIGHT            : 24px ;
 $HK_DIALOG_BORDER_RADIUS            : $HK_DIALOG_PADDING ;
 
 $HK_SPLIT_PANE_DIVIDER_SIZE         : 10px ;
-$HK_TOOLBAR_HEIGHT                  : 24px ;
+$HK_TOOLBAR_HEIGHT                  : 18px ;
+$HK_TOOLBAR_ITEM_BORDER_COLOR       : #A6B5BB ;
 
 
 //
@@ -117,9 +119,15 @@ $HK_TOOLBAR_HEIGHT                  : 24px ;
   @include control-font;
   @include control-border;
   background: $HK_BUTTON_BG_COLOR;
+  color: $HK_TEXT_COLOR;
   padding: 1px 10px 2px 10px;
   border-radius: 7px;
-  &:active {
+  
+  &.disabled {
+      color: #d0d0d0;
+  }
+  
+  &:not(.disabled):active {
     background: $HK_CONTROL_ACTIVE_BG_COLOR;
   }
 }
@@ -378,10 +386,14 @@ $HK_TOOLBAR_HEIGHT                  : 24px ;
 
 .hk-toolbar {
     > .hk-toolbar-item {
-        margin-right: 5px;
+        margin-right: 2px;
+        display: block;
+        float: left;
     }
     
     > .hk-button {
-        
+        border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;
+        border-radius: 0;
+        padding: ((($HK_TOOLBAR_HEIGHT - $HK_CONTROL_FONT_SIZE) / 2) - 1) 3px;
     }
 }
