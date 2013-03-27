@@ -1,5 +1,9 @@
 Stuff that I'm deliberately leaving until later:
 
+[ ] Buttons - refactor to wrapper <a> and absolutely position <span> for label
+    (means button label will always be vertically centered)
+[ ] Buttons - support icons
+
 [ ] Dialog - truncate title bar when dialog is small
 [ ] Dialog - transition for rolling/unrolling
 [ ] Split pane - min/max size policy
