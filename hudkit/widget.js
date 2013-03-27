@@ -26,38 +26,22 @@
     
     /**
      * Call on a widget when you're done with it and never want to use it again.
-     * Widget will be removed from its parent and reference to root node nullified.
-     * It's invalid to call any other methods on a Widget instance after it has been
-     * dispose()'d.
-     * Subclasses should override this method to unregister listeners and nullify
-     * any references likely to cause memory leaks.
+     *
+     * There is no need to remove this widget's root from the DOM, this guaranteed
+     * to have happened by the time dispose() is called. However, container widgets
+     * *must* remove all of their children (non-recursively).
+     *
+     * Subclasses should override this method to unregister listeners, remove child
+     * widgets and nullify any references likely to cause memory leaks.
      */
     dispose: function() {
-      if (this._parent) {
-        this.removeFromParent();
-      }
       this.root = null;
     },
     
     getRoot: function() { return this.root; },
+    
     getParent: function() { return this._parent; },
-    
-    removeFromParent: function() {
-      this.root.parentNode.removeChild(this.root);
-      this._parent = null;
-    },
-    
-    _attachToParentViaElement: function(parentWidget, ele) {
-      
-      if (this._parent) {
-        this.removeFromParent();
-      }
-      
-      ele = ele || parentWidget.getRoot();
-      ele.appendChild(this.root);
-      this._parent = parentWidget;
-    
-    },
+    setParent: function(p) { this._parent = p; },
     
     isHidden: function() { return this._hidden; },
     setHidden: function(hidden) {
@@ -167,6 +151,33 @@
     
     _cssDisplayMode: function() {
       return 'block';
+    },
+    
+    _attachChildViaElement: function(childWidget, ele) {
+      
+      // TODO: it would probably be better if we just asked the
+      // child to remove itself from the its current parent here
+      // but that pre-supposes a standard interface for removing
+      // elements from "containers", which we don't have yet. And
+      // I'm not willing to commit to an interface that hasn't yet
+      // proven to be required...
+      var existingParent = childWidget.getParent();
+      if (existingParent) {
+        throw "can't attach child widget - child already has a parent!";
+      }
+      
+      ele = ele || this.getRoot();
+      ele.appendChild(childWidget.getRoot());
+      childWidget.setParent(this);
+      
+    },
+    
+    _removeChildViaElement: function(childWidget, ele) {
+      
+      ele = ele || this.getRoot();
+      ele.removeChild(childWidget.getRoot());
+      childWidget.setParent(null);
+      
     }
   };
   

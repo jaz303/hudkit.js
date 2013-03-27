@@ -18,6 +18,12 @@
       
       },
       
+      dispose: function() {
+        this.setToolbar(null);
+        this.setRootWidget(null);
+        superKlass.dispose.call(this);
+      },
+      
       setPadding: function(padding) {
         this._padding = hk.parseInt(padding);
         this._layout();
@@ -28,22 +34,20 @@
       },
       
       setToolbar: function(widget) {
-        
-        if (widget == this._toolbar) {
+        if (widget === this._toolbar)
           return;
-        }
         
         if (this._toolbar) {
-          this._toolbar.removeFromParent();
+          this._removeChildViaElement(this._toolbar, this.root);
           this._toolbar = null;
         }
         
         if (widget) {
-          widget._attachToParentViaElement(this, this.root);
           this._toolbar = widget;
-          this._layout();
+          this._attachChildViaElement(this._toolbar, this.root);
         }
         
+        this._layout();
       },
       
       showToolbar: function() { this._toolbarVisible = true; this._layout(); },
@@ -52,22 +56,20 @@
       isToolbarVisible: function() { return this._toolbarVisible; },
       
       setRootWidget: function(widget) {
-        
-        if (widget == this._rootWidget) {
+        if (widget === this._rootWidget)
           return;
-        }
         
         if (this._rootWidget) {
-          this._rootWidget.removeFromParent();
+          this._removeChildViaElement(this._rootWidget, this.root);
           this._rootWidget = null;
         }
         
         if (widget) {
-          widget._attachToParentViaElement(this, this.root);
           this._rootWidget = widget;
-          this._layout();
+          this._attachChildViaElement(this._rootWidget, this.root);
         }
         
+        this._layout();
       },
       
       setBounds: function(x, y, width, height) {

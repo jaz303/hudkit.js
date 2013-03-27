@@ -18,6 +18,12 @@
         this._bind();
       },
       
+      dispose: function() {
+        this.setWidgetAtIndex(0, null);
+        this.setWidgetAtIndex(1, null);
+        superKlass.dispose.call(this);
+      },
+      
       setOrientation: function(orientation) {
         
         this._orientation = orientation;
@@ -48,17 +54,20 @@
         
         var existingWidget = this._widgets[ix];
         
-        if (this._widgets[ix]) {
-          this._widgets[ix].removeFromParent();
-          this._widgets[ix] = null;
-        }
-        
-        if (widget) {
-          this._widgets[ix] = widget;
-          widget._attachToParentViaElement(this, this.root);
+        if (widget !== existingWidget) {
+          if (existingWidget) {
+            this._removeChildViaElement(existingWidget, this.root);
+            this._widgets[ix] = null;
+          }
+
+          if (widget) {
+            this._widgets[ix] = widget;
+            this._attachChildViaElement(widget, this.root);
+          }
+
           this._layout();
         }
-        
+          
         return existingWidget;
         
       },
