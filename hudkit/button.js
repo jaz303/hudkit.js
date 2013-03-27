@@ -18,6 +18,7 @@
       
       dispose: function() {
         this.setAction(null);
+        this._handleActionChanged = null;
         superKlass.dispose.apply(this);
       },
       
