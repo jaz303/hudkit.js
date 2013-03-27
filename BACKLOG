@@ -6,6 +6,11 @@ Stuff that I'm deliberately leaving until later:
 [ ] Split pane - preserve proportions after outer resize
 [ ] Split pane - set split in absolute pixel size rather than proportion
 
+IDEAS
+=====
+[ ] Position mode; should it be possible to make a single dimension (e.g. width/height)
+    explicit, while leaving the other auto?
+
 BUGS
 ====
 [ ] Resizing split pane cursor is incorrect when code editor widget is on-screen
