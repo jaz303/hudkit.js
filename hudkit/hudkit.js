@@ -15,10 +15,9 @@
   }
   
   var hk = {
-    MANUAL_BOUNDS_STATIC    : 1,
-    MANUAL_BOUNDS_POSITION  : 2,
-    MANUAL_BOUNDS_SIZE      : 4,
-    MANUAL_BOUNDS_ALL       : 7,
+    POSITION_MODE_DEFAULT   : 0,
+    POSITION_MODE_AUTO_SIZE : 1,
+    POSITION_MODE_FLOWING   : 2,
     
     root                    : null,
     rootPane                : null,

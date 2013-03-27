@@ -6,6 +6,7 @@
   Widget.prototype = {
     init: function(rect) {
       
+      this._positionMode = hk.POSITION_MODE_DEFAULT;
       this._parent = null;
       this._hidden = false;
       
@@ -104,8 +105,31 @@
     },
     
     _applyBounds: function() {
+      
+      if (this._positionMode & hk.POSITION_MODE_AUTO_SIZE) {
+        this.root.style.width = 'auto';
+        this.root.style.height = 'auto';
+      } else {
+        this._applyPosition();
+      }
+      
+      if (this._positionMode & hk.POSITION_MODE_FLOWING) {
+         this.root.style.position = 'relative';
+         this.root.style.left = '';
+         this.root.style.top = '';
+      } else {
+        this.root.style.position = '';
+        this._applySize();
+      }
+      
+    },
+    
+    _applyPosition: function() {
       this.root.style.left = this.x + 'px';
       this.root.style.top = this.y + 'px';
+    },
+    
+    _applySize: function() {
       this.root.style.width = this.width + 'px';
       this.root.style.height = this.height + 'px';
     },
@@ -115,31 +139,28 @@
      * positioning. This is useful, for example, when the widget needs to
      * participate in a float-based layout.
      *
-     * This method should be used sparingly and as such it is marked as protected.
-     * Ideally it should only be called by container widgets and layout managers.
+     * POSITION_MODE_DEFAULT    - absolute position, explicit size
+     * POSITION_MODE_AUTO_SIZE  - width and height set to 'auto'
+     * POSITION_MODE_FLOWING    - position set to 'relative'
      *
-     * Whilst a widget is using manual bounds, it is illegal to attempt to adjust
-     * its geometry via setBounds() and setRect()
+     * This method should be used sparingly and as such it is marked as protected.
+     * Ideally it should only be called by container widgets and layout managers,
+     * who should set the position mode of every child that is added to them.
+     *
+     * Calls to setBounds() will respect the current position mode.
+     *
+     * @param newMode bitmask of hk.POSITION_MODE_* constants
      */
-    _useManualBounds: function(flags) {
-      if (flags & hk.MANUAL_BOUNDS_STATIC) { // TODO: rename this
-        this.root.style.position = 'relative';
-      }
-      if (flags & hk.MANUAL_BOUNDS_POSITION) {
-        this.root.style.left = '';
-        this.root.style.top = '';
-      }
-      if (flags & hk.MANUAL_BOUNDS_SIZE) {
-        this.root.style.width = '';
-        this.root.style.height = '';
-      }
-    },
-    
-    _useAutoBounds: function() {
-      this.root.style.position = '';
+    _setPositionMode: function(newMode) {
+      
+      if (newMode == this._positionMode)
+        return;
+        
+      this._positionMode = newMode;
       this._applyBounds();
+        
     },
-    
+
     _defaultSize: function() {
       return [100, 100];
     },

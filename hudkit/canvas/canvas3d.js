@@ -25,9 +25,7 @@
         return this.root;
       },
       
-      _applyBounds: function() {
-        this.root.style.left = this.x + 'px';
-        this.root.style.top = this.y + 'px';
+      _applySize: function() {
         this.root.width = this.width;
         this.root.height = this.height;
         
