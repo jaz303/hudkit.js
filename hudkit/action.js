@@ -9,10 +9,17 @@
     removeObserver: function(obs) { hk.remove(this._observers, obs); },
     
     isEnabled: function() { return this._enabled; },
-    setEnabled: function(en) { this._enabled = !!en; this._notify(); },
     toggleEnabled: function() { this.setEnabled(!this._enabled); },
     enable: function() { this.setEnabled(true); },
     disable: function() { this.setEnabled(false); },
+    
+    setEnabled: function(en) { 
+      en = !!en;
+      if (en != this._enabled) {
+        this._enabled = en;
+        this._notify()
+      }
+    },
     
     _notify: function() {
       var os = this._observers;
