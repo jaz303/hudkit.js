@@ -4,7 +4,22 @@
   hk.CodeEditor = hk.Widget.extend({
     methods: {
       init: function() {
+        this._changeTimeout = 750;
+        this._changeTimeoutId = null;
         superKlass.init.apply(this, arguments);
+        this._setupHandlers();
+      },
+      
+      setChangeTimeout: function(timeout) {
+        this._changeTimeout = timeout;
+      },
+      
+      getValue: function() {
+        return this._editor.getValue();
+      },
+      
+      setValue: function(newValue) {
+        this._editor.setValue(newValue, 1);
       },
       
       getEditor: function() {
@@ -26,6 +41,16 @@
         this._editor = ace.edit(this._editRoot);
         this._editor.setTheme("ace/theme/cobalt");
         this._editor.getSession().setMode("ace/mode/javascript");
+      },
+      
+      _setupHandlers: function() {
+        var self = this;
+        
+        this._editor.on('change', function() {
+          clearTimeout(self._changeTimeoutId);
+          self._changeTimeoutId = setTimeout(function() {
+          }, self._changeTimeout);
+        });
       },
       
       _applyBounds: function() {
