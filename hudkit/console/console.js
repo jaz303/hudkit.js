@@ -52,8 +52,14 @@
       // terminal is ready for input; command line is shown.
       ready: function() { this._input.style.display = '-webkit-box'; },
       
-      // clear the user's current command
-      clearCommand: function() { this._command.value = ''; },
+      /**
+       * Clear's the user's current command.
+       * Also cancels any active history navigation.
+       */
+      clearCommand: function() {
+        this._command.value = '';
+        this._historyIx = null;
+      },
       
       // prepare for a new command - clear current input, generate
       // a new prompt and scroll to the bottom. set `makeReady` to
@@ -89,8 +95,8 @@
         
         superKlass.init.apply(this, arguments);
         
-        this._queue = [];
         this._history = [];
+        this._historyIx = null;
         
         this.echoOn();
         this.notReady();
@@ -144,14 +150,54 @@
         var command = this._getCommand();
         if (this._evaluator) {
           this.clearCommand();
+          if (this._history.length == 0 || command != this._history[this._history.length - 1]) {
+            this._history.push(command);
+          }
           this._evaluator(command, this);
         } else {
           this.newCommand();
         }
       },
       
+      _handleClear: function() {
+        this.clearCommand();
+      },
+      
       _handleHistoryNav: function(dir) {
-        console.log("HISTORY - " + dir);
+        
+        if (this._history.length == 0) {
+          return;
+        }
+        
+        var cmd = null;
+        
+        if (dir == 'prev') {
+          if (this._historyIx === null) {
+            this._historyStash = this._command.value || '';
+            this._historyIx = this._history.length - 1;
+          } else {
+            this._historyIx--;
+            if (this._historyIx < 0) {
+              this._historyIx = 0;
+            }
+          }
+        } else {
+          if (this._historyIx === null) {
+            return;
+          }
+          this._historyIx++;
+          if (this._historyIx == this._history.length) {
+            cmd = this._historyStash;
+            this._historyIx = null;
+          }
+        }
+        
+        if (cmd === null) {
+          cmd = this._history[this._historyIx];
+        }
+        
+        this._command.value = cmd;
+        
       },
       
       _handleAutocomplete: function() {
@@ -206,6 +252,7 @@
           switch (evt.which) {
             case 8:  if (self._command.value.length == 0) self._bell();     break;
             case 13: evt.preventDefault(); self._handleEnter();             break;
+            case 27: evt.preventDefault(); self._handleClear();             break;
             case 38: evt.preventDefault(); self._handleHistoryNav('prev');  break;
             case 40: evt.preventDefault(); self._handleHistoryNav('next');  break;
             case 9:  evt.preventDefault(); self._handleAutocomplete();      break;
