@@ -43,6 +43,9 @@
         this._editor = ace.edit(this._editRoot);
         this._editor.setTheme("ace/theme/cobalt");
         this._editor.getSession().setMode("ace/mode/javascript");
+
+        var session = this._editor.getSession();
+        session.setUseWorker(false);
       },
       
       _setupHandlers: function() {
