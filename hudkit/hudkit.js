@@ -58,6 +58,16 @@ if (typeof modulo === 'undefined') {
       return ix;
     },
     
+    isDOMNode: function(thing) {
+      if (typeof Node === 'object') {
+        return thing instanceof Node;
+      } else {
+        return (typeof thing === 'object')
+                && (typeof thing.nodeType === 'number')
+                && (typeof thing.nodeName === 'string');
+      }
+    },
+    
     //
     // Basic CSS stuff
     
