@@ -1,7 +1,7 @@
 //
 // Theme
 
-$HK_MONOSPACE_FONT                  : 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace ;
+$HK_MONOSPACE_FONT                  : monospace ;
 $HK_TEXT_COLOR                      : #121729 ;
 
 $HK_CONTROL_FONT                    : Helvetica, sans-serif ;
@@ -11,7 +11,7 @@ $HK_CONTROL_ACTIVE_BG_COLOR         : #EAF20F ;
 
 $HK_BUTTON_BG_COLOR                 : #929DA8 ;
 
-$HK_CONSOLE_FONT_SIZE               : 12px ;
+$HK_CONSOLE_FONT_SIZE               : 13px ;
 
 $HK_DIALOG_PADDING                  : 6px ;
 $HK_DIALOG_HEADER_HEIGHT            : 24px ;
@@ -150,7 +150,8 @@ $HK_TOOLBAR_ITEM_BORDER_COLOR       : #A6B5BB ;
     background: #00122A;
     
     .ace_editor {
-        font-size: 11px;
+        font-family: $HK_MONOSPACE_FONT ;
+        font-size: 12px;
     }
     
     ::-webkit-scrollbar {

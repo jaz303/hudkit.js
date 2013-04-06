@@ -63,7 +63,8 @@
 .hk-code-editor {
   background: #00122A; }
   .hk-code-editor .ace_editor {
-    font-size: 11px; }
+    font-family: monospace;
+    font-size: 12px; }
   .hk-code-editor ::-webkit-scrollbar {
     background: #012042;
     width: 15px;
@@ -85,7 +86,7 @@
   padding: 5px;
   background: #f0f0f0;
   overflow: auto;
-  font: 10px "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "source-code-pro", monospace; }
+  font: 10.83333px monospace; }
   .hk-console .output-item {
     display: -webkit-box;
     -webkit-box-orient: horizontal;
