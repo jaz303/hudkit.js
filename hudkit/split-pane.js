@@ -1,4 +1,6 @@
-;(function(global, hk) {
+;(function() {
+  
+  var hk = modulo.get('hk');
   
   var DIVIDER_SIZE = hk.theme.SPLIT_PANE_DIVIDER_SIZE;
   
@@ -174,4 +176,4 @@
     }
   });
   
-})(this, hk);
+})();

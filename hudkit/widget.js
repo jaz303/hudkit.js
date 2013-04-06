@@ -1,4 +1,6 @@
-;(function(global, hk) {
+;(function() {
+  
+  var hk = modulo.get('hk');
   
   var NO_CONSTRUCT = {};
   function Widget() {}
@@ -208,4 +210,4 @@
   
   hk.Widget = Widget;
   
-})(this, hk);
+})();

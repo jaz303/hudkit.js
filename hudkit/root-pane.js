@@ -1,4 +1,6 @@
-;(function(global, hk) {
+;(function() {
+  
+  var hk = modulo.get('hk');
   
   var DEFAULT_PADDING = 0;
   
@@ -124,4 +126,4 @@
     }
   });
   
-})(this, hk);
+})();

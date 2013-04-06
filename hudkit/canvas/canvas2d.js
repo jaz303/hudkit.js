@@ -1,4 +1,6 @@
-;(function(global, hk) {
+;(function() {
+  
+  var hk = modulo.get('hk');
   
   var superKlass = hk.Widget.prototype;
   hk.Canvas2D = hk.Widget.extend({
@@ -23,4 +25,4 @@
     }
   });
   
-})(this, hk);
+})();

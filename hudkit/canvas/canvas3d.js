@@ -1,4 +1,6 @@
-;(function(global, hk) {
+;(function() {
+  
+  var hk = modulo.get('hk');
   
   var CONTEXTS = [ "webgl", "experimental-webgl", "moz-webgl", "webkit-3d" ];
   
@@ -59,4 +61,4 @@
     }
   });
   
-})(this, hk);
+})();

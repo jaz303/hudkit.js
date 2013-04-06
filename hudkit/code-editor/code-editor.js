@@ -1,4 +1,6 @@
-;(function(global, hk) {
+;(function() {
+  
+  var hk = modulo.get('hk');
   
   var superKlass = hk.Widget.prototype;
   hk.CodeEditor = hk.Widget.extend({
@@ -62,4 +64,4 @@
     }
   });
   
-})(this, hk);
+})();

@@ -1,5 +1,7 @@
 ;(function() {
   
+  var hk = modulo.get('hk');
+  
   function HKMenuActionItem(action) {
     this.action = action;
     this.root = document.createElement('a');
@@ -55,4 +57,4 @@
     return new HKMenu(options);
   }
   
-})(this, hk);
+})();

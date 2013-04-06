@@ -1,5 +1,7 @@
 ;(function() {
   
+  var hk = modulo.get('hk');
+  
   function createMenuActuator(bar, menu) {
     var actuator = document.createElement('a');
     actuator.href = '#';
@@ -33,4 +35,4 @@
     return new HKMenuBar();
   };
   
-})(this, hk);
+})();

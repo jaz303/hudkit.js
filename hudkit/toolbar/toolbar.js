@@ -1,4 +1,6 @@
-;(function(global, hk) {
+;(function() {
+  
+  var hk = modulo.get('hk');
   
   var TOOLBAR_ITEM_CLASS = 'hk-toolbar-item';
   
@@ -36,4 +38,4 @@
     }
   });
   
-})(this, hk);
+})();

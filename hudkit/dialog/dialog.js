@@ -1,4 +1,6 @@
-;(function(global, hk) {
+;(function() {
+  
+  var hk = modulo.get('hk');
   
   var SHOW_HIDDEN         = 1,
       SHOW_VISIBLE        = 2,
@@ -334,4 +336,4 @@
   
   hk.Dialog = Dialog;
   
-})(this, hk);
+})();

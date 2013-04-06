@@ -1,4 +1,6 @@
-;(function(global, hk) {
+;(function() {
+  
+  var hk = modulo.get('hk');
   
   var DEFAULT_PROMPT = {text: '>'},
       HISTORY_LENGTH = 500;
@@ -269,4 +271,4 @@
     }
   });
   
-})(this, hk);
+})();

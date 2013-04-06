@@ -1,5 +1,7 @@
-;(function(global, hk) {
+;(function() {
   "use strict";
+  
+  var hk = modulo.get('hk');
   
   var ActionProto = {
     getTitle: function() { return this._title; },
@@ -73,4 +75,4 @@
   
   hk.createAction = createAction;
   
-})(this, hk);
+})();

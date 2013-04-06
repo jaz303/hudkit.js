@@ -1,4 +1,12 @@
-;(function(exports) {
+if (typeof modulo === 'undefined') {
+  window.modulo = {
+    get     : function(k) { return window[k]; },
+    set     : function(k, v) { window[k] = v; },
+    global  : function() { return window; }
+  };
+}
+
+;(function() {
   
   var activeCapture = null;
   
@@ -135,6 +143,6 @@
     TOOLBAR_MARGIN_LEFT         : 8,
   };
   
-  exports.hk = hk;
+  modulo.set('hk', hk);
   
-})(this);
+})();
