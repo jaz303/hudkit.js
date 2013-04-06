@@ -16,7 +16,11 @@
       
       printHTML: function(html) {
         var ele = document.createElement('div');
-        ele.innerHTML = html;
+        if (hk.isDOMNode(html)) {
+          ele.appendChild(html);
+        } else {
+          ele.innerHTML = html;
+        }
         this._appendOutputElement(ele);
       },
       
