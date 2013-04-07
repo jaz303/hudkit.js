@@ -10,6 +10,8 @@ Stuff that I'm deliberately leaving until later:
 [ ] Split pane - preserve proportions after outer resize
 [ ] Split pane - set split in absolute pixel size rather than proportion
 
+[ ] Root pane - should be possible to specify alternate value for top padding when toolbar present
+
 IDEAS
 =====
 [ ] Position mode; should it be possible to make a single dimension (e.g. width/height)
