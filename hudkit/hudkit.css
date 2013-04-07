@@ -224,11 +224,15 @@
   height: 8px;
   cursor: row-resize; }
 
-.hk-toolbar > .hk-toolbar-item {
+.hk-toolbar-items.hk-toolbar-items-left {
+  float: left; }
+.hk-toolbar-items.hk-toolbar-items-right {
+  float: right; }
+.hk-toolbar-items > .hk-toolbar-item {
   margin-right: 2px;
   display: block;
   float: left; }
-.hk-toolbar > .hk-button {
+.hk-toolbar-items > .hk-button {
   border: 1px solid #a6b5bb;
   border-radius: 0;
   padding: 3px 3px; }

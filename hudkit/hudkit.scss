@@ -398,6 +398,13 @@ $HK_BLOCK_BORDER_RADIUS             : 10px;
 // Toolbar
 
 .hk-toolbar {
+    
+}
+
+.hk-toolbar-items {
+    &.hk-toolbar-items-left { float: left; }
+    &.hk-toolbar-items-right { float: right; }
+    
     > .hk-toolbar-item {
         margin-right: 2px;
         display: block;
