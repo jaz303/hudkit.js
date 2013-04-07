@@ -19,6 +19,7 @@
       
       _buildStructure: function() {
         this.root = document.createElement('canvas');
+        this.root.setAttribute('tabindex', 0);
         this.root.className = 'hk-canvas hk-canvas-2d';
         this._context = this.root.getContext('2d');
       },

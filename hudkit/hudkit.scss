@@ -142,6 +142,10 @@ $HK_BLOCK_BORDER_RADIUS             : 10px;
 .hk-canvas-2d {
     background-color: #121212;
     border-radius: $HK_BLOCK_BORDER_RADIUS;
+    
+    &:focus {
+        outline: none;
+    }
 }
 
 //
