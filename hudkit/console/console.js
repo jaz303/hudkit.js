@@ -24,6 +24,12 @@
         this._appendOutputElement(ele);
       },
       
+      printObject: function(obj) {
+        this.printHTML(this._formatter(obj));
+      },
+      
+      setObjectFormatter: function(formatter) { this._formatter = formatter; },
+      
       /**
        * Set the evaluator function.
        * The evaluator function will be passed 2 arguments - the command to be
@@ -100,6 +106,8 @@
       init: function() {
         
         superKlass.init.apply(this, arguments);
+        
+        this._formatter = null;
         
         this._history = [];
         this._historyIx = null;
