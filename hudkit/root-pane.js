@@ -2,7 +2,7 @@
   
   var hk = modulo.get('hk');
   
-  var DEFAULT_PADDING = 0;
+  var DEFAULT_PADDING = 8;
   
   var superKlass = hk.Widget.prototype;
   hk.RootPane = hk.Widget.extend({

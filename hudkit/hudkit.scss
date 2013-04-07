@@ -11,15 +11,19 @@ $HK_CONTROL_ACTIVE_BG_COLOR         : #EAF20F ;
 
 $HK_BUTTON_BG_COLOR                 : #929DA8 ;
 
+$HK_ROOT_BG_COLOR                   : #181E23 ;
+
 $HK_CONSOLE_FONT_SIZE               : 13px ;
 
 $HK_DIALOG_PADDING                  : 6px ;
 $HK_DIALOG_HEADER_HEIGHT            : 24px ;
 $HK_DIALOG_BORDER_RADIUS            : $HK_DIALOG_PADDING ;
 
-$HK_SPLIT_PANE_DIVIDER_SIZE         : 10px ;
+$HK_SPLIT_PANE_DIVIDER_SIZE         : 8px ;
 $HK_TOOLBAR_HEIGHT                  : 18px ;
 $HK_TOOLBAR_ITEM_BORDER_COLOR       : #A6B5BB ;
+
+$HK_BLOCK_BORDER_RADIUS             : 10px;
 
 
 //
@@ -136,7 +140,8 @@ $HK_TOOLBAR_ITEM_BORDER_COLOR       : #A6B5BB ;
 // Canvas
 
 .hk-canvas-2d {
-    background-color: #181818;
+    background-color: #121212;
+    border-radius: $HK_BLOCK_BORDER_RADIUS;
 }
 
 //
@@ -148,6 +153,7 @@ $HK_TOOLBAR_ITEM_BORDER_COLOR       : #A6B5BB ;
 
 .hk-code-editor {
     background: #00122A;
+    border-radius: $HK_BLOCK_BORDER_RADIUS;
     
     .ace_editor {
         font-family: $HK_MONOSPACE_FONT ;
@@ -190,7 +196,8 @@ $HK_TOOLBAR_ITEM_BORDER_COLOR       : #A6B5BB ;
 
 .hk-console {
     padding: 5px;
-    background: #f0f0f0;
+    background: #AAB2B7;
+    border-radius: $HK_BLOCK_BORDER_RADIUS;
     overflow: auto;
     font: $HK_CONSOLE_FONT_SIZE/1.2 $HK_MONOSPACE_FONT;
     
@@ -351,6 +358,7 @@ $HK_TOOLBAR_ITEM_BORDER_COLOR       : #A6B5BB ;
     right: 0;
     bottom: 0;
     overflow: hidden;
+    background-color: $HK_ROOT_BG_COLOR;
 }
 
 //
@@ -359,7 +367,7 @@ $HK_TOOLBAR_ITEM_BORDER_COLOR       : #A6B5BB ;
 .hk-split-pane {
     > .hk-split-pane-divider {
         position: absolute;
-        background: #505050;
+        background: $HK_ROOT_BG_COLOR;
     }
     
     > .hk-split-pane-ghost {

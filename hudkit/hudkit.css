@@ -55,13 +55,15 @@
     background: #eaf20f; }
 
 .hk-canvas-2d {
-  background-color: #181818; }
+  background-color: #121212;
+  border-radius: 10px; }
 
 .hk-code-editor * {
   -webkit-user-select: auto; }
 
 .hk-code-editor {
-  background: #00122A; }
+  background: #00122A;
+  border-radius: 10px; }
   .hk-code-editor .ace_editor {
     font-family: monospace;
     font-size: 12px; }
@@ -84,7 +86,8 @@
 
 .hk-console {
   padding: 5px;
-  background: #f0f0f0;
+  background: #AAB2B7;
+  border-radius: 10px;
   overflow: auto;
   font: 10.83333px monospace; }
   .hk-console .output-item {
@@ -199,23 +202,24 @@
   left: 0;
   right: 0;
   bottom: 0;
-  overflow: hidden; }
+  overflow: hidden;
+  background-color: #181e23; }
 
 .hk-split-pane > .hk-split-pane-divider {
   position: absolute;
-  background: #505050; }
+  background: #181e23; }
 .hk-split-pane > .hk-split-pane-ghost {
   background: #ff3300;
   opacity: 0.7; }
 .hk-split-pane.horizontal > .hk-split-pane-divider {
   top: 0;
   bottom: 0;
-  width: 10px;
+  width: 8px;
   cursor: col-resize; }
 .hk-split-pane.vertical > .hk-split-pane-divider {
   left: 0;
   right: 0;
-  height: 10px;
+  height: 8px;
   cursor: row-resize; }
 
 .hk-toolbar > .hk-toolbar-item {

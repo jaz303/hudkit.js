@@ -183,7 +183,7 @@ if (typeof modulo === 'undefined') {
     DIALOG_PADDING              : 6,
     DIALOG_HEADER_HEIGHT        : 24,
     DIALOG_TRANSITION_DURATION  : 200,
-    SPLIT_PANE_DIVIDER_SIZE     : 10,
+    SPLIT_PANE_DIVIDER_SIZE     : 8,
     TOOLBAR_HEIGHT              : 18,
     
     // The following properties are defined in Javascript only...
