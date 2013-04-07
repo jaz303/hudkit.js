@@ -9,7 +9,7 @@
     methods: {
       init: function() {
         
-        this._padding         = DEFAULT_PADDING;
+        this._padding         = [0, DEFAULT_PADDING, DEFAULT_PADDING, DEFAULT_PADDING];
         this._toolbarVisible  = true;
         this._toolbar         = null;
         this._rootWidget      = null;
@@ -27,7 +27,7 @@
       },
       
       setPadding: function(padding) {
-        this._padding = hk.parseInt(padding);
+        this._padding = hk.parseTRBL(padding);
         this._layout();
       },
       
@@ -86,11 +86,11 @@
       _layout: function() {
         
         var rect        = this.root.getBoundingClientRect(),
-            left        = this._padding,
-            top         = this._padding,
-            width       = rect.width - (2 * this._padding),
+            left        = this._padding[3],
+            top         = this._padding[0],
+            width       = rect.width - (this._padding[1] + this._padding[3]),
             rootTop     = top,
-            rootHeight  = rect.height - (2 * this._padding);
+            rootHeight  = rect.height - (2 * this._padding[0] + this._padding[2]);
         
         if (this._toolbar && this._toolbarVisible) {
           
