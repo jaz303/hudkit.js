@@ -12,6 +12,12 @@
         this._setupHandlers();
       },
       
+      dispose: function() {
+        clearTimeout(this._changeTimeoutId);
+        // TODO: teardown ACE editor
+        superKlass.dispose.apply(this);
+      },
+      
       setChangeTimeout: function(timeout) {
         this._changeTimeout = timeout;
       },
