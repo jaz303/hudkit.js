@@ -60,6 +60,10 @@
         this._editor.on('change', function() {
           clearTimeout(self._changeTimeoutId);
           self._changeTimeoutId = setTimeout(function() {
+            
+            // HACK: need to find a preferred way fo dealing with event handlers
+            if (self.onchange) self.onchange();
+            
           }, self._changeTimeout);
         });
       },
