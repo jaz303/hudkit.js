@@ -7,7 +7,19 @@
   
   var superKlass = hk.Widget.prototype;
   
-  hk.Console = hk.Widget.extend({
+  hk.Console = hk.Widget.extend(function() {
+    
+    hk.Widget.apply(this, arguments);
+    
+    this._formatter = null;
+    
+    this._history = [];
+    this._historyIx = null;
+    
+    this.echoOn();
+    this.notReady();
+    
+  }, {
     methods: {
       
       print: function(text) { this._appendOutputText(text); },
@@ -102,20 +114,6 @@
       
       //
       // Private API
-      
-      init: function() {
-        
-        superKlass.init.apply(this, arguments);
-        
-        this._formatter = null;
-        
-        this._history = [];
-        this._historyIx = null;
-        
-        this.echoOn();
-        this.notReady();
-      
-      },
       
       _appendOutputText: function(text, className) {
         var ele = document.createElement('div');

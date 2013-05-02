@@ -5,13 +5,13 @@
   var CONTEXTS = [ "webgl", "experimental-webgl", "moz-webgl", "webkit-3d" ];
   
   var superKlass = hk.Widget.prototype;
-  hk.Canvas3D = hk.Widget.extend({
+  hk.Canvas3D = hk.Widget.extend(function() {
+    
+    this._context = null;
+    hk.Widget.apply(this, arguments);
+  
+  }, {
     methods: {
-      init: function() {
-        this._context = null;
-        superKlass.init.apply(this, arguments);
-      },
-      
       /**
        * Returns the WebGL context.
        * This method should not be called until the widget has been added to the DOM

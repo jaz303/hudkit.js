@@ -8,18 +8,18 @@
   hk.SPLIT_PANE_VERTICAL      = 2;
   
   var superKlass = hk.Widget.prototype;
-  hk.SplitPane = hk.Widget.extend({
+  hk.SplitPane = hk.Widget.extend(function() {
+    
+    this._widgets     = [null, null];
+    this._split       = 0.5;
+    this._orientation = hk.SPLIT_PANE_HORIZONTAL;
+    
+    hk.Widget.apply(this, arguments);
+    
+    this._bind();
+    
+  }, {
     methods: {
-      init: function() {
-        this._widgets     = [null, null];
-        this._split       = 0.5;
-        this._orientation = hk.SPLIT_PANE_HORIZONTAL;
-        
-        superKlass.init.apply(this, arguments);
-        
-        this._bind();
-      },
-      
       dispose: function() {
         this.setWidgetAtIndex(0, null);
         this.setWidgetAtIndex(1, null);

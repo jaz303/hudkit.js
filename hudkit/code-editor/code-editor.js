@@ -3,15 +3,15 @@
   var hk = modulo.get('hk');
   
   var superKlass = hk.Widget.prototype;
-  hk.CodeEditor = hk.Widget.extend({
+  hk.CodeEditor = hk.Widget.extend(function() {
+    
+    this._changeTimeout = 750;
+    this._changeTimeoutId = null;
+    hk.Widget.apply(this, arguments);
+    this._setupHandlers();
+    
+  }, {
     methods: {
-      init: function() {
-        this._changeTimeout = 750;
-        this._changeTimeoutId = null;
-        superKlass.init.apply(this, arguments);
-        this._setupHandlers();
-      },
-      
       dispose: function() {
         clearTimeout(this._changeTimeoutId);
         // TODO: teardown ACE editor

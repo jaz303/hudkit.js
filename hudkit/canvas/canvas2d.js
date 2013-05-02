@@ -3,12 +3,10 @@
   var hk = modulo.get('hk');
   
   var superKlass = hk.Widget.prototype;
-  hk.Canvas2D = hk.Widget.extend({
+  hk.Canvas2D = hk.Widget.extend(function() {
+    hk.Widget.apply(this, arguments);
+  }, {
     methods: {
-      init: function() {
-        superKlass.init.apply(this, arguments);
-      },
-      
       getContext: function() { return this._context; },
       getCanvas: function() { return this.root; },
       

@@ -5,21 +5,19 @@
   var DEFAULT_PADDING = 8;
   
   var superKlass = hk.Widget.prototype;
-  hk.RootPane = hk.Widget.extend({
+  hk.RootPane = hk.Widget.extend(function() {
+    
+    this._padding         = [0, DEFAULT_PADDING, DEFAULT_PADDING, DEFAULT_PADDING];
+    this._toolbarVisible  = true;
+    this._toolbar         = null;
+    this._rootWidget      = null;
+    
+    hk.Widget.apply(this, arguments);
+    
+    this._setupResizeHandler();
+    
+  }, {
     methods: {
-      init: function() {
-        
-        this._padding         = [0, DEFAULT_PADDING, DEFAULT_PADDING, DEFAULT_PADDING];
-        this._toolbarVisible  = true;
-        this._toolbar         = null;
-        this._rootWidget      = null;
-        
-        superKlass.init.apply(this, arguments);
-        
-        this._setupResizeHandler();
-      
-      },
-      
       dispose: function() {
         this.setToolbar(null);
         this.setRootWidget(null);

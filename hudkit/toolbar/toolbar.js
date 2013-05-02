@@ -8,12 +8,12 @@
   var TOOLBAR_ITEM_CLASS    = 'hk-toolbar-item';
   
   var superKlass = hk.Widget.prototype;
-  hk.Toolbar = hk.Widget.extend({
+  hk.Toolbar = hk.Widget.extend(function() {
+    
+    hk.Widget.apply(this, arguments);
+  
+  }, {
     methods: {
-      init: function() {
-        superKlass.init.apply(this, arguments);
-      },
-      
       addAction: function(action, align) {
         
         align = align || hk.TOOLBAR_ALIGN_LEFT;

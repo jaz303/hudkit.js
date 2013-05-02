@@ -1,0 +1,45 @@
+# jf-classkit
+
+Javascript inheritance stuff.
+
+    A = Base.extend(
+      function(foo) {
+        this.foo = foo;
+      }, {
+        methods: {
+          speak: function() {
+            console.log('warble');
+          }
+        }
+      }
+    );
+    
+    B = A.extend(
+      function(foo) {
+        // or B.superclass.apply(this, arguments)
+        A.apply(this, arguments);
+      }, {
+        methods: {
+          speak: function() {
+            console.log('mehhhh');
+          }
+        }
+      }
+    );
+    
+    a = new A('omghi');
+    a.speak();
+    // => 'warble'
+    a.foo
+    // => 'omghi'
+    
+    b = new B('omgbye');
+    b.speak();
+    // => 'mehhhh'
+    b.foo
+    // => 'omgbye'
+
+## TODO
+
+  * Signals
+  * Mixins
