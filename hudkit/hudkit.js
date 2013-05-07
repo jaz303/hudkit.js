@@ -151,6 +151,18 @@ if (typeof modulo === 'undefined') {
     },
     
     //
+    //
+    
+    selectOption: function(select, value) {
+      for (var i = 0, l = select.options.length; i < l; i++) {
+        if (select.options[i].value == value) {
+          select.selectedIndex = i;
+          break;
+        }
+      }
+    },
+    
+    //
     // Event capturing
     
     startCapture: function(events) {
