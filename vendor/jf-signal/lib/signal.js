@@ -18,6 +18,10 @@
     }
   };
   
+  Signal.prototype.disconnectAll = function() {
+    this._handlers.splice(0, this._handlers.length);
+  };
+  
   Signal.prototype.emit = function(evt) {
     evt = evt || {};
     evt.source = this._source;
@@ -41,5 +45,7 @@
       box[signals[i]] = new Signal(source, signals[i]);
     }
   }
+  
+  window.Signal = Signal;
   
 })();
