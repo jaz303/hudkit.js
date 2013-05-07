@@ -185,6 +185,10 @@ if (typeof modulo === 'undefined') {
     DIALOG_TRANSITION_DURATION  : 200,
     SPLIT_PANE_DIVIDER_SIZE     : 8,
     TOOLBAR_HEIGHT              : 18,
+    TAB_SPACING                 : 7,
+    TAB_HEIGHT                  : 24,
+    TAB_BORDER_RADIUS           : 5,
+    TAB_BACKGROUND_COLOR        : '#67748C',
     
     // The following properties are defined in Javascript only...
     TOOLBAR_MARGIN_TOP          : 8,

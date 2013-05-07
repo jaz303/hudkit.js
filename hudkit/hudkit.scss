@@ -23,6 +23,12 @@ $HK_SPLIT_PANE_DIVIDER_SIZE         : 8px ;
 $HK_TOOLBAR_HEIGHT                  : 18px ;
 $HK_TOOLBAR_ITEM_BORDER_COLOR       : #A6B5BB ;
 
+$HK_TAB_SPACING                     : 7px ;
+$HK_TAB_PADDING                     : 7px ;
+$HK_TAB_HEIGHT                      : $HK_CONTROL_FONT_SIZE + (2 * 7px);
+$HK_TAB_BORDER_RADIUS               : 5px ;
+$HK_TAB_BACKGROUND_COLOR            : #67748C ;
+
 $HK_BLOCK_BORDER_RADIUS             : 10px;
 
 
@@ -391,6 +397,54 @@ $HK_BLOCK_BORDER_RADIUS             : 10px;
         right: 0;
         height: $HK_SPLIT_PANE_DIVIDER_SIZE;
         cursor: row-resize;
+    }
+}
+
+//
+// Tab Pane
+
+.hk-tab-pane {
+    .hk-tab-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: $HK_TAB_HEIGHT;
+        
+        > a {
+          @include control-font;
+          
+          background: $HK_TAB_BACKGROUND_COLOR;
+          display: block;
+          float: left;
+          margin-right: $HK_TAB_SPACING;
+          color: $HK_TEXT_COLOR;
+          text-decoration: none;
+          font-weight: bold;
+          padding: $HK_TAB_PADDING;
+          border-radius: $HK_TAB_BORDER_RADIUS;
+          min-width: 30px;
+          text-align: center;
+          
+         &.active {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+        }
+    }
+    
+    .hk-tab-container {
+        position: absolute;
+        top: $HK_TAB_HEIGHT + $HK_TAB_SPACING;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: $HK_TAB_BACKGROUND_COLOR;
+        border-radius: 8px;
+    }
+    
+    .hk-tab-canvas {
+        position: absolute;
     }
 }
 

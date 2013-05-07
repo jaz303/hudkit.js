@@ -224,6 +224,40 @@
   height: 8px;
   cursor: row-resize; }
 
+.hk-tab-pane .hk-tab-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 24px; }
+  .hk-tab-pane .hk-tab-bar > a {
+    font: 10px Helvetica, sans-serif;
+    line-height: 1;
+    background: #67748c;
+    display: block;
+    float: left;
+    margin-right: 7px;
+    color: #121729;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 7px;
+    border-radius: 5px;
+    min-width: 30px;
+    text-align: center; }
+    .hk-tab-pane .hk-tab-bar > a.active {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0; }
+.hk-tab-pane .hk-tab-container {
+  position: absolute;
+  top: 31px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #67748c;
+  border-radius: 8px; }
+.hk-tab-pane .hk-tab-canvas {
+  position: absolute; }
+
 .hk-toolbar-items.hk-toolbar-items-left {
   float: left; }
 .hk-toolbar-items.hk-toolbar-items-right {

@@ -19,6 +19,7 @@ $HUDKIT_JAVASCRIPTS = array(
   'hudkit/dialog/dialog.js',
   'hudkit/canvas/canvas2d.js',
   'hudkit/canvas/canvas3d.js',
+  'hudkit/tab-pane/tab-pane.js',
   'hudkit/toolbar/toolbar.js',
 );
 ?>
