@@ -176,6 +176,10 @@
         ele.removeChild(childWidget.getRoot());
         childWidget.setParent(null);
 
+      },
+      
+      _addSignal: function(name) {
+        this[name] = new Signal(this, name);
       }
     }
   });
