@@ -22,7 +22,7 @@
   }, {
     methods: {
       
-      print: function(text) { this._appendOutputText(text); },
+      print: function(text, className) { this._appendOutputText(text, className); },
       printError: function(text) { this._appendOutputText(text, 'error'); },
       printSuccess: function(text) { this._appendOutputText(text, 'success'); },
       
@@ -116,9 +116,12 @@
       // Private API
       
       _appendOutputText: function(text, className) {
+        // TODO: text should be appended using a <pre> so we don't need to do
+        // any of this replacement crap
         var ele = document.createElement('div');
         ele.className = 'text-line ' + (className || '');
-        ele.innerHTML = text.replace("\n", "<br/>");
+        ele.innerHTML = text.replace(/\n/g, "<br/>")
+                            .replace(/ /g,  "&nbsp;");
         this._appendOutputElement(ele);
       },
       
