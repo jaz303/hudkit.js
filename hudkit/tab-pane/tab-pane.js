@@ -138,9 +138,11 @@
             } else {
               ctx.beginPath();
               ctx.moveTo(hk.theme.TAB_BORDER_RADIUS, 0);
+              ctx.lineTo(hk.theme.TAB_BORDER_RADIUS, arcY);
               ctx.arc(0, arcY, hk.theme.TAB_BORDER_RADIUS, 0, Math.PI / 2, false);
               ctx.lineTo(width, hk.theme.TAB_SPACING);
               ctx.arc(width, arcY, hk.theme.TAB_BORDER_RADIUS, Math.PI / 2, Math.PI, false);
+              ctx.lineTo(width - hk.theme.TAB_BORDER_RADIUS, 0);
               ctx.lineTo(hk.theme.TAB_BORDER_RADIUS, 0);
               ctx.fill();
             }
