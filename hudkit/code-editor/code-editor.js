@@ -2,11 +2,15 @@
   
   var hk = modulo.get('hk');
   
-  var superKlass = hk.Widget.prototype;
+  var supr = hk.Widget.prototype;
   hk.CodeEditor = hk.Widget.extend(function() {
     
     this._changeTimeout = 750;
     this._changeTimeoutId = null;
+    this._muted = false;
+    
+    this._addSignal('contentChanged');
+    
     hk.Widget.apply(this, arguments);
     this._setupHandlers();
     
@@ -14,12 +18,21 @@
     methods: {
       dispose: function() {
         clearTimeout(this._changeTimeoutId);
+        this.contentChanged.disconnectAll();
         // TODO: teardown ACE editor
-        superKlass.dispose.apply(this);
+        supr.dispose.apply(this);
       },
       
       setChangeTimeout: function(timeout) {
         this._changeTimeout = timeout;
+      },
+      
+      muteChangeEvents: function() {
+        this._muted = true;
+      },
+      
+      unmuteChangeEvents: function() {
+        this._muted = false;
       },
       
       getValue: function() {
@@ -59,17 +72,16 @@
         
         this._editor.on('change', function() {
           clearTimeout(self._changeTimeoutId);
+          if (self._muted) return;
           self._changeTimeoutId = setTimeout(function() {
-            
-            // HACK: need to find a preferred way fo dealing with event handlers
-            if (self.onchange) self.onchange();
-            
+            if (self._muted) return;
+            self.contentChanged.emit();
           }, self._changeTimeout);
         });
       },
       
       _applyBounds: function() {
-        superKlass._applyBounds.apply(this, arguments);
+        supr._applyBounds.apply(this, arguments);
         if (this._editor) {
           this._editor.resize();
         }
