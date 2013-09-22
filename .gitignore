@@ -2,3 +2,4 @@ cc-ide
 .sass-cache
 vendor/ace
 .DS_Store
+node_modules
