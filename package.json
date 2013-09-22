@@ -17,7 +17,6 @@
   ],
   "author": "Jason Frame <jason@onehackoranother.com> (http://jasonframe.co.uk)",
   "license": "MIT",
-  "gitHead": "50924d801b396f1baaad5354e93eec77d1494374",
   "dependencies": {
     "classkit": "~0.1.0",
     "rattrap": "0.0.2",
