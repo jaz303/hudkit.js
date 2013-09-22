@@ -1,0 +1,26 @@
+{
+  "name": "hudkit",
+  "version": "0.0.1",
+  "description": "User interface library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jaz303/hudkit.js.git"
+  },
+  "keywords": [
+    "user",
+    "interface",
+    "ui"
+  ],
+  "author": "Jason Frame <jason@onehackoranother.com> (http://jasonframe.co.uk)",
+  "license": "MIT",
+  "gitHead": "50924d801b396f1baaad5354e93eec77d1494374",
+  "dependencies": {
+    "classkit": "~0.1.0",
+    "rattrap": "0.0.2",
+    "domutil": "0.0.8"
+  }
+}
