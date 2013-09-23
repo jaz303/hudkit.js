@@ -19,6 +19,7 @@ function xc(klass) {
 }
 
 exports.init = init;
+exports.action = require('./lib/action');
 
 xc('Widget');
 xc('Box');

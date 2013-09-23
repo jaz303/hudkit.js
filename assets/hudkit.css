@@ -114,7 +114,7 @@ table {
   background: #00122A;
   border-radius: 10px; }
   .hk-code-editor .ace_editor {
-    font-family: monospace;
+    font-family: Menlo, Monaco, "Liberation Mono", monospace;
     font-size: 12px; }
   .hk-code-editor ::-webkit-scrollbar {
     background: #012042;
@@ -138,7 +138,7 @@ table {
   background: #AAB2B7;
   border-radius: 10px;
   overflow: auto;
-  font: 10.83333px monospace; }
+  font: 10.83333px Menlo, Monaco, "Liberation Mono", monospace; }
   .hk-console .output-item {
     display: -webkit-box;
     -webkit-box-orient: horizontal;
