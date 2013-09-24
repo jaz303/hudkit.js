@@ -29,6 +29,7 @@ xc('CodeEditor');
 xc('Console');
 xc('Canvas2D');
 xc('TabPane');
+xc('Toolbar');
 
 var constants = require('./lib/constants');
 Object.keys(constants).forEach(function(k) {
