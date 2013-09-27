@@ -21,7 +21,6 @@
     "classkit": "~0.1.0",
     "rattrap": "0.0.2",
     "domutil": "0.0.8",
-    "signalkit": "~0.2.3",
-    "brace": "~0.1.3"
+    "signalkit": "~0.2.3"
   }
 }
