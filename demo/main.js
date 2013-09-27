@@ -27,7 +27,7 @@ function init(window, document) {
 
     var b4 = new hk.Box();
 
-    var editor = new hk.CodeEditor();
+    var editor = new hk.Box();
     var term = new hk.Console();
     
     leftSplit.setTopWidget(editor);
@@ -54,7 +54,7 @@ function init(window, document) {
     root.setToolbar(toolbar);
     root.setRootWidget(outerSplit);
 
-    term.newCommand(true);
+    console.newCommand(true);
     // console.ready();
 
 
