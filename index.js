@@ -30,6 +30,8 @@ xc('Console');
 xc('Canvas2D');
 xc('TabPane');
 xc('Toolbar');
+xc('Container');
+xc('Panel');
 
 var constants = require('./lib/constants');
 Object.keys(constants).forEach(function(k) {
