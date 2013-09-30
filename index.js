@@ -32,6 +32,7 @@ xc('TabPane');
 xc('Toolbar');
 xc('Container');
 xc('Panel');
+xc('ButtonBar');
 
 var constants = require('./lib/constants');
 Object.keys(constants).forEach(function(k) {
