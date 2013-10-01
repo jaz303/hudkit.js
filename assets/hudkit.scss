@@ -86,9 +86,16 @@
 // Widget
 
 .hk-widget {
-    position: absolute;
     overflow: hidden;
     box-sizing: border-box;
+}
+
+.hk-position-manual {
+    position: absolute;
+}
+
+.hk-position-auto {
+    
 }
 
 //
