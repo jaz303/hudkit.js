@@ -8,6 +8,19 @@ function init(window, document) {
 
     var buttons = new hk.ButtonBar();
 
+    var button1 = new hk.Button();
+    button1.setAction(hk.action(function() {
+        split.toggleWidgetAtIndex(0);
+    }));
+
+    var action2 = hk.action(function() { console.log("BUTTON 2"); });
+    var button2 = new hk.Button();
+    button2.setAction(action2);
+    action2.disable();
+
+    buttons.addButton(button1)
+           .addButton(button2);
+
     var split = new hk.SplitPane();
     split.setOrientation(hk.SPLIT_PANE_VERTICAL);
 
