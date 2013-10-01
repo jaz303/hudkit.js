@@ -32,6 +32,7 @@ xc('TabPane');
 xc('Toolbar');
 xc('Container');
 xc('Panel');
+xc('Button');
 xc('ButtonBar');
 
 var constants = require('./lib/constants');
