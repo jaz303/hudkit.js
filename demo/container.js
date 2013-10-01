@@ -55,6 +55,21 @@ function init(window, document) {
         }
     });
 
+    var toolbar = new hk.Toolbar();
+
+    var a1 = hk.action(function() {
+        console.log("FOO");
+    }, {title: 'Foo'});
+
+    var a2 = hk.action(function() {
+        console.log("BAR");
+    }, {title: 'Bar'});
+
+    toolbar.addAction(a1);
+    toolbar.addAction(a2);
+
+    root.setToolbar(toolbar);
+
     // var outerSplit  = new hk.SplitPane(),
     //     leftSplit   = new hk.SplitPane(),
     //     rightSplit  = new hk.SplitPane();
