@@ -34,6 +34,7 @@ xc('Container');
 xc('Panel');
 xc('Button');
 xc('ButtonBar');
+xc('StatusBar');
 
 var constants = require('./lib/constants');
 Object.keys(constants).forEach(function(k) {
