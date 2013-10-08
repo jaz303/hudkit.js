@@ -330,3 +330,27 @@ table {
     color: #d0d0d0; }
   .hk-toolbar-items > .hk-button:not(.disabled):active {
     background: #eaf20f; }
+
+.hk-tree-view li {
+  color: white; }
+  .hk-tree-view li ul {
+    padding-left: 20px; }
+
+.hk-status-bar {
+  background: #595959;
+  border-top: 1px solid #7D7D7D;
+  box-sizing: border-box;
+  padding: 0 5px; }
+  .hk-status-bar .left-cells {
+    float: left; }
+  .hk-status-bar .right-cells {
+    float: right; }
+  .hk-status-bar .cell {
+    float: left;
+    height: 20px; }
+  .hk-status-bar .cell.text {
+    color: white;
+    font-size: 11px;
+    font-family: Helvetica;
+    padding-top: 3px;
+    text-shadow: #202020 0 -1px 1px; }

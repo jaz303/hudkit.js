@@ -34,6 +34,7 @@ xc('Container');
 xc('Panel');
 xc('Button');
 xc('ButtonBar');
+xc('TreeView');
 xc('StatusBar');
 
 var constants = require('./lib/constants');

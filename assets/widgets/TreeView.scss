@@ -1,0 +1,25 @@
+.hk-tree-view {
+    
+    ul {
+
+    }
+    
+    li {
+        color: white;
+        
+        span {
+
+        }
+
+        ul {
+            padding-left: 20px
+        }
+    }
+    
+    li.container {
+        &.expanded {
+
+        }
+    }
+
+}

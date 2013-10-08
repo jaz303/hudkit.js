@@ -487,3 +487,6 @@
         padding: ((($HK_TOOLBAR_HEIGHT - $HK_CONTROL_FONT_SIZE) / 2) - 1) 3px;
     }
 }
+
+@import 'widgets/TreeView';
+@import 'widgets/StatusBar';
