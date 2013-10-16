@@ -36,6 +36,7 @@ xc('Button');
 xc('ButtonBar');
 xc('TreeView');
 xc('StatusBar');
+xc('MultiSplitPane');
 
 var constants = require('./lib/constants');
 Object.keys(constants).forEach(function(k) {
