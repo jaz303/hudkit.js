@@ -1,6 +1,6 @@
 {
   "name": "hudkit",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "User interface library",
   "main": "index.js",
   "scripts": {
