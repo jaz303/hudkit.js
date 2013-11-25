@@ -5,7 +5,7 @@ var rootPane    = null,
 
 function init() {
 
-    rootPane = new RootPane();
+    rootPane = exports.root = new RootPane();
     rootEl = document.body;
     rootEl.className = 'hk';
     rootEl.appendChild(rootPane.getRoot());
@@ -14,11 +14,8 @@ function init() {
 
 }
 
-function xc(klass) {
-    exports[klass] = require('./lib/' + klass);
-}
-
 exports.init            = init;
+exports.root            = null;
 exports.action          = require('./lib/action');
 
 exports.Widget          = require('./lib/Widget');
