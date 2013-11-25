@@ -18,25 +18,25 @@ function xc(klass) {
     exports[klass] = require('./lib/' + klass);
 }
 
-exports.init = init;
-exports.action = require('./lib/action');
+exports.init            = init;
+exports.action          = require('./lib/action');
 
-xc('Widget');
-xc('Box');
-xc('RootPane');
-xc('SplitPane');
-xc('CodeEditor');
-xc('Console');
-xc('Canvas2D');
-xc('TabPane');
-xc('Toolbar');
-xc('Container');
-xc('Panel');
-xc('Button');
-xc('ButtonBar');
-xc('TreeView');
-xc('StatusBar');
-xc('MultiSplitPane');
+exports.Widget          = require('./lib/Widget');
+exports.Box             = require('./lib/Box');
+exports.RootPane        = require('./lib/RootPane');
+exports.SplitPane       = require('./lib/SplitPane');
+exports.CodeEditor      = require('./lib/CodeEditor');
+exports.Console         = require('./lib/Console');
+exports.Canvas2D        = require('./lib/Canvas2D');
+exports.TabPane         = require('./lib/TabPane');
+exports.Toolbar         = require('./lib/Toolbar');
+exports.Container       = require('./lib/Container');
+exports.Panel           = require('./lib/Panel');
+exports.Button          = require('./lib/Button');
+exports.ButtonBar       = require('./lib/ButtonBar');
+// exports.TreeView        = require('./lib/TreeView');
+exports.StatusBar       = require('./lib/StatusBar');
+exports.MultiSplitPane  = require('./lib/MultiSplitPane');
 
 var constants = require('./lib/constants');
 Object.keys(constants).forEach(function(k) {
