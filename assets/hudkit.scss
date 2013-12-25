@@ -4,63 +4,6 @@
 //
 // Mixins
 
-@mixin noselect {
-    -webkit-user-select: none;
-    cursor: default;
-}
-
-@mixin small-text {
-    font-size: 11px;
-}
-
-@mixin control-font {
-    font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;
-    line-height: 1;
-}
-
-@mixin control-border {
-    border: 1px solid HK_CONTROL_BORDER_COLOR;
-}
-
-@mixin button {
-    @include control-font;
-    
-    background: $HK_BUTTON_BG_COLOR;
-    color: $HK_TEXT_COLOR;
-    
-    &.disabled {
-        color: #d0d0d0;
-    }
-    
-    &:not(.disabled):active {
-      background: $HK_CONTROL_ACTIVE_BG_COLOR;
-    }
-}
-
-@mixin bordered-button {
-    @include button;
-    @include control-border;
-}
-
-//
-// Root
-
-.hk {
-    @include noselect;
-    
-    background: #101010;
-    
-    font: 12px Arial, Helvetica, sans-serif;
-    
-    a {
-        text-decoration: none;
-    }
-    
-    * {
-        @include noselect;
-    }
-}
-
 //
 //
 
@@ -87,35 +30,6 @@
 
 .hk-menu-action-item {
     display: block;
-}
-
-
-//
-// Capture Overlay
-
-.hk-capture-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 30000;
-}
-
-//
-// Widget
-
-.hk-widget {
-    overflow: hidden;
-    box-sizing: border-box;
-}
-
-.hk-position-manual {
-    position: absolute;
-}
-
-.hk-position-auto {
-    
 }
 
 //
@@ -378,14 +292,7 @@
 //
 // Root Pane
 
-.hk-root-pane {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: hidden;
-    background-color: $HK_ROOT_BG_COLOR;
-}
+
 
 //
 // Split Pane
