@@ -33,7 +33,7 @@
 
 .hk-tab-pane .hk-tab-container {
   position: absolute;
-  top: $HK_TAB_HEIGHT + $HK_TAB_SPACING;
+  top: $HK_TAB_CONTAINER_TOP;
   right: 0;
   bottom: 0;
   left: 0;

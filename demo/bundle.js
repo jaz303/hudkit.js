@@ -1653,7 +1653,7 @@ exports.initialize = function(ctx, k, theme) {
 }
 
 var fs = require('fs'),
-    CSS = ".hk-tab-pane .hk-tab-bar {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: $HK_TAB_HEIGHT;\n}\n\n.hk-tab-pane .hk-tab-bar > a {\n\n  /* control-font mixin */\n  font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n  line-height: 1;\n\n  background: $HK_TAB_BACKGROUND_COLOR;\n  display: block;\n  float: left;\n  margin-right: $HK_TAB_SPACING;\n  color: $HK_TEXT_COLOR;\n  text-decoration: none;\n  font-weight: bold;\n  padding: $HK_TAB_PADDING;\n  border-radius: $HK_TAB_BORDER_RADIUS;\n  min-width: 30px;\n  text-align: center; \n  \n}\n\n.hk-tab-pane .hk-tab-bar > a.active {\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.hk-tab-pane .hk-tab-container {\n  position: absolute;\n  top: $HK_TAB_HEIGHT + $HK_TAB_SPACING;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: $HK_TAB_BACKGROUND_COLOR;\n  border-radius: 8px;\n}\n\n.hk-tab-pane .hk-tab-canvas {\n  position: absolute;\n}\n";
+    CSS = ".hk-tab-pane .hk-tab-bar {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: $HK_TAB_HEIGHT;\n}\n\n.hk-tab-pane .hk-tab-bar > a {\n\n  /* control-font mixin */\n  font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n  line-height: 1;\n\n  background: $HK_TAB_BACKGROUND_COLOR;\n  display: block;\n  float: left;\n  margin-right: $HK_TAB_SPACING;\n  color: $HK_TEXT_COLOR;\n  text-decoration: none;\n  font-weight: bold;\n  padding: $HK_TAB_PADDING;\n  border-radius: $HK_TAB_BORDER_RADIUS;\n  min-width: 30px;\n  text-align: center; \n  \n}\n\n.hk-tab-pane .hk-tab-bar > a.active {\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.hk-tab-pane .hk-tab-container {\n  position: absolute;\n  top: $HK_TAB_CONTAINER_TOP;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: $HK_TAB_BACKGROUND_COLOR;\n  border-radius: 8px;\n}\n\n.hk-tab-pane .hk-tab-canvas {\n  position: absolute;\n}\n";
 
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
@@ -2485,13 +2485,12 @@ var theme = {
     'HK_TAB_BORDER_RADIUS'          : '5px',
     'HK_TAB_BACKGROUND_COLOR'       : '#67748C',
 
+    // $HK_TAB_HEIGHT + $HK_TAB_SPACING
+    'HK_TAB_CONTAINER_TOP'          : '31px',
+
     'HK_BLOCK_BORDER_RADIUS'        : '10px',
 
     'HK_TOOLBAR_HEIGHT'             : '18px',
-
-    // ((($HK_TOOLBAR_HEIGHT - $HK_CONTROL_FONT_SIZE) / 2) - 1)
-    'HK_TOOLBAR_V_PADDING'          : '3px',
-
     'HK_TOOLBAR_ITEM_BORDER_COLOR'  : '#A6B5BB',
     'HK_TOOLBAR_MARGIN_TOP'         : '8px',
     'HK_TOOLBAR_MARGIN_RIGHT'       : '8px',
