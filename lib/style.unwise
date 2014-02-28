@@ -13,20 +13,3 @@
 	-webkit-user-select: none;
 	cursor: default;
 }
-
-/* Button - Common Styles */
-
-.hk-button-common {
-	font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;
-	line-height: 1;
-	background: $HK_BUTTON_BG_COLOR;
-	color: $HK_TEXT_COLOR;
-}
-
-.hk-button-common.disabled {
-	color: #d0d0d0;
-}
-
-.hk-button-common:not(.disabled):active {
-	background: $HK_CONTROL_ACTIVE_BG_COLOR;
-}

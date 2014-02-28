@@ -1,20 +1,20 @@
-/* TODO add button styles! */
-
-/*
-.hk-button {
-  @include control-font;
-  @include control-border;
+.hk-button-common {
+  font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;
+  line-height: 1;
   background: $HK_BUTTON_BG_COLOR;
   color: $HK_TEXT_COLOR;
+}
+
+.hk-button-common.disabled {
+  color: #d0d0d0;
+}
+
+.hk-button-common:not(.disabled):active {
+  background: $HK_CONTROL_ACTIVE_BG_COLOR;
+}
+
+.hk-rounded-button {
+  display: inline-block;
   padding: 1px 10px 2px 10px;
   border-radius: 7px;
-  
-  &.disabled {
-      color: #d0d0d0;
-  }
-  
-  &:not(.disabled):active {
-    background: $HK_CONTROL_ACTIVE_BG_COLOR;
-  }
 }
-*/
