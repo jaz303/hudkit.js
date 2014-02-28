@@ -1874,7 +1874,7 @@ exports.initialize = function(ctx, k, theme) {
 		            
 		            this._canvas = this.document.createElement('canvas');
 		            this._canvas.className = 'hk-tab-canvas';
-		            this._canvas.height = theme.TAB_SPACING * 2;
+		            this._canvas.height = theme.getInt('HK_TAB_SPACING') * 2;
 		            this._ctx = this._canvas.getContext('2d');
 		            
 		            this._root.appendChild(this._canvas);
@@ -1901,12 +1901,17 @@ exports.initialize = function(ctx, k, theme) {
 		        
 		        _redraw: function() {
 		            var self = this;
-		            
+
+		            var tabSpacing 	= theme.getInt('HK_TAB_SPACING'),
+		            	tabHeight 	= theme.getInt('HK_TAB_HEIGHT'),
+		            	tabRadius 	= theme.getInt('HK_TAB_BORDER_RADIUS'),
+		            	bgColor 	= theme.get('HK_TAB_BACKGROUND_COLOR');
+
 		            this._tabs.forEach(function(tab, i) {
-		                tab.pane.setBounds(theme.TAB_SPACING,
-		                                   theme.TAB_SPACING,
-		                                   self.width - (2 * theme.TAB_SPACING),
-		                                   self.height - (3 * theme.TAB_SPACING + theme.TAB_HEIGHT));
+		                tab.pane.setBounds(tabSpacing,
+		                                   tabSpacing,
+		                                   self.width - (2 * tabSpacing),
+		                                   self.height - (3 * tabSpacing + tabHeight));
 		                                                     
 		                if (tab.active) {
 		                    var width       = tab.ele.offsetWidth,
@@ -1915,37 +1920,37 @@ exports.initialize = function(ctx, k, theme) {
 		                            top     = tab.ele.offsetTop,
 		                            ctx     = self._ctx;
 
-		                    width += theme.TAB_BORDER_RADIUS;
+		                    width += tabRadius;
 
 		                    if (i > 0) {
-		                        left -= theme.TAB_BORDER_RADIUS;
-		                        width += theme.TAB_BORDER_RADIUS;
+		                        left -= tabRadius;
+		                        width += tabRadius;
 		                    }
 
 		                    self._canvas.style.left = '' + left + 'px';
 		                    self._canvas.style.top = '' + (top + height) + 'px';
 		                    self._canvas.width = width;
 		                    
-		                    ctx.fillStyle = theme.TAB_BACKGROUND_COLOR;
+		                    ctx.fillStyle = bgColor;
 
-		                    var arcY = theme.TAB_SPACING - theme.TAB_BORDER_RADIUS;
+		                    var arcY = tabSpacing - tabRadius;
 
 		                    if (i == 0) {
-		                        ctx.fillRect(0, 0, width - theme.TAB_BORDER_RADIUS, self._canvas.height);
+		                        ctx.fillRect(0, 0, width - tabRadius, self._canvas.height);
 		                        ctx.beginPath();
-		                        ctx.arc(width, arcY, theme.TAB_BORDER_RADIUS, Math.PI, Math.PI / 2, true);
-		                        ctx.lineTo(width - theme.TAB_BORDER_RADIUS, theme.TAB_SPACING);
-		                        ctx.lineTo(width - theme.TAB_BORDER_RADIUS, 0);
+		                        ctx.arc(width, arcY, tabRadius, Math.PI, Math.PI / 2, true);
+		                        ctx.lineTo(width - tabRadius, tabSpacing);
+		                        ctx.lineTo(width - tabRadius, 0);
 		                        ctx.fill();
 		                    } else {
 		                        ctx.beginPath();
-		                        ctx.moveTo(theme.TAB_BORDER_RADIUS, 0);
-		                        ctx.lineTo(theme.TAB_BORDER_RADIUS, arcY);
-		                        ctx.arc(0, arcY, theme.TAB_BORDER_RADIUS, 0, Math.PI / 2, false);
-		                        ctx.lineTo(width, theme.TAB_SPACING);
-		                        ctx.arc(width, arcY, theme.TAB_BORDER_RADIUS, Math.PI / 2, Math.PI, false);
-		                        ctx.lineTo(width - theme.TAB_BORDER_RADIUS, 0);
-		                        ctx.lineTo(theme.TAB_BORDER_RADIUS, 0);
+		                        ctx.moveTo(tabRadius, 0);
+		                        ctx.lineTo(tabRadius, arcY);
+		                        ctx.arc(0, arcY, tabRadius, 0, Math.PI / 2, false);
+		                        ctx.lineTo(width, tabSpacing);
+		                        ctx.arc(width, arcY, tabRadius, Math.PI / 2, Math.PI, false);
+		                        ctx.lineTo(width - tabRadius, 0);
+		                        ctx.lineTo(tabRadius, 0);
 		                        ctx.fill();
 		                    }
 		                }
@@ -2360,6 +2365,9 @@ var theme = {
 
     'HK_TOOLBAR_HEIGHT'             : '18px',
     'HK_TOOLBAR_ITEM_BORDER_COLOR'  : '#A6B5BB',
+
+    'HK_TOOLBAR_V_PADDING'          : '3px',
+
     'HK_TOOLBAR_MARGIN_TOP'         : '8px',
     'HK_TOOLBAR_MARGIN_RIGHT'       : '8px',
     'HK_TOOLBAR_MARGIN_BOTTOM'      : '8px',
