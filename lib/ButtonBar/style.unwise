@@ -2,36 +2,14 @@
     
 }
 
-.hk-button-bar .hk-button {
-    
-    /* control-font mixin */
-    font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;
-    line-height: 1;
-
-    /* button mixin */
-    background: $HK_BUTTON_BG_COLOR;
-    color: $HK_TEXT_COLOR;
-
-    /* ... */
-
+.hk-button-bar-button {
     display: block;
     width: 20px;
     height: 20px;
     border-radius: 10px;
     margin: 0 4px 4px 0;
-
-    span {
-        display: none;
-    }
-
 }
 
-.hk-button-bar .hk-button:not(.disabled):active {
-    /* button mixin */
-    background: $HK_CONTROL_ACTIVE_BG_COLOR;
-}
-
-.hk-button-bar .hk-button.disabled {
-    /* button mixin */
-    color: #d0d0d0;
+.hk-button-bar-button span {
+    display: none;
 }
