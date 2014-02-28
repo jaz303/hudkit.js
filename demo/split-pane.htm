@@ -7,24 +7,22 @@
     <script src='bundle.js'></script>
     <script>
       function init() {
-        
-        var root = hk.init(document);
 
-        var b1 = new hk.Box();
+        var b1 = hk.box();
         b1.setBackgroundColor('red');
 
-        var b2 = new hk.Box();
+        var b2 = hk.box();
         b2.setBackgroundColor('green');
 
-        var sp = new hk.SplitPane();
+        var sp = hk.splitPane();
         sp.setLeftWidget(b1);
         sp.setRightWidget(b2);
 
-        root.setRootWidget(sp);
-        
+        hk.root.setRootWidget(sp);
+
       }
     </script>
   </head>
-  <body onload='init();'>
+  <body onload='hkinit(); init();'>
   </body>
 </html>

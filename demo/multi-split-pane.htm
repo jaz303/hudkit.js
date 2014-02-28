@@ -4,14 +4,50 @@
   <head>
     <title>hudkit demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel='stylesheet' href='../assets/hudkit.css' type='text/css'>
+    <script src='bundle.js'></script>
     <script>
       function init() {
-        require('./multi-split-pane').init(window, document);
+
+        var split = hk.multiSplitPane();
+        split.setOrientation(hk.k.SPLIT_PANE_VERTICAL);
+        
+        var b1 = hk.box();
+        b1.setBackgroundColor('red');
+        split.setWidgetAtIndex(0, b1);
+
+        var b2 = hk.box();
+        b2.setBackgroundColor('green');
+        split.addSplit(0.5, b2);
+
+        var b3 = hk.box();
+        b3.setBackgroundColor('orange');
+        split.addSplit(0.75, b3);
+
+        var s2 = hk.multiSplitPane();
+        s2.setOrientation(hk.k.SPLIT_PANE_HORIZONTAL);
+
+        var b4 = hk.box();
+        b4.setBackgroundColor('pink');
+        s2.setWidgetAtIndex(0, b4);
+
+        var b5 = hk.box();
+        b5.setBackgroundColor('green');
+        s2.addSplit(0.33, b5);
+
+        var b6 = hk.box();
+        b6.setBackgroundColor('blue');
+        s2.addSplit(0.66, b6);
+
+        split.addSplit(0.25, s2);
+
+        split.removeWidgetAtIndex(2);
+
+        hk.root.setResizeDelay(0);
+        hk.root.setRootWidget(split);
+
       }
     </script>
   </head>
-  <body onload='init();'>
-
+  <body onload='hkinit(); init();'>
   </body>
 </html>

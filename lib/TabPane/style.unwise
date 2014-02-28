@@ -1,0 +1,46 @@
+.hk-tab-pane .hk-tab-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $HK_TAB_HEIGHT;
+}
+
+.hk-tab-pane .hk-tab-bar > a {
+
+  /* control-font mixin */
+  font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;
+  line-height: 1;
+
+  background: $HK_TAB_BACKGROUND_COLOR;
+  display: block;
+  float: left;
+  margin-right: $HK_TAB_SPACING;
+  color: $HK_TEXT_COLOR;
+  text-decoration: none;
+  font-weight: bold;
+  padding: $HK_TAB_PADDING;
+  border-radius: $HK_TAB_BORDER_RADIUS;
+  min-width: 30px;
+  text-align: center; 
+  
+}
+
+.hk-tab-pane .hk-tab-bar > a.active {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.hk-tab-pane .hk-tab-container {
+  position: absolute;
+  top: $HK_TAB_HEIGHT + $HK_TAB_SPACING;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: $HK_TAB_BACKGROUND_COLOR;
+  border-radius: 8px;
+}
+
+.hk-tab-pane .hk-tab-canvas {
+  position: absolute;
+}

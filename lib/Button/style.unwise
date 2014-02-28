@@ -1,0 +1,20 @@
+/* TODO add button styles! */
+
+/*
+.hk-button {
+  @include control-font;
+  @include control-border;
+  background: $HK_BUTTON_BG_COLOR;
+  color: $HK_TEXT_COLOR;
+  padding: 1px 10px 2px 10px;
+  border-radius: 7px;
+  
+  &.disabled {
+      color: #d0d0d0;
+  }
+  
+  &:not(.disabled):active {
+    background: $HK_CONTROL_ACTIVE_BG_COLOR;
+  }
+}
+*/

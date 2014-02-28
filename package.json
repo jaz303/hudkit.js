@@ -21,6 +21,12 @@
     "rattrap": "0.0.2",
     "domutil": "0.0.8",
     "signalkit": "~0.2.3",
-    "hudkit-core": "0.0.3"
+    "hudkit-core": "~0.1.2"
+  },
+  "peerDependencies": {
+    "hudkit-core": "~0.1.0"
+  },
+  "devDependencies": {
+    "brfs": "~1.0.0"
   }
 }

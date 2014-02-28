@@ -7,9 +7,15 @@
     <script src='bundle.js'></script>
     <script>
       function init() {
-        var box = hk.box();
-        hk.root.setRootWidget(box);
-        box.setBackgroundColor('blue');
+        var canvas = hk.canvas2D();
+        hk.root.setRootWidget(canvas);
+
+        var ctx = canvas.getContext();
+        ctx.strokeStyle = 'white';
+        ctx.beginPath();
+        ctx.moveTo(10, 10);
+        ctx.lineTo(100, 100);
+        ctx.stroke();
       }
     </script>
   </head>

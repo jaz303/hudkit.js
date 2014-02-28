@@ -7,9 +7,12 @@
     <script src='bundle.js'></script>
     <script>
       function init() {
-        var box = hk.box();
-        hk.root.setRootWidget(box);
-        box.setBackgroundColor('blue');
+        var console = hk.console();
+
+        console.echoOn();
+        console.newCommand(true);
+
+        hk.root.setRootWidget(console);
       }
     </script>
   </head>

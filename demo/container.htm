@@ -4,15 +4,76 @@
   <head>
     <title>hudkit demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel='stylesheet' href='../assets/hudkit.css' type='text/css'>
-    <script src='ace-editor/ace.js'></script>
+    <script src='bundle.js'></script>
     <script>
       function init() {
-        require('./container').init(window, document);
+
+        var buttons = hk.buttonBar();
+
+        var button1 = hk.button();
+        button1.setAction(hk.action(function() {
+            split.toggleWidgetAtIndex(0);
+        }));
+
+        var action2 = hk.action(function() { console.log("BUTTON 2"); });
+        var button2 = hk.button();
+        button2.setAction(action2);
+        // action2.disable();
+
+        buttons.addButton(button1)
+               .addButton(button2);
+
+        var split = hk.splitPane();
+        split.setOrientation(hk.k.SPLIT_PANE_VERTICAL);
+
+        var b1 = hk.box(), b2 = hk.box();
+
+        b1.setBackgroundColor('#303030');
+        b2.setBackgroundColor('#505050');
+
+        split.setLeftWidget(b1);
+        split.setRightWidget(b2);
+
+        var panel = hk.panel();
+        panel.addChild('buttons', buttons);
+        panel.addChild('split', split);
+
+        panel.setLayout(function(c, x, y, width, height) {
+            
+            if (c.buttons)
+                c.buttons.setBounds(0, 0, 20, height);
+
+            if (c.split)
+                c.split.setBounds(28, 0, width - 28, height);
+        
+        });
+
+        hk.root.setRootWidget(panel);
+
+        document.addEventListener('keypress', function(evt) {
+            if (String.fromCharCode(evt.charCode) == 't') {
+                split.toggleWidgetAtIndex(0);
+            }
+        });
+
+        var toolbar = hk.toolbar();
+
+        var a1 = hk.action(function() {
+            console.log("FOO");
+        }, {title: 'Foo'});
+
+        var a2 = hk.action(function() {
+            console.log("BAR");
+        }, {title: 'Bar'});
+
+        toolbar.addAction(a1);
+        toolbar.addAction(a2);
+
+        hk.root.setToolbar(toolbar);
+
       }
     </script>
   </head>
-  <body onload='init();'>
-
+  <body onload='hkinit(); init();'>
   </body>
 </html>
