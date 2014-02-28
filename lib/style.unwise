@@ -1,21 +1,24 @@
-.hk-root {
+.hk-root-pane {
 	-webkit-user-select: none;
 	cursor: default;
 	background: #101010;
 	font: 12px $HK_CONTROL_FONT;
 }
 
-.hk-root a {
+.hk-root-pane a {
 	text-decoration: none;
 }
 
-.hk-root * {
+.hk-root-pane * {
 	-webkit-user-select: none;
 	cursor: default;
 }
 
+/* Button - Common Styles */
+
 .hk-button-common {
 	font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;
+	line-height: 1;
 	background: $HK_BUTTON_BG_COLOR;
 	color: $HK_TEXT_COLOR;
 }

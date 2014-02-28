@@ -16,8 +16,11 @@
 
 .hk-toolbar-items > .hk-toolbar-item {
     margin-right: 2px;
-    display: block;
-    float: left;
+    display: inline-block;
+    height: $HK_TOOLBAR_HEIGHT;
+
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .hk-toolbar-items > .hk-button-common {

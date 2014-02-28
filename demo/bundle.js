@@ -770,7 +770,7 @@ signals.widgetRegistered.connect(function(name, ctor) {
 module.exports = Instance;
 
 var RESET_CSS   = "/* http://meyerweb.com/eric/tools/css/reset/ \n   v2.0 | 20110126\n   License: none (public domain)\n*/\n\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed, \nfigure, figcaption, footer, header, hgroup, \nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n\tmargin: 0;\n\tpadding: 0;\n\tborder: 0;\n\tfont-size: 100%;\n\tfont: inherit;\n\tvertical-align: baseline;\n}\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure, \nfooter, header, hgroup, menu, nav, section {\n\tdisplay: block;\n}\nbody {\n\tline-height: 1;\n}\nol, ul {\n\tlist-style: none;\n}\nblockquote, q {\n\tquotes: none;\n}\nblockquote:before, blockquote:after,\nq:before, q:after {\n\tcontent: '';\n\tcontent: none;\n}\ntable {\n\tborder-collapse: collapse;\n\tborder-spacing: 0;\n}",
-    BASE_CSS    = ".hk-root {\n\t-webkit-user-select: none;\n\tcursor: default;\n\tbackground: #101010;\n\tfont: 12px $HK_CONTROL_FONT;\n}\n\n.hk-root a {\n\ttext-decoration: none;\n}\n\n.hk-root * {\n\t-webkit-user-select: none;\n\tcursor: default;\n}\n\n.hk-button-common {\n\tfont: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n\tbackground: $HK_BUTTON_BG_COLOR;\n\tcolor: $HK_TEXT_COLOR;\n}\n\n.hk-button-common.disabled {\n\tcolor: #d0d0d0;\n}\n\n.hk-button-common:not(.disabled):active {\n\tbackground: $HK_CONTROL_ACTIVE_BG_COLOR;\n}";
+    BASE_CSS    = ".hk-root-pane {\n\t-webkit-user-select: none;\n\tcursor: default;\n\tbackground: #101010;\n\tfont: 12px $HK_CONTROL_FONT;\n}\n\n.hk-root-pane a {\n\ttext-decoration: none;\n}\n\n.hk-root-pane * {\n\t-webkit-user-select: none;\n\tcursor: default;\n}\n\n/* Button - Common Styles */\n\n.hk-button-common {\n\tfont: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n\tline-height: 1;\n\tbackground: $HK_BUTTON_BG_COLOR;\n\tcolor: $HK_TEXT_COLOR;\n}\n\n.hk-button-common.disabled {\n\tcolor: #d0d0d0;\n}\n\n.hk-button-common:not(.disabled):active {\n\tbackground: $HK_CONTROL_ACTIVE_BG_COLOR;\n}";
 
 function Instance(window) {
 
@@ -2010,10 +2010,6 @@ exports.initialize = function(ctx, k, theme) {
 	                action.onchange.connect(sync);
 
 	                buttonEl.className = 'hk-button-common hk-button ' + TOOLBAR_ITEM_CLASS;
-	                buttonEl.style.width = 'auto';
-	                buttonEl.style.height = 'auto';
-	                buttonEl.style.position = 'relative';
-
 	                buttonEl.addEventListener('click', function(evt) {
 	                    evt.preventDefault();
 	                    evt.stopPropagation();
@@ -2050,7 +2046,7 @@ exports.initialize = function(ctx, k, theme) {
 }
 
 var fs = require('fs'),
-    CSS = ".hk-toolbar {\n    \n}\n\n.hk-toolbar-items {\n\n}\n\n.hk-toolbar-items.hk-toolbar-items-left {\n    float: left;\n}\n\n.hk-toolbar-items.hk-toolbar-items-right {\n    float: right;\n}\n\n.hk-toolbar-items > .hk-toolbar-item {\n    margin-right: 2px;\n    display: block;\n    float: left;\n}\n\n.hk-toolbar-items > .hk-button-common {\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    padding: $HK_TOOLBAR_V_PADDING 3px;\n}\n";
+    CSS = ".hk-toolbar {\n    \n}\n\n.hk-toolbar-items {\n\n}\n\n.hk-toolbar-items.hk-toolbar-items-left {\n    float: left;\n}\n\n.hk-toolbar-items.hk-toolbar-items-right {\n    float: right;\n}\n\n.hk-toolbar-items > .hk-toolbar-item {\n    margin-right: 2px;\n    display: inline-block;\n    height: $HK_TOOLBAR_HEIGHT;\n\n    box-sizing: border-box;\n    -moz-box-sizing: border-box;\n}\n\n.hk-toolbar-items > .hk-button-common {\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    padding: $HK_TOOLBAR_V_PADDING 3px;\n}\n";
 
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
