@@ -102,10 +102,20 @@ exports.initialize = function(ctx, k, theme) {
 
         return [
 
-            function() {
+            function(hk, rect, type) {
+
+                if (typeof rect === 'string') {
+                    type = rect;
+                    rect = null;
+                }
                 
                 this._action = null;
-                _sc.apply(this, arguments);
+                this._buttonType = type || 'rounded';
+                this._buttonClass = '';
+
+                _sc.call(this, hk, rect);
+
+                this._updateClass();
 
                 var self = this;
                 this._root.addEventListener('click', function(evt) {
@@ -146,18 +156,42 @@ exports.initialize = function(ctx, k, theme) {
                         this._actionUnbind = this._action.onchange.connect(this._sync.bind(this));
                     }
 
+                    this._sync();
+
+                },
+
+                getButtonType: function() {
+                    return this._buttonType;
+                },
+
+                setButtonType: function(type) {
+                    this._buttonType = type;
+                    this._updateClass();
+                },
+
+                getButtonClass: function() {
+                    return this._buttonClass;
+                },
+
+                setButtonClass: function() {
+                    this._buttonClass = className || '';
+                    this._updateClass();
                 },
                 
                 _buildStructure: function() {
                     
                     this._root = this.document.createElement('a');
                     this._root.href = '#';
-                    this._root.className = 'hk-button-common hk-button';
-                
-                    this._text = this.document.createElement('span');
 
+                    this._text = this.document.createElement('span');
                     this._root.appendChild(this._text);
 
+                    this._updateClass();
+
+                },
+
+                _defaultPositionMode: function() {
+                    return k.POSITION_MODE_AUTO;
                 },
 
                 _sync: function() {
@@ -177,6 +211,20 @@ exports.initialize = function(ctx, k, theme) {
                         du.addClass(this._root, 'disabled');
                     }
 
+                },
+
+                _updateClass: function() {
+
+                    var className = 'hk-button-common';
+                    className += ' hk-' + this._buttonType + '-button';
+                    className += ' ' + this._buttonClass;
+
+                    if (this._action && !this._action.isEnabled()) {
+                        className += ' disabled';
+                    }
+
+                    this._root.className = className;
+
                 }
             
             }
@@ -188,7 +236,7 @@ exports.initialize = function(ctx, k, theme) {
 }
 
 var fs = require('fs'),
-    CSS = "/* TODO add button styles! */\n\n/*\n.hk-button {\n  @include control-font;\n  @include control-border;\n  background: $HK_BUTTON_BG_COLOR;\n  color: $HK_TEXT_COLOR;\n  padding: 1px 10px 2px 10px;\n  border-radius: 7px;\n  \n  &.disabled {\n      color: #d0d0d0;\n  }\n  \n  &:not(.disabled):active {\n    background: $HK_CONTROL_ACTIVE_BG_COLOR;\n  }\n}\n*/";
+    CSS = ".hk-button-common {\n  font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n  line-height: 1;\n  background: $HK_BUTTON_BG_COLOR;\n  color: $HK_TEXT_COLOR;\n}\n\n.hk-button-common.disabled {\n  color: #d0d0d0;\n}\n\n.hk-button-common:not(.disabled):active {\n  background: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-rounded-button {\n  display: inline-block;\n  padding: 1px 10px 2px 10px;\n  border-radius: 7px;\n}\n";
 
 exports.attach = function(instance) {
     instance.appendCSS(CSS);
@@ -208,10 +256,15 @@ exports.attach = function(instance) {
 
             'methods', {
                 addButton: function(button) {
+                    
+                    button.setButtonType('button-bar');
                     button._setPositionMode(k.POSITION_MODE_AUTO);
+                    
                     this._attachChildViaElement(button, this._root);
                     this._buttons.push(button);
+
                     return this;
+                
                 },
                 
                 _buildStructure: function() {
@@ -227,7 +280,7 @@ exports.attach = function(instance) {
 }
 
 var fs = require('fs'),
-    CSS = ".hk-button-bar {\n    \n}\n\n.hk-button-bar .hk-button {\n    \n    /* control-font mixin */\n    font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n    line-height: 1;\n\n    /* button mixin */\n    background: $HK_BUTTON_BG_COLOR;\n    color: $HK_TEXT_COLOR;\n\n    /* ... */\n\n    display: block;\n    width: 20px;\n    height: 20px;\n    border-radius: 10px;\n    margin: 0 4px 4px 0;\n\n    span {\n        display: none;\n    }\n\n}\n\n.hk-button-bar .hk-button:not(.disabled):active {\n    /* button mixin */\n    background: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-button-bar .hk-button.disabled {\n    /* button mixin */\n    color: #d0d0d0;\n}\n";
+    CSS = ".hk-button-bar {\n    \n}\n\n.hk-button-bar-button {\n    display: block;\n    width: 20px;\n    height: 20px;\n    border-radius: 10px;\n    margin: 0 4px 4px 0;\n}\n\n.hk-button-bar-button span {\n    display: none;\n}\n";
 
 exports.attach = function(instance) {
     instance.appendCSS(CSS);
@@ -770,7 +823,7 @@ signals.widgetRegistered.connect(function(name, ctor) {
 module.exports = Instance;
 
 var RESET_CSS   = "/* http://meyerweb.com/eric/tools/css/reset/ \n   v2.0 | 20110126\n   License: none (public domain)\n*/\n\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed, \nfigure, figcaption, footer, header, hgroup, \nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n\tmargin: 0;\n\tpadding: 0;\n\tborder: 0;\n\tfont-size: 100%;\n\tfont: inherit;\n\tvertical-align: baseline;\n}\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure, \nfooter, header, hgroup, menu, nav, section {\n\tdisplay: block;\n}\nbody {\n\tline-height: 1;\n}\nol, ul {\n\tlist-style: none;\n}\nblockquote, q {\n\tquotes: none;\n}\nblockquote:before, blockquote:after,\nq:before, q:after {\n\tcontent: '';\n\tcontent: none;\n}\ntable {\n\tborder-collapse: collapse;\n\tborder-spacing: 0;\n}",
-    BASE_CSS    = ".hk-root-pane {\n\t-webkit-user-select: none;\n\tcursor: default;\n\tbackground: #101010;\n\tfont: 12px $HK_CONTROL_FONT;\n}\n\n.hk-root-pane a {\n\ttext-decoration: none;\n}\n\n.hk-root-pane * {\n\t-webkit-user-select: none;\n\tcursor: default;\n}\n\n/* Button - Common Styles */\n\n.hk-button-common {\n\tfont: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n\tline-height: 1;\n\tbackground: $HK_BUTTON_BG_COLOR;\n\tcolor: $HK_TEXT_COLOR;\n}\n\n.hk-button-common.disabled {\n\tcolor: #d0d0d0;\n}\n\n.hk-button-common:not(.disabled):active {\n\tbackground: $HK_CONTROL_ACTIVE_BG_COLOR;\n}";
+    BASE_CSS    = ".hk-root-pane {\n\t-webkit-user-select: none;\n\tcursor: default;\n\tbackground: #101010;\n\tfont: 12px $HK_CONTROL_FONT;\n}\n\n.hk-root-pane a {\n\ttext-decoration: none;\n}\n\n.hk-root-pane * {\n\t-webkit-user-select: none;\n\tcursor: default;\n}\n";
 
 function Instance(window) {
 
@@ -1976,8 +2029,6 @@ exports.attach = function(instance) {
 
 exports.initialize = function(ctx, k, theme) {
 
-	var TOOLBAR_ITEM_CLASS = 'hk-toolbar-item';
-
 	ctx.registerWidget('Toolbar', ctx.Widget.extend(function(_sc, _sm) {
 
 		return [
@@ -1987,40 +2038,20 @@ exports.initialize = function(ctx, k, theme) {
 	        },
 
 	        'methods', {
+	            
 	            addAction: function(action, align) {
-
-	                align = align || k.TOOLBAR_ALIGN_LEFT;
-	                var target = (align === k.TOOLBAR_ALIGN_LEFT) ? this._left : this._right;
-	                
-	                var buttonEl = this.document.createElement('a');
-	                buttonEl.href = '#';
-	                buttonEl.className = 'hk-button';
-
-	                function sync() {
-	                    buttonEl.textContent = action.getTitle();
-	                    if (action.isEnabled()) {
-	                        du.removeClass(buttonEl, 'disabled');
-	                    } else {
-	                        du.addClass(buttonEl, 'enabled');
-	                    }
-	                }
-
-	                sync();
-
-	                action.onchange.connect(sync);
-
-	                buttonEl.className = 'hk-button-common hk-button ' + TOOLBAR_ITEM_CLASS;
-	                buttonEl.addEventListener('click', function(evt) {
-	                    evt.preventDefault();
-	                    evt.stopPropagation();
-	                    action();
-	                });
-
-	                target.appendChild(buttonEl);
-
-	                return action;
-
+					var button = this._hk.button('toolbar');
+					button.setAction(action);
+					return this.addWidget(button, align);
 	            },
+
+	            addWidget: function(widget, align) {
+					align = align || k.TOOLBAR_ALIGN_LEFT;
+					var target = (align === k.TOOLBAR_ALIGN_LEFT) ? this._left : this._right;
+					widget._setPositionMode(k.POSITION_MODE_AUTO);
+					this._attachChildViaElement(widget, target);
+					return widget;
+				},
 
 	            _buildStructure: function() {
 
@@ -2037,6 +2068,7 @@ exports.initialize = function(ctx, k, theme) {
 	                this._root.className = 'hk-toolbar';
 
 	            }
+
 	        }
 
 	    ];
@@ -2046,14 +2078,13 @@ exports.initialize = function(ctx, k, theme) {
 }
 
 var fs = require('fs'),
-    CSS = ".hk-toolbar {\n    \n}\n\n.hk-toolbar-items {\n\n}\n\n.hk-toolbar-items.hk-toolbar-items-left {\n    float: left;\n}\n\n.hk-toolbar-items.hk-toolbar-items-right {\n    float: right;\n}\n\n.hk-toolbar-items > .hk-toolbar-item {\n    margin-right: 2px;\n    display: inline-block;\n    height: $HK_TOOLBAR_HEIGHT;\n\n    box-sizing: border-box;\n    -moz-box-sizing: border-box;\n}\n\n.hk-toolbar-items > .hk-button-common {\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    padding: $HK_TOOLBAR_V_PADDING 3px;\n}\n";
+    CSS = ".hk-toolbar {\n    \n}\n\n.hk-toolbar-items {\n\n}\n\n.hk-toolbar-items.hk-toolbar-items-left {\n    float: left;\n}\n\n.hk-toolbar-items.hk-toolbar-items-right {\n    float: right;\n}\n\n.hk-toolbar-items > * {\n    margin-right: 2px;\n    display: inline-block;\n    height: $HK_TOOLBAR_HEIGHT;\n\n    box-sizing: border-box;\n    -moz-box-sizing: border-box;\n}\n\n.hk-toolbar-button {\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    padding: $HK_TOOLBAR_V_PADDING 3px;\n}\n";
 
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/Toolbar")
 },{"domutil":26,"fs":32}],18:[function(require,module,exports){
-(function (__dirname){var fs 		= require('fs'),
-	Class   = require('classkit').Class,
+(function (__dirname){var	Class   = require('classkit').Class,
 	du 		= require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -2073,7 +2104,7 @@ exports.initialize = function(ctx, k, theme) {
                 
                 this._parent = null;
                 this._hidden = false;
-                this._positionMode = k.POSITION_MODE_MANUAL;
+                this._positionMode = this._defaultPositionMode();
 
                 var root = this._buildStructure();
                 if (root) this._root = root;
@@ -2191,6 +2222,9 @@ exports.initialize = function(ctx, k, theme) {
                     }
                 },
 
+                // a widget can be in one of two position modes:
+                // manual: CSS position absolute, explicit top, left, width, height
+                // auto: no predefined rules, completely defined by CSS on a per-widget basis
                 _setPositionMode: function(newMode) {
 
                     if (newMode === this._positionMode)
@@ -2210,6 +2244,10 @@ exports.initialize = function(ctx, k, theme) {
                         throw new Error("unknown position mode: " + newMode);
                     }
 
+                },
+
+                _defaultPositionMode: function() {
+                    return k.POSITION_MODE_MANUAL;
                 },
 
                 _defaultSize: function() {
@@ -2274,8 +2312,11 @@ exports.initialize = function(ctx, k, theme) {
 
 }
 
+var fs = require('fs'),
+    CSS = ".hk-widget {\n\toverflow: hidden;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n}\n\n.hk-position-manual {\n\tposition: absolute;\n}\n\n.hk-position-auto {\n\t/* placeholder only */\n}\n";
+
 exports.attach = function(instance) {
-	instance.appendCSS(".hk-widget {\n\toverflow: hidden;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n}\n\n.hk-position-manual {\n\tposition: absolute;\n}\n\n.hk-position-auto {\n\t/* placeholder only */\n}\n");
+	instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Widget")
 },{"classkit":23,"domutil":26,"fs":32}],19:[function(require,module,exports){
