@@ -1,0 +1,29 @@
+.hk-root {
+	-webkit-user-select: none;
+	cursor: default;
+	background: #101010;
+	font: 12px $HK_CONTROL_FONT;
+}
+
+.hk-root a {
+	text-decoration: none;
+}
+
+.hk-root * {
+	-webkit-user-select: none;
+	cursor: default;
+}
+
+.hk-button-common {
+	font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;
+	background: $HK_BUTTON_BG_COLOR;
+	color: $HK_TEXT_COLOR;
+}
+
+.hk-button-common.disabled {
+	color: #d0d0d0;
+}
+
+.hk-button-common:not(.disabled):active {
+	background: $HK_CONTROL_ACTIVE_BG_COLOR;
+}

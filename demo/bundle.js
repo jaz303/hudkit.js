@@ -6,10 +6,42 @@ window.hkinit = function() {
 }
 
 },{"../":2}],2:[function(require,module,exports){
-var hk = require('hudkit-core');
+var fs          = require('fs'),
+    signals     = require('./lib/signals'),
+    constants   = require('./lib/constants'),
+    theme       = require('./lib/theme'),
+    Instance    = require('./lib/Instance'),
+    Context     = require('./lib/Context'),
+    registry    = require('./lib/registry');
 
-var fs = require('fs');
+var hk = module.exports = {
+    register    : registry.registerModule,
+    init        : init,
+    instance    : function(doc) { return new Instance(doc); }
+};
 
+var initialized = false;
+
+signals.moduleRegistered.connect(function(mod) {
+    if (initialized) {
+        initializeModule(mod);
+    }
+});
+
+function initializeModule(mod) {
+    mod.initialize(Context, constants, theme);
+}
+
+function init() {
+    if (initialized) {
+        return;
+    }
+    registry.modules().forEach(initializeModule);
+    initialized = true;
+}
+
+hk.register(require('./lib/Widget'));
+hk.register(require('./lib/RootPane'));
 hk.register(require('./lib/Box'));
 hk.register(require('./lib/SplitPane'));
 hk.register(require('./lib/MultiSplitPane'));
@@ -22,9 +54,7 @@ hk.register(require('./lib/ButtonBar'));
 hk.register(require('./lib/TabPane'));
 hk.register(require('./lib/Toolbar'));
 hk.register(require('./lib/StatusBar'));
-
-module.exports = hk;
-},{"./lib/Box":3,"./lib/Button":4,"./lib/ButtonBar":5,"./lib/Canvas2D":6,"./lib/Console":7,"./lib/Container":8,"./lib/MultiSplitPane":9,"./lib/Panel":10,"./lib/SplitPane":11,"./lib/StatusBar":12,"./lib/TabPane":13,"./lib/Toolbar":14,"fs":32,"hudkit-core":16}],3:[function(require,module,exports){
+},{"./lib/Box":3,"./lib/Button":4,"./lib/ButtonBar":5,"./lib/Canvas2D":6,"./lib/Console":7,"./lib/Container":8,"./lib/Context":9,"./lib/Instance":10,"./lib/MultiSplitPane":11,"./lib/Panel":12,"./lib/RootPane":13,"./lib/SplitPane":14,"./lib/StatusBar":15,"./lib/TabPane":16,"./lib/Toolbar":17,"./lib/Widget":18,"./lib/constants":19,"./lib/registry":20,"./lib/signals":21,"./lib/theme":22,"fs":32}],3:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('Box', ctx.Widget.extend(function(_sc, _sm) {
@@ -164,7 +194,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Button")
-},{"domutil":15,"fs":32}],5:[function(require,module,exports){
+},{"domutil":26,"fs":32}],5:[function(require,module,exports){
 (function (__dirname){exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('ButtonBar', ctx.Widget.extend(function(_sc, _sm) {
@@ -573,7 +603,7 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Console")
-},{"domutil":15,"fs":32}],8:[function(require,module,exports){
+},{"domutil":26,"fs":32}],8:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
 	ctx.registerWidget('Container', ctx.Widget.extend(function(_sc, _sm) {
@@ -697,6 +727,106 @@ exports.attach = function(instance) {
 };
 
 },{}],9:[function(require,module,exports){
+var registry 	= require('./registry'),
+	signals		= require('./signals'),
+	constants 	= require('./constants');
+
+// Context object is passed to each registered module's initialize()
+// function, allowing them to access select registry methods and 
+// all previously registered widgets.
+var Context = module.exports = {
+	
+	registerWidget  : registry.registerWidget,
+	
+	defineConstant: function(name, value) {
+		Object.defineProperty(constants, name, {
+			enumerable	: true,
+			writable	: false,
+			value		: value
+		});
+	},
+
+	defineConstants: function(constants) {
+		for (var k in constants) {
+			this.defineConstant(k, constants[k]);
+		}
+	}
+
+};
+
+signals.widgetRegistered.connect(function(name, ctor) {
+	Context[name] = ctor;
+});
+},{"./constants":19,"./registry":20,"./signals":21}],10:[function(require,module,exports){
+(function (__dirname){var fs 			= require('fs'),
+	styleTag 	= require('style-tag'),
+    action      = require('hudkit-action'),
+	registry 	= require('./registry'),
+	signals 	= require('./signals'),
+	theme 		= require('./theme'),
+	constants	= require('./constants'),
+    slice       = Array.prototype.slice;
+
+module.exports = Instance;
+
+var RESET_CSS   = "/* http://meyerweb.com/eric/tools/css/reset/ \n   v2.0 | 20110126\n   License: none (public domain)\n*/\n\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed, \nfigure, figcaption, footer, header, hgroup, \nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n\tmargin: 0;\n\tpadding: 0;\n\tborder: 0;\n\tfont-size: 100%;\n\tfont: inherit;\n\tvertical-align: baseline;\n}\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure, \nfooter, header, hgroup, menu, nav, section {\n\tdisplay: block;\n}\nbody {\n\tline-height: 1;\n}\nol, ul {\n\tlist-style: none;\n}\nblockquote, q {\n\tquotes: none;\n}\nblockquote:before, blockquote:after,\nq:before, q:after {\n\tcontent: '';\n\tcontent: none;\n}\ntable {\n\tborder-collapse: collapse;\n\tborder-spacing: 0;\n}",
+    BASE_CSS    = ".hk-root {\n\t-webkit-user-select: none;\n\tcursor: default;\n\tbackground: #101010;\n\tfont: 12px $HK_CONTROL_FONT;\n}\n\n.hk-root a {\n\ttext-decoration: none;\n}\n\n.hk-root * {\n\t-webkit-user-select: none;\n\tcursor: default;\n}\n\n.hk-button-common {\n\tfont: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n\tbackground: $HK_BUTTON_BG_COLOR;\n\tcolor: $HK_TEXT_COLOR;\n}\n\n.hk-button-common.disabled {\n\tcolor: #d0d0d0;\n}\n\n.hk-button-common:not(.disabled):active {\n\tbackground: $HK_CONTROL_ACTIVE_BG_COLOR;\n}";
+
+function Instance(window) {
+
+    this.window = window;
+    this.document = window.document;
+    
+    this.appendCSS(RESET_CSS);
+    this.appendCSS(BASE_CSS);
+
+    registry.modules().forEach(function(mod) {
+    	mod.attach(this);
+    }, this);
+
+    this.root = this.rootPane();
+
+    var body = this.document.body;
+    body.className = 'hk';
+    body.appendChild(this.root.getRoot());
+
+}
+
+Instance.prototype.constants = Instance.prototype.k = constants;
+Instance.prototype.action = action;
+
+Instance.prototype.appendCSS = function(css) {
+
+    css = css.replace(/\$(\w+)/g, function(m) {
+        return theme.get(RegExp.$1);
+    });
+
+    return styleTag(this.document, css);
+
+}
+
+// when widget is registered make it available to all hudkit instances
+signals.widgetRegistered.connect(function(name, ctor) {
+
+    var method = name[0].toLowerCase() + name.substring(1);
+
+    Instance.prototype[method] = function(a, b, c, d, e, f, g, h) {
+        switch (arguments.length) {
+            case 0: return new ctor(this);
+            case 1: return new ctor(this, a);
+            case 2: return new ctor(this, a, b);
+            case 3: return new ctor(this, a, b, c);
+            case 4: return new ctor(this, a, b, c, d);
+            case 5: return new ctor(this, a, b, c, d, e);
+            case 6: return new ctor(this, a, b, c, d, e, f);
+            case 7: return new ctor(this, a, b, c, d, e, f, g);
+            case 8: return new ctor(this, a, b, c, d, e, f, g, h);
+            default: throw new Error("too many ctor arguments. sorry :(");
+        }
+    }
+
+});}).call(this,"/../lib")
+},{"./constants":19,"./registry":20,"./signals":21,"./theme":22,"fs":32,"hudkit-action":27,"style-tag":30}],11:[function(require,module,exports){
 var du      = require('domutil'),
     rattrap = require('rattrap'),
     signal  = require('signalkit');
@@ -1028,7 +1158,7 @@ exports.initialize = function(ctx, k, theme) {
 exports.attach = function(instance) {
 
 }
-},{"domutil":15,"rattrap":30,"signalkit":31}],10:[function(require,module,exports){
+},{"domutil":26,"rattrap":28,"signalkit":29}],12:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
 	ctx.registerWidget('Panel', ctx.Container.extend(function(_sc, _sm) {
@@ -1056,7 +1186,185 @@ exports.attach = function(instance) {
 
 };
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
+(function (__dirname){var fs      = require('fs'),
+    trbl    = require('trbl');
+
+var DEFAULT_PADDING = 8;
+
+exports.initialize = function(ctx, k, theme) {
+
+    ctx.registerWidget('RootPane', ctx.Widget.extend(function(_sc, _sm) {
+
+        return [
+
+            function() {
+
+                this._padding           = [DEFAULT_PADDING, DEFAULT_PADDING, DEFAULT_PADDING, DEFAULT_PADDING];
+                this._toolbarVisible    = true;
+                this._toolbar           = null;
+                this._rootWidget        = null;
+                this._resizeDelay       = 500;
+
+                _sc.apply(this, arguments);
+
+                this._setupResizeHandler();
+
+            },
+
+            'methods', {
+
+                dispose: function() {
+                    this.setToolbar(null);
+                    this.setRootWidget(null);
+                    _sm.dispose.call(this);
+                },
+
+                setPadding: function(padding) {
+                    this._padding = trbl(padding);
+                    this._layout();
+                },
+
+                setBackgroundColor: function(color) {
+                    this._root.style.backgroundColor = color;
+                },
+
+                setToolbar: function(widget) {
+
+                    if (widget === this._toolbar)
+                        return;
+
+                    if (this._toolbar) {
+                        this._removeChildViaElement(this._toolbar, this._root);
+                        this._toolbar = null;
+                    }
+
+                    if (widget) {
+                        this._toolbar = widget;
+                        this._attachChildViaElement(this._toolbar, this._root);
+                    }
+
+                    this._layout();
+
+                },
+
+                showToolbar: function() {
+                    this._toolbarVisible = true;
+                    this._layout();
+                },
+                
+                hideToolbar: function() {
+                    this._toolbarVisible = false;
+                    this._layout();
+                },
+                
+                toggleToolbar: function() {
+                    this._toolbarVisible = !this._toolbarVisible;
+                    this._layout();
+                },
+                
+                isToolbarVisible: function() {
+                    return this._toolbarVisible;
+                },
+
+                setRootWidget: function(widget) {
+
+                    if (widget === this._rootWidget)
+                        return;
+
+                    if (this._rootWidget) {
+                        this._removeChildViaElement(this._rootWidget, this._root);
+                        this._rootWidget = null;
+                    }
+
+                    if (widget) {
+                        this._rootWidget = widget;
+                        this._attachChildViaElement(this._rootWidget, this._root);
+                    }
+
+                    this._layout();
+
+                },
+
+                setBounds: function(x, y, width, height) {
+                    /* no-op; root widget always fills its containing DOM element */
+                },
+
+                setResizeDelay: function(delay) {
+                    this._resizeDelay = parseInt(delay, 10);
+                },
+
+                _buildStructure: function() {
+                    this._root = this.document.createElement('div');
+                    this._root.className = 'hk-root-pane';
+                },
+
+                _layout: function() {
+                    
+                    var rect        = this._root.getBoundingClientRect(),
+                        left        = this._padding[3],
+                        top         = this._padding[0],
+                        width       = rect.width - (this._padding[1] + this._padding[3]),
+                        rootTop     = top,
+                        rootHeight  = rect.height - (this._padding[0] + this._padding[2]);
+                    
+                    if (this._toolbar && this._toolbarVisible) {
+                        
+                        this._toolbar.setHidden(false);
+                        this._toolbar.setBounds(left,
+                                                top,
+                                                width,
+                                                theme.getInt('HK_TOOLBAR_HEIGHT'));
+                        
+                        var delta = theme.getInt('HK_TOOLBAR_HEIGHT') + theme.getInt('HK_TOOLBAR_MARGIN_BOTTOM');
+                        rootTop += delta;
+                        rootHeight -= delta;
+                    
+                    } else if (this._toolbar) {
+                        this._toolbar.setHidden(true);
+                    }
+                    
+                    if (this._rootWidget) {
+                        this._rootWidget.setBounds(left, rootTop, width, rootHeight);
+                    }
+                    
+                },
+
+                _setupResizeHandler: function() {
+
+                    var self    = this,
+                        timeout = null;
+
+                    // FIXME: stash this registration for later unbinding
+                    // isn't this what basecamp is for?
+                    this.window.addEventListener('resize', function() {
+                        if (self._resizeDelay <= 0) {
+                            self._layout();    
+                        } else {
+                            if (timeout) {
+                                self._clearTimeout(timeout);
+                            }
+                            timeout = self._setTimeout(function() {
+                                self._layout();
+                            }, self._resizeDelay);
+                        }
+                    });
+
+                }
+
+            }
+
+        ];
+
+    }));
+
+}
+
+exports.attach = function(instance) {
+    instance.appendCSS(".hk-root-pane {\n\ttop: 0;\n\tleft: 0;\n\tright: 0;\n\tbottom: 0;\n\toverflow: hidden;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}");
+}
+}).call(this,"/../lib/RootPane")
+},{"fs":32,"trbl":31}],14:[function(require,module,exports){
 (function (__dirname){var du      = require('domutil'),
     rattrap = require('rattrap');
 
@@ -1310,7 +1618,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(css);
 }}).call(this,"/../lib/SplitPane")
-},{"domutil":15,"fs":32,"rattrap":30}],12:[function(require,module,exports){
+},{"domutil":26,"fs":32,"rattrap":28}],15:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 function TextCell(doc) {
@@ -1402,7 +1710,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/StatusBar")
-},{"domutil":15,"fs":32}],13:[function(require,module,exports){
+},{"domutil":26,"fs":32}],16:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -1658,7 +1966,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/TabPane")
-},{"domutil":15,"fs":32}],14:[function(require,module,exports){
+},{"domutil":26,"fs":32}],17:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -1742,447 +2050,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/Toolbar")
-},{"domutil":15,"fs":32}],15:[function(require,module,exports){
-// Constants from jQuery
-var rclass = /[\t\r\n]/g;
-var core_rnotwhite = /\S+/g;
-
-var DataStore         = {},
-    kDataStoreNextIx  = 1,
-    kDataKey          = 'du-data-key';
-
-var __window = typeof window === 'undefined'
-                ? null
-                : window;
-
-var __document = typeof document === 'undefined'
-                  ? null
-                  : document;
-
-function generateElementKey() {
-  return kDataStoreNextIx++;
-}
-
-module.exports = {
-  init: function(window, document) {
-    __window = window;
-    __document = document;
-  },
-
-  data: function(el, key, val) {
-    var elementKey = el.getAttribute(kDataKey);
-    if (!elementKey) {
-      elementKey = generateElementKey();
-      el.setAttribute(kDataKey, elementKey);
-    }
-
-    var elementData = DataStore[elementKey];
-    
-    if (arguments.length === 2) {
-      if (typeof key === 'undefined') {
-        delete DataStore[elementKey];
-      } else {
-        return elementData ? elementData[key] : undefined;
-      }
-    } else if (arguments.length === 3) {
-      if (typeof val === 'undefined') {
-        if (elementData) {
-          delete elementData[key];
-        }
-      } else {
-        if (!elementData) {
-          elementData = {};
-          DataStore[elementKey] = elementData;
-        }
-        elementData[key] = val;
-      }
-    } else {
-      throw "data() - invalid arguments";
-    }
-  },
-
-  // from jQuery
-  hasClass: function(ele, className) {
-    className = " " + className + " ";
-    return (" " + ele.className + " ").replace(rclass, " ").indexOf(className) >= 0;
-  },
-
-  // from jQuery
-  addClass: function(ele, value) {
-    var classes = (value || "").match(core_rnotwhite) || [],
-        cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
-
-    if (cur) {
-      var j = 0, clazz;
-      while ((clazz = classes[j++])) {
-        if (cur.indexOf(" " + clazz + " ") < 0) {
-          cur += clazz + " ";
-        }
-      }
-      ele.className = cur.trim();
-    }
-  },
-
-  // from jQuery
-  removeClass: function(ele, value) {
-    var classes = (value || "").match(core_rnotwhite) || [],
-        cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
-
-    if (cur) {
-      var j = 0, clazz;
-      while ((clazz = classes[j++])) {
-        while (cur.indexOf(" " + clazz + " ") >= 0) {
-          cur = cur.replace(" " + clazz + " ", " ");
-        }
-        ele.className = value ? cur.trim() : "";
-      }
-
-    }
-  },
-
-  viewportSize: function() {
-    return {
-      width: __document.documentElement.clientWidth,
-      height: __document.documentElement.clientHeight
-    };
-  },
-
-  stop: function(evt) {
-    evt.preventDefault();
-    evt.stopPropagation();
-  },
-
-  setPosition: function(el, x, y) {
-    el.style.left = x + 'px';
-    el.style.top = y + 'px';
-  },
-
-  setSize: function(width, height) {
-    el.style.width = width + 'px';
-    el.style.height = height + 'px';
-  },
-
-  isElement: function(el) {
-    return el && el.nodeType === 1;
-  }
-};
-},{}],16:[function(require,module,exports){
-var fs          = require('fs'),
-    signals     = require('./lib/signals'),
-    constants   = require('./lib/constants'),
-    theme       = require('./lib/theme'),
-    Instance    = require('./lib/Instance'),
-    Context     = require('./lib/Context'),
-    registry    = require('./lib/registry');
-
-var hk = module.exports = {
-    register    : registry.registerModule,
-    init        : init,
-    instance    : function(doc) { return new Instance(doc); }
-};
-
-var initialized = false;
-
-signals.moduleRegistered.connect(function(mod) {
-    if (initialized) {
-        initializeModule(mod);
-    }
-});
-
-function initializeModule(mod) {
-    mod.initialize(Context, constants, theme);
-}
-
-function init() {
-    if (initialized) {
-        return;
-    }
-    registry.modules().forEach(initializeModule);
-    initialized = true;
-}
-
-hk.register(require('./lib/Widget'));
-hk.register(require('./lib/RootPane'));
-
-},{"./lib/Context":17,"./lib/Instance":18,"./lib/RootPane":19,"./lib/Widget":20,"./lib/constants":21,"./lib/registry":22,"./lib/signals":23,"./lib/theme":24,"fs":32}],17:[function(require,module,exports){
-var registry 	= require('./registry'),
-	signals		= require('./signals'),
-	constants 	= require('./constants');
-
-// Context object is passed to each registered module's initialize()
-// function, allowing them to access select registry methods and 
-// all previously registered widgets.
-var Context = module.exports = {
-	
-	registerWidget  : registry.registerWidget,
-	
-	defineConstant: function(name, value) {
-		Object.defineProperty(constants, name, {
-			enumerable	: true,
-			writable	: false,
-			value		: value
-		});
-	},
-
-	defineConstants: function(constants) {
-		for (var k in constants) {
-			this.defineConstant(k, constants[k]);
-		}
-	}
-
-};
-
-signals.widgetRegistered.connect(function(name, ctor) {
-	Context[name] = ctor;
-});
-},{"./constants":21,"./registry":22,"./signals":23}],18:[function(require,module,exports){
-(function (__dirname){var fs 			= require('fs'),
-	styleTag 	= require('style-tag'),
-    action      = require('hudkit-action'),
-	registry 	= require('./registry'),
-	signals 	= require('./signals'),
-	theme 		= require('./theme'),
-	constants	= require('./constants'),
-    slice       = Array.prototype.slice;
-
-module.exports = Instance;
-
-var RESET_CSS   = "/* http://meyerweb.com/eric/tools/css/reset/ \n   v2.0 | 20110126\n   License: none (public domain)\n*/\n\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed, \nfigure, figcaption, footer, header, hgroup, \nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n\tmargin: 0;\n\tpadding: 0;\n\tborder: 0;\n\tfont-size: 100%;\n\tfont: inherit;\n\tvertical-align: baseline;\n}\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure, \nfooter, header, hgroup, menu, nav, section {\n\tdisplay: block;\n}\nbody {\n\tline-height: 1;\n}\nol, ul {\n\tlist-style: none;\n}\nblockquote, q {\n\tquotes: none;\n}\nblockquote:before, blockquote:after,\nq:before, q:after {\n\tcontent: '';\n\tcontent: none;\n}\ntable {\n\tborder-collapse: collapse;\n\tborder-spacing: 0;\n}",
-    BASE_CSS    = ".hk-root {\n\t-webkit-user-select: none;\n\tcursor: default;\n\tbackground: #101010;\n\tfont: 12px $HK_CONTROL_FONT;\n}\n\n.hk-root a {\n\ttext-decoration: none;\n}\n\n.hk-root * {\n\t-webkit-user-select: none;\n\tcursor: default;\n}\n\n.hk-button-common {\n\tfont: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n\tbackground: $HK_BUTTON_BG_COLOR;\n\tcolor: $HK_TEXT_COLOR;\n}\n\n.hk-button-common.disabled {\n\tcolor: #d0d0d0;\n}\n\n.hk-button-common:not(.disabled):active {\n\tbackground: $HK_CONTROL_ACTIVE_BG_COLOR;\n}";
-
-function Instance(window) {
-
-    this.window = window;
-    this.document = window.document;
-    
-    this.appendCSS(RESET_CSS);
-    this.appendCSS(BASE_CSS);
-
-    registry.modules().forEach(function(mod) {
-    	mod.attach(this);
-    }, this);
-
-    this.root = this.rootPane();
-
-    var body = this.document.body;
-    body.className = 'hk';
-    body.appendChild(this.root.getRoot());
-
-}
-
-Instance.prototype.constants = Instance.prototype.k = constants;
-Instance.prototype.action = action;
-
-Instance.prototype.appendCSS = function(css) {
-
-    css = css.replace(/\$(\w+)/g, function(m) {
-        return theme.get(RegExp.$1);
-    });
-
-    return styleTag(this.document, css);
-
-}
-
-// when widget is registered make it available to all hudkit instances
-signals.widgetRegistered.connect(function(name, ctor) {
-
-    var method = name[0].toLowerCase() + name.substring(1);
-
-    Instance.prototype[method] = function(a, b, c, d, e, f, g, h) {
-        switch (arguments.length) {
-            case 0: return new ctor(this);
-            case 1: return new ctor(this, a);
-            case 2: return new ctor(this, a, b);
-            case 3: return new ctor(this, a, b, c);
-            case 4: return new ctor(this, a, b, c, d);
-            case 5: return new ctor(this, a, b, c, d, e);
-            case 6: return new ctor(this, a, b, c, d, e, f);
-            case 7: return new ctor(this, a, b, c, d, e, f, g);
-            case 8: return new ctor(this, a, b, c, d, e, f, g, h);
-            default: throw new Error("too many ctor arguments. sorry :(");
-        }
-    }
-
-});}).call(this,"/../node_modules/hudkit-core/lib")
-},{"./constants":21,"./registry":22,"./signals":23,"./theme":24,"fs":32,"hudkit-action":27,"style-tag":28}],19:[function(require,module,exports){
-(function (__dirname){var fs      = require('fs'),
-    trbl    = require('trbl');
-
-var DEFAULT_PADDING = 8;
-
-exports.initialize = function(ctx, k, theme) {
-
-    ctx.registerWidget('RootPane', ctx.Widget.extend(function(_sc, _sm) {
-
-        return [
-
-            function() {
-
-                this._padding           = [DEFAULT_PADDING, DEFAULT_PADDING, DEFAULT_PADDING, DEFAULT_PADDING];
-                this._toolbarVisible    = true;
-                this._toolbar           = null;
-                this._rootWidget        = null;
-                this._resizeDelay       = 500;
-
-                _sc.apply(this, arguments);
-
-                this._setupResizeHandler();
-
-            },
-
-            'methods', {
-
-                dispose: function() {
-                    this.setToolbar(null);
-                    this.setRootWidget(null);
-                    _sm.dispose.call(this);
-                },
-
-                setPadding: function(padding) {
-                    this._padding = trbl(padding);
-                    this._layout();
-                },
-
-                setBackgroundColor: function(color) {
-                    this._root.style.backgroundColor = color;
-                },
-
-                setToolbar: function(widget) {
-
-                    if (widget === this._toolbar)
-                        return;
-
-                    if (this._toolbar) {
-                        this._removeChildViaElement(this._toolbar, this._root);
-                        this._toolbar = null;
-                    }
-
-                    if (widget) {
-                        this._toolbar = widget;
-                        this._attachChildViaElement(this._toolbar, this._root);
-                    }
-
-                    this._layout();
-
-                },
-
-                showToolbar: function() {
-                    this._toolbarVisible = true;
-                    this._layout();
-                },
-                
-                hideToolbar: function() {
-                    this._toolbarVisible = false;
-                    this._layout();
-                },
-                
-                toggleToolbar: function() {
-                    this._toolbarVisible = !this._toolbarVisible;
-                    this._layout();
-                },
-                
-                isToolbarVisible: function() {
-                    return this._toolbarVisible;
-                },
-
-                setRootWidget: function(widget) {
-
-                    if (widget === this._rootWidget)
-                        return;
-
-                    if (this._rootWidget) {
-                        this._removeChildViaElement(this._rootWidget, this._root);
-                        this._rootWidget = null;
-                    }
-
-                    if (widget) {
-                        this._rootWidget = widget;
-                        this._attachChildViaElement(this._rootWidget, this._root);
-                    }
-
-                    this._layout();
-
-                },
-
-                setBounds: function(x, y, width, height) {
-                    /* no-op; root widget always fills its containing DOM element */
-                },
-
-                setResizeDelay: function(delay) {
-                    this._resizeDelay = parseInt(delay, 10);
-                },
-
-                _buildStructure: function() {
-                    this._root = this.document.createElement('div');
-                    this._root.className = 'hk-root-pane';
-                },
-
-                _layout: function() {
-                    
-                    var rect        = this._root.getBoundingClientRect(),
-                        left        = this._padding[3],
-                        top         = this._padding[0],
-                        width       = rect.width - (this._padding[1] + this._padding[3]),
-                        rootTop     = top,
-                        rootHeight  = rect.height - (this._padding[0] + this._padding[2]);
-                    
-                    if (this._toolbar && this._toolbarVisible) {
-                        
-                        this._toolbar.setHidden(false);
-                        this._toolbar.setBounds(left,
-                                                top,
-                                                width,
-                                                theme.getInt('HK_TOOLBAR_HEIGHT'));
-                        
-                        var delta = theme.getInt('HK_TOOLBAR_HEIGHT') + theme.getInt('HK_TOOLBAR_MARGIN_BOTTOM');
-                        rootTop += delta;
-                        rootHeight -= delta;
-                    
-                    } else if (this._toolbar) {
-                        this._toolbar.setHidden(true);
-                    }
-                    
-                    if (this._rootWidget) {
-                        this._rootWidget.setBounds(left, rootTop, width, rootHeight);
-                    }
-                    
-                },
-
-                _setupResizeHandler: function() {
-
-                    var self    = this,
-                        timeout = null;
-
-                    // FIXME: stash this registration for later unbinding
-                    // isn't this what basecamp is for?
-                    this.window.addEventListener('resize', function() {
-                        if (self._resizeDelay <= 0) {
-                            self._layout();    
-                        } else {
-                            if (timeout) {
-                                self._clearTimeout(timeout);
-                            }
-                            timeout = self._setTimeout(function() {
-                                self._layout();
-                            }, self._resizeDelay);
-                        }
-                    });
-
-                }
-
-            }
-
-        ];
-
-    }));
-
-}
-
-exports.attach = function(instance) {
-    instance.appendCSS(".hk-root-pane {\n\ttop: 0;\n\tleft: 0;\n\tright: 0;\n\tbottom: 0;\n\toverflow: hidden;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}");
-}
-}).call(this,"/../node_modules/hudkit-core/lib/RootPane")
-},{"fs":32,"trbl":29}],20:[function(require,module,exports){
+},{"domutil":26,"fs":32}],18:[function(require,module,exports){
 (function (__dirname){var fs 		= require('fs'),
 	Class   = require('classkit').Class,
 	du 		= require('domutil');
@@ -2408,10 +2276,10 @@ exports.initialize = function(ctx, k, theme) {
 exports.attach = function(instance) {
 	instance.appendCSS(".hk-widget {\n\toverflow: hidden;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n}\n\n.hk-position-manual {\n\tposition: absolute;\n}\n\n.hk-position-auto {\n\t/* placeholder only */\n}\n");
 }
-}).call(this,"/../node_modules/hudkit-core/lib/Widget")
-},{"classkit":25,"domutil":26,"fs":32}],21:[function(require,module,exports){
+}).call(this,"/../lib/Widget")
+},{"classkit":23,"domutil":26,"fs":32}],19:[function(require,module,exports){
 module.exports = {};
-},{}],22:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 var signals = require('./signals');
 
 module.exports = {
@@ -2447,7 +2315,7 @@ function widgets() {
 	return widgetMap;
 }
 
-},{"./signals":23}],23:[function(require,module,exports){
+},{"./signals":21}],21:[function(require,module,exports){
 var signal = require('signalkit');
 
 function s(signalName) {
@@ -2456,7 +2324,7 @@ function s(signalName) {
 
 s('moduleRegistered');
 s('widgetRegistered');
-},{"signalkit":31}],24:[function(require,module,exports){
+},{"signalkit":29}],22:[function(require,module,exports){
 // TODO: this is eventually to be handled by Unwise,
 // with live updating when themes change.
 
@@ -2513,7 +2381,7 @@ module.exports = {
     }
 };
 
-},{}],25:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 function Class() {};
   
 Class.prototype.method = function(name) {
@@ -2557,150 +2425,153 @@ Class.Features = {
 
 exports.Class = Class;
 
-},{}],26:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
+exports.hasClass = hasClass;
+exports.addClass = addClass;
+exports.removeClass = removeClass;
+exports.toggleClass = toggleClass;
+
+function hasClass(el, className) {
+    return el.classList.contains(className);
+}
+
+function addClass(el, classes) {
+    if (classes.indexOf(' ') >= 0) {
+        classes.split(/\s+/).forEach(function(c) {
+            el.classList.add(c);
+        });
+    } else {
+        el.classList.add(classes);
+    }
+}
+
+function removeClass(el, classes) {
+    if (classes.indexOf(' ') >= 0) {
+        classes.split(/\s+/).forEach(function(c) {
+            el.classList.remove(c);
+        });
+    } else {
+        el.classList.remove(classes);
+    }
+}
+
+function toggleClass(el, classes) {
+    if (classes.indexOf(' ') >= 0) {
+        classes.split(/\s+/).forEach(function(c) {
+            el.classList.toggle(c);
+        });
+    } else {
+        el.classList.toggle(classes);
+    }
+}
+},{}],25:[function(require,module,exports){
+exports.hasClass = hasClass;
+exports.addClass = addClass;
+exports.removeClass = removeClass;
+exports.toggleClass = toggleClass;
+
 // Constants from jQuery
 var rclass = /[\t\r\n]/g;
 var core_rnotwhite = /\S+/g;
 
-var DataStore         = {},
-    kDataStoreNextIx  = 1,
-    kDataKey          = 'du-data-key';
+// from jQuery
+function hasClass(ele, className) {
+    className = " " + className + " ";
+    return (" " + ele.className + " ").replace(rclass, " ").indexOf(className) >= 0;
+}
 
-var __window = typeof window === 'undefined'
-                ? null
-                : window;
+function addClass(ele, value) {
+  console.log(arguments);
+    var classes = (value || "").match(core_rnotwhite) || [],
+            cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
 
-var __document = typeof document === 'undefined'
-                  ? null
-                  : document;
+    if (cur) {
+        var j = 0, clazz;
+        while ((clazz = classes[j++])) {
+            if (cur.indexOf(" " + clazz + " ") < 0) {
+                cur += clazz + " ";
+            }
+        }
+        ele.className = cur.trim();
+    }
+}
 
-function generateElementKey() {
-  return kDataStoreNextIx++;
+function removeClass(ele, value) {
+    var classes = (value || "").match(core_rnotwhite) || [],
+            cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
+
+    if (cur) {
+        var j = 0, clazz;
+        while ((clazz = classes[j++])) {
+            while (cur.indexOf(" " + clazz + " ") >= 0) {
+                cur = cur.replace(" " + clazz + " ", " ");
+            }
+            ele.className = value ? cur.trim() : "";
+        }
+    }
+}
+
+function toggleClass(ele, value) {
+    var classes = (value || "").match(core_rnotwhite) || [],
+            cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
+
+    if (cur) {
+        var j = 0, clazz;
+        while ((clazz = classes[j++])) {
+            var removeCount = 0;
+            while (cur.indexOf(" " + clazz + " ") >= 0) {
+                cur = cur.replace(" " + clazz + " ", " ");
+                removeCount++;
+            }
+            if (removeCount === 0) {
+                cur += clazz + " ";
+            }
+            ele.className = cur.trim();
+        }
+    }
+}
+},{}],26:[function(require,module,exports){
+var clazz;
+
+if (typeof DOMTokenList !== 'undefined') {
+    clazz = require('./impl/classes-classlist.js');
+} else {
+    clazz = require('./impl/classes-string.js');
 }
 
 module.exports = {
-  init: function(window, document) {
-    __window = window;
-    __document = document;
-  },
+    hasClass: clazz.hasClass,
+    addClass: clazz.addClass,
+    removeClass: clazz.removeClass,
+    toggleClass: clazz.toggleClass,
 
-  data: function(el, key, val) {
-    var elementKey = el.getAttribute(kDataKey);
-    if (!elementKey) {
-      elementKey = generateElementKey();
-      el.setAttribute(kDataKey, elementKey);
+    viewportSize: function(doc) {
+        return {
+            width: doc.documentElement.clientWidth,
+            height: doc.documentElement.clientHeight
+        };
+    },
+
+    stop: function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+    },
+
+    setPosition: function(el, x, y) {
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+    },
+
+    setSize: function(width, height) {
+        el.style.width = width + 'px';
+        el.style.height = height + 'px';
+    },
+
+    isElement: function(el) {
+        return el && el.nodeType === 1;
     }
-
-    var elementData = DataStore[elementKey];
-    
-    if (arguments.length === 2) {
-      if (typeof key === 'undefined') {
-        delete DataStore[elementKey];
-      } else {
-        return elementData ? elementData[key] : undefined;
-      }
-    } else if (arguments.length === 3) {
-      if (typeof val === 'undefined') {
-        if (elementData) {
-          delete elementData[key];
-        }
-      } else {
-        if (!elementData) {
-          elementData = {};
-          DataStore[elementKey] = elementData;
-        }
-        elementData[key] = val;
-      }
-    } else {
-      throw "data() - invalid arguments";
-    }
-  },
-
-  // from jQuery
-  hasClass: function(ele, className) {
-    className = " " + className + " ";
-    return (" " + ele.className + " ").replace(rclass, " ").indexOf(className) >= 0;
-  },
-
-  // from jQuery
-  addClass: function(ele, value) {
-    var classes = (value || "").match(core_rnotwhite) || [],
-        cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
-
-    if (cur) {
-      var j = 0, clazz;
-      while ((clazz = classes[j++])) {
-        if (cur.indexOf(" " + clazz + " ") < 0) {
-          cur += clazz + " ";
-        }
-      }
-      ele.className = cur.trim();
-    }
-  },
-
-  // from jQuery
-  removeClass: function(ele, value) {
-    var classes = (value || "").match(core_rnotwhite) || [],
-        cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
-
-    if (cur) {
-      var j = 0, clazz;
-      while ((clazz = classes[j++])) {
-        while (cur.indexOf(" " + clazz + " ") >= 0) {
-          cur = cur.replace(" " + clazz + " ", " ");
-        }
-        ele.className = value ? cur.trim() : "";
-      }
-    }
-  },
-
-  toggleClass: function(ele, value) {
-    var classes = (value || "").match(core_rnotwhite) || [],
-        cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
-
-    if (cur) {
-      var j = 0, clazz;
-      while ((clazz = classes[j++])) {
-        var removeCount = 0;
-        while (cur.indexOf(" " + clazz + " ") >= 0) {
-          cur = cur.replace(" " + clazz + " ", " ");
-          removeCount++;
-        }
-        if (removeCount === 0) {
-          cur += clazz + " ";
-        }
-        ele.className = cur.trim();
-      }
-    }
-  },
-
-  viewportSize: function() {
-    return {
-      width: __document.documentElement.clientWidth,
-      height: __document.documentElement.clientHeight
-    };
-  },
-
-  stop: function(evt) {
-    evt.preventDefault();
-    evt.stopPropagation();
-  },
-
-  setPosition: function(el, x, y) {
-    el.style.left = x + 'px';
-    el.style.top = y + 'px';
-  },
-
-  setSize: function(width, height) {
-    el.style.width = width + 'px';
-    el.style.height = height + 'px';
-  },
-
-  isElement: function(el) {
-    return el && el.nodeType === 1;
-  }
 };
-},{}],27:[function(require,module,exports){
+},{"./impl/classes-classlist.js":24,"./impl/classes-string.js":25}],27:[function(require,module,exports){
 var signal = require('signalkit');
 
 var ActionProto = Object.create(Function.prototype);
@@ -2740,92 +2611,7 @@ module.exports = function(fn, opts) {
 
 }
 
-},{"signalkit":31}],28:[function(require,module,exports){
-// adapted from
-// http://stackoverflow.com/questions/524696/how-to-create-a-style-tag-with-javascript
-module.exports = function(doc, initialCss) {
-    
-    if (typeof doc === 'string') {
-        initialCss = doc;
-        doc = null;
-    }
-
-    doc = doc || document;
-
-    var head    = doc.getElementsByTagName('head')[0],
-        style   = doc.createElement('style');
-
-    style.type = 'text/css';
-    head.appendChild(style);
-
-    function set(css) {
-        css = '' + (css || '');
-        if (style.styleSheet) {
-            style.styleSheet.cssText = css;
-        } else {
-            while (style.childNodes.length) {
-                style.removeChild(style.firstChild);
-            }
-            style.appendChild(doc.createTextNode(css));
-        }
-    }
-
-    set(initialCss || '');
-
-    set.el = style;
-    set.destroy = function() {
-        head.removeChild(style);
-    }
-
-    return set;
-
-}
-},{}],29:[function(require,module,exports){
-// [a] => [a,a,a,a]
-// [a,b] => [a,b,a,b]
-// [a,b,c] => [a,b,c,b]
-// [a,b,c,d] => [a,b,c,d]
-// a => [(int)a, (int)a, (int)a, (int)a]
-module.exports = function(thing) {
-    if (Array.isArray(thing)) {
-        switch (thing.length) {
-            case 1:
-                return [
-                    parseInt(thing[0], 10),
-                    parseInt(thing[0], 10),
-                    parseInt(thing[0], 10),
-                    parseInt(thing[0], 10)
-                ];
-            case 2:
-                return [
-                    parseInt(thing[0], 10),
-                    parseInt(thing[1], 10),
-                    parseInt(thing[0], 10),
-                    parseInt(thing[1], 10)
-                ];
-            case 3:
-                return [
-                    parseInt(thing[0], 10),
-                    parseInt(thing[1], 10),
-                    parseInt(thing[2], 10),
-                    parseInt(thing[1], 10)
-                ];
-            case 4:
-                return [
-                    parseInt(thing[0], 10),
-                    parseInt(thing[1], 10),
-                    parseInt(thing[2], 10),
-                    parseInt(thing[3], 10)
-                ];
-            default:
-                throw new Error("trbl - array must have 1-4 elements");
-        }
-    } else {
-        var val = parseInt(thing);
-        return [val, val, val, val];
-    }
-}
-},{}],30:[function(require,module,exports){
+},{"signalkit":29}],28:[function(require,module,exports){
 var activeCapture = null;
 
 function createOverlay() {
@@ -2874,7 +2660,7 @@ exports.stopCapture = function() {
     }
 }
 
-},{}],31:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 (function (process){//
 // Helpers
 
@@ -2945,7 +2731,92 @@ Signal.prototype.clear = function() {
 
 module.exports = function(name) { return new Signal(name); }
 module.exports.Signal = Signal;}).call(this,require("/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33}],32:[function(require,module,exports){
+},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33}],30:[function(require,module,exports){
+// adapted from
+// http://stackoverflow.com/questions/524696/how-to-create-a-style-tag-with-javascript
+module.exports = function(doc, initialCss) {
+    
+    if (typeof doc === 'string') {
+        initialCss = doc;
+        doc = null;
+    }
+
+    doc = doc || document;
+
+    var head    = doc.getElementsByTagName('head')[0],
+        style   = doc.createElement('style');
+
+    style.type = 'text/css';
+    head.appendChild(style);
+
+    function set(css) {
+        css = '' + (css || '');
+        if (style.styleSheet) {
+            style.styleSheet.cssText = css;
+        } else {
+            while (style.childNodes.length) {
+                style.removeChild(style.firstChild);
+            }
+            style.appendChild(doc.createTextNode(css));
+        }
+    }
+
+    set(initialCss || '');
+
+    set.el = style;
+    set.destroy = function() {
+        head.removeChild(style);
+    }
+
+    return set;
+
+}
+},{}],31:[function(require,module,exports){
+// [a] => [a,a,a,a]
+// [a,b] => [a,b,a,b]
+// [a,b,c] => [a,b,c,b]
+// [a,b,c,d] => [a,b,c,d]
+// a => [(int)a, (int)a, (int)a, (int)a]
+module.exports = function(thing) {
+    if (Array.isArray(thing)) {
+        switch (thing.length) {
+            case 1:
+                return [
+                    parseInt(thing[0], 10),
+                    parseInt(thing[0], 10),
+                    parseInt(thing[0], 10),
+                    parseInt(thing[0], 10)
+                ];
+            case 2:
+                return [
+                    parseInt(thing[0], 10),
+                    parseInt(thing[1], 10),
+                    parseInt(thing[0], 10),
+                    parseInt(thing[1], 10)
+                ];
+            case 3:
+                return [
+                    parseInt(thing[0], 10),
+                    parseInt(thing[1], 10),
+                    parseInt(thing[2], 10),
+                    parseInt(thing[1], 10)
+                ];
+            case 4:
+                return [
+                    parseInt(thing[0], 10),
+                    parseInt(thing[1], 10),
+                    parseInt(thing[2], 10),
+                    parseInt(thing[3], 10)
+                ];
+            default:
+                throw new Error("trbl - array must have 1-4 elements");
+        }
+    } else {
+        var val = parseInt(thing);
+        return [val, val, val, val];
+    }
+}
+},{}],32:[function(require,module,exports){
 
 },{}],33:[function(require,module,exports){
 // shim for using process in browser

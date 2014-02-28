@@ -1,0 +1,13 @@
+.hk-widget {
+	overflow: hidden;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+.hk-position-manual {
+	position: absolute;
+}
+
+.hk-position-auto {
+	/* placeholder only */
+}
