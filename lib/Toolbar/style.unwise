@@ -14,7 +14,7 @@
     float: right;
 }
 
-.hk-toolbar-items > .hk-toolbar-item {
+.hk-toolbar-items > * {
     margin-right: 2px;
     display: inline-block;
     height: $HK_TOOLBAR_HEIGHT;
@@ -23,7 +23,7 @@
     -moz-box-sizing: border-box;
 }
 
-.hk-toolbar-items > .hk-button-common {
+.hk-toolbar-button {
     border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;
     padding: $HK_TOOLBAR_V_PADDING 3px;
 }
