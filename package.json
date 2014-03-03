@@ -18,7 +18,7 @@
   "author": "Jason Frame <jason@onehackoranother.com> (http://jasonframe.co.uk)",
   "license": "MIT",
   "dependencies": {
-    "rattrap": "0.0.2",
+    "rattrap": "~0.1.0",
     "classkit": "~0.2.0",
     "domutil": "~0.2.0",
     "trbl": "0.0.2",

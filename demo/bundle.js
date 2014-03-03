@@ -848,6 +848,7 @@ function Instance(window) {
 
 Instance.prototype.constants = Instance.prototype.k = constants;
 Instance.prototype.action = action;
+Instance.prototype.theme = theme;
 
 Instance.prototype.appendCSS = function(css) {
 
@@ -932,6 +933,12 @@ exports.initialize = function(ctx, k, theme) {
                 setBounds: function(x, y, w, h) {
                     _sm.setBounds.call(this, x, y, w, h);
                     this._layout();
+                },
+
+                setPaneSizes: function(sizes) {
+
+
+
                 },
 
                 addSplit: function(ratio, widget) {
@@ -1159,7 +1166,7 @@ exports.initialize = function(ctx, k, theme) {
                             self._root.appendChild(self._ghost);
                             updateGhost();
 
-                            rattrap.startCapture({
+                            var stopCapture = rattrap.startCapture(self.document, {
                                 cursor: (self._orientation === k.SPLIT_PANE_VERTICAL) ? 'col-resize' : 'row-resize',
                                 mousemove: function(evt) {
                                     if (horizontal) {
@@ -1178,7 +1185,7 @@ exports.initialize = function(ctx, k, theme) {
                                     updateGhost();
                                 },
                                 mouseup: function() {
-                                    rattrap.stopCapture();
+                                    stopCapture();
                                     self._root.removeChild(self._ghost);
                                     
                                     var p = (lastValid - min) / (max - min);
@@ -1625,7 +1632,7 @@ exports.initialize = function(ctx, k, theme) {
 	                    self._root.appendChild(self._ghost);
 	                    moveGhost();
 	                    
-	                    rattrap.startCapture({
+	                    var stopCapture = rattrap.startCapture(self.document, {
 	                        cursor: (self._orientation === SPLIT_PANE_VERTICAL) ? 'col-resize' : 'row-resize',
 	                        mousemove: function(evt) {
 	                            if (self._orientation === SPLIT_PANE_VERTICAL) {
@@ -1649,7 +1656,7 @@ exports.initialize = function(ctx, k, theme) {
 	                            }
 	                        },
 	                        mouseup: function() {
-	                            rattrap.stopCapture();
+	                            stopCapture();
 	                            self._root.removeChild(self._ghost);
 	                            self.setSplit(lastValidSplit);
 	                        }
@@ -2085,15 +2092,35 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/Toolbar")
 },{"domutil":27,"fs":33}],18:[function(require,module,exports){
-(function (__dirname){// TODO: editable items
-// TODO: deletable items
-// TODO: observation
-// TODO: flair
-// TODO: multiple selection
+(function (__dirname){// TODO: flair
+// TODO: scrollable
 // TODO: separate actuator icon/link
+// TODO: multiple selection
+
 // TODO: refresh
 // TODO: context menu
+
+// TODO: observation
+// TODO: deletable items
+
 // TODO: drag and drop (move, reorder)
+
+// TODO: some sort of guard object that can only ever be
+// executing/waiting for a single callback, and operation
+// can be cancelled... based on the following...
+function cancellable(fn, ifCancelled) {
+    var cancelled = false, fn = function() {
+        if (cancelled) {
+            if (ifCancelled) {
+                ifCancelled();
+            }
+        } else {
+            return fn.apply(null, arguments);    
+        }
+    }
+    return [fn, function() { cancelled = true; }];
+}
+
 exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('TreeView', ctx.Widget.extend(function(_sc, _sm) {
@@ -2113,11 +2140,17 @@ exports.initialize = function(ctx, k, theme) {
             'methods', {
 
                 setDelegate: function(delegate) {
+                    
+                    // FIXME: for completeness this should handle being
+                    // busy when called; changing delegates is a rare 
+                    // operation but should be handled gracefully.
+                    // idea: this._busy could be a cancellation function.
 
                     if (delegate === this._delegate)
                         return;
 
                     this._delegate = delegate;
+                    this._selected = false;
 
                     this._wrapper.innerHTML = '';
 
@@ -2875,16 +2908,20 @@ module.exports = function(fn, opts) {
 }
 
 },{"signalkit":30}],29:[function(require,module,exports){
-var activeCapture = null;
+var activeCaptures = [];
 
-function createOverlay() {
-    var overlay = document.createElement('div');
+function createOverlay(doc) {
+    var overlay = doc.createElement('div');
     overlay.className = 'rattrap-overlay';
+    overlay.unselectable = 'on';
     overlay.style.position = 'fixed';
     overlay.style.top = 0;
     overlay.style.left = 0;
     overlay.style.width = '100%';
     overlay.style.height = '100%';
+    overlay.style.webkitUserSelect = 'none';
+    overlay.style.mozUserSelect = 'none';
+    overlay.style.msUserSelect = 'none';
     return overlay;
 }
 
@@ -2896,31 +2933,36 @@ function makeCaptureHandler(fn) {
     }
 }
 
-exports.startCapture = function(events) {
+exports.startCapture = function(doc, events) {
 
-    if (activeCapture) {
+    if (typeof events === 'undefined') {
+        events = doc;
+        doc = document;
+    }
+
+    if (activeCaptures.indexOf(doc) >= 0) {
         throw "cannot capture events, capture is already in progress";
     }
 
-    activeCapture = createOverlay();
-
-    document.body.appendChild(activeCapture);
+    var overlay = createOverlay(doc);
+    document.body.appendChild(overlay);
+    activeCaptures.push(overlay);
 
     for (var k in events) {
         if (k === 'cursor') {
-            activeCapture.style.cursor = events[k];
+            overlay.style.cursor = events[k];
         } else {
-            activeCapture.addEventListener(k, makeCaptureHandler(events[k]));
+            overlay.addEventListener(k, makeCaptureHandler(events[k]));
         }
     }
 
-}
-
-exports.stopCapture = function() {
-    if (activeCapture) {
-        document.body.removeChild(activeCapture);
-        activeCapture = null;
+    return function() {
+        doc.body.removeChild(overlay);
+        activeCaptures.splice(activeCaptures.indexOf(overlay), 1);
+        doc = null;
+        overlay = null;
     }
+
 }
 
 },{}],30:[function(require,module,exports){
