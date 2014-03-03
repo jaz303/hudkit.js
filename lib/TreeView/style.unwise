@@ -1,0 +1,40 @@
+.hk-tree-view {
+	background: #202020;
+	color: white;
+}
+
+.hk-tree-view a {
+	display: block;
+	color: white;
+	padding: 3px;
+}
+
+.hk-tree-view ul {
+	display: block;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.hk-tree-view li {
+	display: block;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.hk-tree-view ul ul {
+	margin-left: 20px;
+}
+
+.hk-tree-view li > ul {
+	display: none;
+}
+
+.hk-tree-view li.expanded > ul {
+	display: block;
+}
+
+.hk-tree-view li.selected > a {
+	background: red;
+}

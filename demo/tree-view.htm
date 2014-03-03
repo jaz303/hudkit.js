@@ -1,0 +1,81 @@
+<!DOCTYPE>
+
+<html>
+  <head>
+    <title>hudkit demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src='bundle.js'></script>
+    <script>
+      function init() {
+
+        var testData = {
+            'a': {
+                title: 'Item A',
+                children: ['d', 'e', 'f']
+            },
+            'b': {
+                title: 'Item B'
+            },
+            'c': {
+                title: 'Item C'
+            },
+            'd': {
+                title: 'Item D'
+            },
+            'e': {
+                title: 'Item E',
+                children: ['g']
+            },
+            'f': {
+                title: 'Item F'
+            },
+            'g': {
+                title: 'Item G'
+            }
+        };
+
+        var testDelegate = {
+            rootItems: function(cb) {
+                setTimeout(function() {
+                    cb(null, ['a','b','c']);
+                }, 0);
+            },
+            childrenForItem: function(item, cb) {
+                setTimeout(function() {
+                    cb(null, testData[item].children || []);
+                });
+            },
+            itemIsContainer: function(item) {
+                return Array.isArray(testData[item].children);
+            },
+            itemTitle: function(item) {
+                return testData[item].title
+            },
+            itemClass: function(item) {
+                return '';
+            },
+            itemActivated: function(item) {
+                console.log("activated: " + item);
+            }
+        }
+
+        var treeView = hk.treeView();
+        treeView.setDelegate(testDelegate);
+        
+        var b2 = hk.box();
+        b2.setBackgroundColor('#303030');
+
+        var sp = hk.splitPane();
+        sp.setOrientation(hk.k.SPLIT_PANE_VERTICAL);
+        sp.setLeftWidget(treeView);
+        sp.setRightWidget(b2);
+        sp.setSplit(0.25);
+
+        hk.root.setRootWidget(sp);
+
+      }
+    </script>
+  </head>
+  <body onload='hkinit(); init();'>
+  </body>
+</html>

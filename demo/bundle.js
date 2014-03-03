@@ -54,7 +54,8 @@ hk.register(require('./lib/ButtonBar'));
 hk.register(require('./lib/TabPane'));
 hk.register(require('./lib/Toolbar'));
 hk.register(require('./lib/StatusBar'));
-},{"./lib/Box":3,"./lib/Button":4,"./lib/ButtonBar":5,"./lib/Canvas2D":6,"./lib/Console":7,"./lib/Container":8,"./lib/Context":9,"./lib/Instance":10,"./lib/MultiSplitPane":11,"./lib/Panel":12,"./lib/RootPane":13,"./lib/SplitPane":14,"./lib/StatusBar":15,"./lib/TabPane":16,"./lib/Toolbar":17,"./lib/Widget":18,"./lib/constants":19,"./lib/registry":20,"./lib/signals":21,"./lib/theme":22,"fs":32}],3:[function(require,module,exports){
+hk.register(require('./lib/TreeView'));
+},{"./lib/Box":3,"./lib/Button":4,"./lib/ButtonBar":5,"./lib/Canvas2D":6,"./lib/Console":7,"./lib/Container":8,"./lib/Context":9,"./lib/Instance":10,"./lib/MultiSplitPane":11,"./lib/Panel":12,"./lib/RootPane":13,"./lib/SplitPane":14,"./lib/StatusBar":15,"./lib/TabPane":16,"./lib/Toolbar":17,"./lib/TreeView":18,"./lib/Widget":19,"./lib/constants":20,"./lib/registry":21,"./lib/signals":22,"./lib/theme":23,"fs":33}],3:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('Box', ctx.Widget.extend(function(_sc, _sm) {
@@ -242,7 +243,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Button")
-},{"domutil":26,"fs":32}],5:[function(require,module,exports){
+},{"domutil":27,"fs":33}],5:[function(require,module,exports){
 (function (__dirname){exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('ButtonBar', ctx.Widget.extend(function(_sc, _sm) {
@@ -286,7 +287,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/ButtonBar")
-},{"fs":32}],6:[function(require,module,exports){
+},{"fs":33}],6:[function(require,module,exports){
 (function (__dirname){exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('Canvas2D', ctx.Widget.extend(function(_sc, _sm) {
@@ -332,7 +333,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Canvas2D")
-},{"fs":32}],7:[function(require,module,exports){
+},{"fs":33}],7:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 var DEFAULT_PROMPT = {text: '>'},
@@ -656,7 +657,7 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Console")
-},{"domutil":26,"fs":32}],8:[function(require,module,exports){
+},{"domutil":27,"fs":33}],8:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
 	ctx.registerWidget('Container', ctx.Widget.extend(function(_sc, _sm) {
@@ -810,7 +811,7 @@ var Context = module.exports = {
 signals.widgetRegistered.connect(function(name, ctor) {
 	Context[name] = ctor;
 });
-},{"./constants":19,"./registry":20,"./signals":21}],10:[function(require,module,exports){
+},{"./constants":20,"./registry":21,"./signals":22}],10:[function(require,module,exports){
 (function (__dirname){var fs 			= require('fs'),
 	styleTag 	= require('style-tag'),
     action      = require('hudkit-action'),
@@ -879,7 +880,7 @@ signals.widgetRegistered.connect(function(name, ctor) {
     }
 
 });}).call(this,"/../lib")
-},{"./constants":19,"./registry":20,"./signals":21,"./theme":22,"fs":32,"hudkit-action":27,"style-tag":30}],11:[function(require,module,exports){
+},{"./constants":20,"./registry":21,"./signals":22,"./theme":23,"fs":33,"hudkit-action":28,"style-tag":31}],11:[function(require,module,exports){
 var du      = require('domutil'),
     rattrap = require('rattrap'),
     signal  = require('signalkit');
@@ -1211,7 +1212,7 @@ exports.initialize = function(ctx, k, theme) {
 exports.attach = function(instance) {
 
 }
-},{"domutil":26,"rattrap":28,"signalkit":29}],12:[function(require,module,exports){
+},{"domutil":27,"rattrap":29,"signalkit":30}],12:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
 	ctx.registerWidget('Panel', ctx.Container.extend(function(_sc, _sm) {
@@ -1417,7 +1418,7 @@ exports.attach = function(instance) {
     instance.appendCSS(".hk-root-pane {\n\ttop: 0;\n\tleft: 0;\n\tright: 0;\n\tbottom: 0;\n\toverflow: hidden;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}");
 }
 }).call(this,"/../lib/RootPane")
-},{"fs":32,"trbl":31}],14:[function(require,module,exports){
+},{"fs":33,"trbl":32}],14:[function(require,module,exports){
 (function (__dirname){var du      = require('domutil'),
     rattrap = require('rattrap');
 
@@ -1671,7 +1672,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(css);
 }}).call(this,"/../lib/SplitPane")
-},{"domutil":26,"fs":32,"rattrap":28}],15:[function(require,module,exports){
+},{"domutil":27,"fs":33,"rattrap":29}],15:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 function TextCell(doc) {
@@ -1763,7 +1764,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/StatusBar")
-},{"domutil":26,"fs":32}],16:[function(require,module,exports){
+},{"domutil":27,"fs":33}],16:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -2024,7 +2025,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/TabPane")
-},{"domutil":26,"fs":32}],17:[function(require,module,exports){
+},{"domutil":27,"fs":33}],17:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -2083,7 +2084,224 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/Toolbar")
-},{"domutil":26,"fs":32}],18:[function(require,module,exports){
+},{"domutil":27,"fs":33}],18:[function(require,module,exports){
+(function (__dirname){// TODO: editable items
+// TODO: deletable items
+// TODO: observation
+// TODO: flair
+// TODO: multiple selection
+// TODO: separate actuator icon/link
+// TODO: refresh
+// TODO: context menu
+// TODO: drag and drop (move, reorder)
+exports.initialize = function(ctx, k, theme) {
+
+    ctx.registerWidget('TreeView', ctx.Widget.extend(function(_sc, _sm) {
+
+        return [
+
+            function() {
+
+                this._busy = false;
+                this._delegate = null;
+                this._selected = null;
+
+                _sc.apply(this, arguments);
+
+            },
+
+            'methods', {
+
+                setDelegate: function(delegate) {
+
+                    if (delegate === this._delegate)
+                        return;
+
+                    this._delegate = delegate;
+
+                    this._wrapper.innerHTML = '';
+
+                    if (this._delegate) {
+                        this._loadRootItems();
+                    }
+
+                },
+
+                _buildStructure: function() {
+
+                    var self = this;
+
+                    this._root = this.document.createElement('div');
+                    this._root.className = 'hk-tree-view';
+
+                    this._wrapper = this.document.createElement('ul');
+                    this._wrapper.className = 'hk-tree-view-items';
+                    
+                    this._wrapper.addEventListener('click', function(evt) {
+
+                        evt.preventDefault();
+                        evt.stopPropagation();
+
+                        var li = self._itemForEvent(evt);
+
+                        if (!li)
+                            return;
+
+                        // selection
+                        self._setSelection(li);
+
+                        // handle expansion
+                        if (li.treeViewContainer) {
+                            if (li.treeViewChildrenLoaded) {
+                                li.classList.toggle('expanded');
+                            } else {
+                                self._loadChildren(li);        
+                            }
+                        }
+
+                    });
+
+                    this._wrapper.addEventListener('dblclick', function(evt) {
+
+                        evt.preventDefault();
+                        evt.stopPropagation();
+
+                        var li = self._itemForEvent(evt);
+
+                        if (!li)
+                            return;
+                        
+                        self._delegate.itemActivated(li.treeViewItem);    
+                    
+                    });
+
+                    this._root.appendChild(this._wrapper);
+
+                },
+
+                _loadRootItems: function() {
+
+                    if (this._busy)
+                        return;
+
+                    this._busy = true;
+
+                    var self = this;
+                    this._delegate.rootItems(function(err, roots) {
+                        if (err) {
+                            // TODO: handle error
+                        } else {
+                            self._appendItems(self._wrapper, roots);
+                        }
+                        self._busy = false;
+                    });
+
+                },
+
+                _loadChildren: function(li) {
+
+                    if (this._busy)
+                        return;
+
+                    this._busy = true;
+
+                    var self = this;
+                    this._delegate.childrenForItem(li.treeViewItem, function(err, children) {
+                        if (err) {
+                            // TODO: handle error
+                            self._busy = false;
+                        } else {
+
+                            var list = self.document.createElement('ul');
+                            li.appendChild(list);
+                            li.treeViewChildrenLoaded = true;
+
+                            self._appendItems(list, children);
+
+                            setTimeout(function() {
+                                li.classList.add('expanded');
+                                self._busy = false;
+                            }, 0);
+
+                        }
+                    });
+
+                },
+
+                _createNodeForItem: function(item) {
+
+                    var li          = this.document.createElement('li'),
+                        isContainer = this._delegate.itemIsContainer(item);
+
+                    li.classList.add(isContainer ? 'hk-tree-view-container' : 'hk-tree-view-leaf');
+
+                    var itemClass = this._delegate.itemClass(item);
+                    if (itemClass) {
+                        li.classList.add(itemClass);    
+                    }
+
+                    var txt = this.document.createElement('a');
+                    txt.href = '#';
+                    txt.textContent = this._delegate.itemTitle(item);
+
+                    li.appendChild(txt);
+                    li.treeViewItem = item;
+                    li.treeViewContainer = isContainer;
+                    li.treeViewChildrenLoaded = false;
+
+                    return li;
+
+                },
+
+                _appendItems: function(wrapper, items) {
+                    items.map(function(r) {
+                        return this._createNodeForItem(r);
+                    }, this).forEach(function(n) {
+                        wrapper.appendChild(n);
+                    });
+                },
+
+                _setSelection: function(item) {
+
+                    if (item === this._selected) {
+                        return;
+                    }
+
+                    if (this._selected) {
+                        this._selected.classList.remove('selected');
+                    }
+
+                    this._selected = item;
+
+                    if (this._selected) {
+                        this._selected.classList.add('selected');
+                    }
+
+                },
+
+                _itemForEvent: function(evt) {
+                    if (evt.target.nodeName.toLowerCase() === 'a') {
+                        return evt.target.parentNode;
+                    } else {
+                        return null;
+                    }
+                }
+
+            }
+
+        ];
+
+    }));
+
+};
+
+var fs = require('fs'),
+    CSS = ".hk-tree-view {\n\tbackground: #202020;\n\tcolor: white;\n}\n\n.hk-tree-view a {\n\tdisplay: block;\n\tcolor: white;\n\tpadding: 3px;\n}\n\n.hk-tree-view ul {\n\tdisplay: block;\n\tlist-style: none;\n\tmargin: 0;\n\tpadding: 0;\n}\n\n.hk-tree-view li {\n\tdisplay: block;\n\tlist-style: none;\n\tmargin: 0;\n\tpadding: 0;\n}\n\n.hk-tree-view ul ul {\n\tmargin-left: 20px;\n}\n\n.hk-tree-view li > ul {\n\tdisplay: none;\n}\n\n.hk-tree-view li.expanded > ul {\n\tdisplay: block;\n}\n\n.hk-tree-view li.selected > a {\n\tbackground: red;\n}";
+
+exports.attach = function(instance) {
+    instance.appendCSS(CSS);
+}}).call(this,"/../lib/TreeView")
+},{"fs":33}],19:[function(require,module,exports){
 (function (__dirname){var	Class   = require('classkit').Class,
 	du 		= require('domutil');
 
@@ -2319,9 +2537,9 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Widget")
-},{"classkit":23,"domutil":26,"fs":32}],19:[function(require,module,exports){
+},{"classkit":24,"domutil":27,"fs":33}],20:[function(require,module,exports){
 module.exports = {};
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var signals = require('./signals');
 
 module.exports = {
@@ -2357,7 +2575,7 @@ function widgets() {
 	return widgetMap;
 }
 
-},{"./signals":21}],21:[function(require,module,exports){
+},{"./signals":22}],22:[function(require,module,exports){
 var signal = require('signalkit');
 
 function s(signalName) {
@@ -2366,7 +2584,7 @@ function s(signalName) {
 
 s('moduleRegistered');
 s('widgetRegistered');
-},{"signalkit":29}],22:[function(require,module,exports){
+},{"signalkit":30}],23:[function(require,module,exports){
 // TODO: this is eventually to be handled by Unwise,
 // with live updating when themes change.
 
@@ -2426,7 +2644,7 @@ module.exports = {
     }
 };
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 function Class() {};
   
 Class.prototype.method = function(name) {
@@ -2470,7 +2688,7 @@ Class.Features = {
 
 exports.Class = Class;
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 exports.hasClass = hasClass;
 exports.addClass = addClass;
 exports.removeClass = removeClass;
@@ -2509,7 +2727,7 @@ function toggleClass(el, classes) {
         el.classList.toggle(classes);
     }
 }
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 exports.hasClass = hasClass;
 exports.addClass = addClass;
 exports.removeClass = removeClass;
@@ -2575,7 +2793,7 @@ function toggleClass(ele, value) {
         }
     }
 }
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var clazz;
 
 if (typeof DOMTokenList !== 'undefined') {
@@ -2616,7 +2834,7 @@ module.exports = {
         return el && el.nodeType === 1;
     }
 };
-},{"./impl/classes-classlist.js":24,"./impl/classes-string.js":25}],27:[function(require,module,exports){
+},{"./impl/classes-classlist.js":25,"./impl/classes-string.js":26}],28:[function(require,module,exports){
 var signal = require('signalkit');
 
 var ActionProto = Object.create(Function.prototype);
@@ -2656,7 +2874,7 @@ module.exports = function(fn, opts) {
 
 }
 
-},{"signalkit":29}],28:[function(require,module,exports){
+},{"signalkit":30}],29:[function(require,module,exports){
 var activeCapture = null;
 
 function createOverlay() {
@@ -2705,7 +2923,7 @@ exports.stopCapture = function() {
     }
 }
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 (function (process){//
 // Helpers
 
@@ -2776,7 +2994,7 @@ Signal.prototype.clear = function() {
 
 module.exports = function(name) { return new Signal(name); }
 module.exports.Signal = Signal;}).call(this,require("/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33}],30:[function(require,module,exports){
+},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":34}],31:[function(require,module,exports){
 // adapted from
 // http://stackoverflow.com/questions/524696/how-to-create-a-style-tag-with-javascript
 module.exports = function(doc, initialCss) {
@@ -2816,7 +3034,7 @@ module.exports = function(doc, initialCss) {
     return set;
 
 }
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 // [a] => [a,a,a,a]
 // [a,b] => [a,b,a,b]
 // [a,b,c] => [a,b,c,b]
@@ -2861,9 +3079,9 @@ module.exports = function(thing) {
         return [val, val, val, val];
     }
 }
-},{}],32:[function(require,module,exports){
-
 },{}],33:[function(require,module,exports){
+
+},{}],34:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};

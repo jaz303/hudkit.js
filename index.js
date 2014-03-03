@@ -46,3 +46,4 @@ hk.register(require('./lib/ButtonBar'));
 hk.register(require('./lib/TabPane'));
 hk.register(require('./lib/Toolbar'));
 hk.register(require('./lib/StatusBar'));
+hk.register(require('./lib/TreeView'));
