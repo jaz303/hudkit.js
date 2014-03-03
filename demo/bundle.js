@@ -937,7 +937,41 @@ exports.initialize = function(ctx, k, theme) {
 
                 setPaneSizes: function(sizes) {
 
+                    var requested = 0,
+                        fill = 0;
 
+                    if (sizes.length !== this._widgets.length) {
+                        throw new Error("length of size array must equal number of widgets in split pane");
+                    }
+
+                    for (var i = 0; i < sizes.length; ++i) {
+                        if (sizes[i] === null) {
+                            fill++;
+                        } else {
+                            requested += sizes[i];
+                        }
+                    }
+
+                    var availableWidth = this.width - (this._splits.length * DIVIDER_SIZE),
+                        remainingWidth = availableWidth - requested;
+
+                    // wimp out if we can't fill exactly.
+                    // TODO: should probably try a best-effort thing
+                    if (fill === 0 && remainingWidth !== 0) {
+                        return;
+                    } else if (fill > 0 && remainingWidth <= 0) {
+                        return;
+                    }
+
+                    var last = 0;
+                    for (var i = 0; i < sizes.length - 1; ++i) {
+                        var s = (sizes[i] === null) ? (remainingWidth / fill) : sizes[i],
+                            r = last + (s / availableWidth)
+                        this._splits[i].ratio = r;
+                        last = r;
+                    }
+
+                    this._layout();
 
                 },
 
