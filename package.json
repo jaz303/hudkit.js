@@ -20,7 +20,7 @@
   "dependencies": {
     "rattrap": "~0.1.1",
     "classkit": "~0.2.0",
-    "domutil": "~0.2.0",
+    "domutil": "~0.2.1",
     "trbl": "0.0.2",
     "hudkit-action": "~0.1.0",
     "style-tag": "0.0.1",
