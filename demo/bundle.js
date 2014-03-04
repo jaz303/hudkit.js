@@ -2165,7 +2165,7 @@ exports.initialize = function(ctx, k, theme) {
 
                 this._busy = false;
                 this._delegate = null;
-                this._selected = null;
+                this._selected = [];
 
                 _sc.apply(this, arguments);
 
@@ -2228,8 +2228,11 @@ exports.initialize = function(ctx, k, theme) {
                         if (!li)
                             return;
 
-                        // selection
-                        self._setSelection(li);
+                        if (evt.shiftKey) {
+                            self._toggleSelection(li);
+                        } else {
+                            self._setSelection(li);
+                        }
 
                     });
 
@@ -2360,20 +2363,46 @@ exports.initialize = function(ctx, k, theme) {
                 },
 
                 _setSelection: function(item) {
+                    this._clearSelection();
+                    this._addToSelection(item);
+                },
 
-                    if (item === this._selected) {
+                _toggleSelection: function(item) {
+                    var ix = this._selected.indexOf(item);
+                    if (ix < 0) {
+                        this._addToSelection(item);
+                    } else {
+                        this._removeFromSelection(item);
+                    }
+                },
+
+                _clearSelection: function() {
+                    for (var i = 0; i < this._selected.length; ++i) {
+                        du.removeClass(this._selected[i], 'selected');
+                    }
+                    this._selected = [];
+                },
+
+                _removeFromSelection: function(item) {
+                    this._removeSelectedIndex(this._selected.indexOf(item));
+                },
+
+                _removeSelectedIndex: function(ix) {
+                    if (ix < 0 || ix >= this._selected.length) {
+                        return;
+                    }
+                    du.removeClass(this._selected[ix], 'selected');
+                    this._selected.splice(ix, 1);
+                },
+
+                _addToSelection: function(item) {
+
+                    if (this._selected.indexOf(item) >= 0) {
                         return;
                     }
 
-                    if (this._selected) {
-                        this._selected.classList.remove('selected');
-                    }
-
-                    this._selected = item;
-
-                    if (this._selected) {
-                        this._selected.classList.add('selected');
-                    }
+                    this._selected.push(item);
+                    du.addClass(item, 'selected');
 
                 },
 
