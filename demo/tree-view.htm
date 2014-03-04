@@ -5,6 +5,27 @@
     <title>hudkit demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script src='bundle.js'></script>
+    <style type='text/css'>
+        .hk-tree-view-flair > * {
+            padding: 0 3px;
+        }
+        .hk-tree-view-flair .badge {
+            background: yellow;
+            border-radius: 6px;
+        }
+        .hk-tree-view-flair .foo {
+            background: orange;
+        }
+        .hk-tree-view-flair .foo:before {
+            content: "foo";
+        }
+        .hk-tree-view-flair .bar {
+            background: pink;
+        }
+        .hk-tree-view-flair .bar:before {
+            content: "bar";
+        }
+    </style>
     <script>
       function init() {
 
@@ -37,7 +58,7 @@
         var testDelegate = {
             rootItems: function(cb) {
                 setTimeout(function() {
-                    cb(null, ['a','b','c']);
+                    cb(null, ['a','b','c','a','b','c','a','b','c','a','b','c','a','b','c']);
                 }, 0);
             },
             childrenForItem: function(item, cb) {
@@ -56,6 +77,15 @@
             },
             itemActivated: function(item) {
                 console.log("activated: " + item);
+            },
+            itemFlair: function(item) {
+                if (item === 'c') {
+                    return [{className: 'foo'}, {className: 'bar'}];
+                } else if (item === 'g') {
+                    return [{className: 'badge', text: 23}];
+                } else {
+                    return [];
+                }
             }
         }
 

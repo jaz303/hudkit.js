@@ -1,12 +1,23 @@
 .hk-tree-view {
 	background: #202020;
-	color: white;
+	overflow: auto;
 }
 
-.hk-tree-view a {
+.hk-tree-view .item {
 	display: block;
-	color: white;
 	padding: 3px;
+}
+
+.hk-tree-view .icon {
+	display: inline-block;
+	width: 16px;
+	background: blue;
+}
+
+.hk-tree-view .title {
+	display: inline-block;
+	margin-left: 5px;
+	color: white;
 }
 
 .hk-tree-view ul {
@@ -31,10 +42,30 @@
 	display: none;
 }
 
+/* Flair */
+
+.hk-tree-view-flair {
+	float: right;
+}
+
+.hk-tree-view-flair > * {
+	display: inline-block;
+	text-align: center;
+	margin-left: 3px;
+}
+
+/* Expanded State */
+
 .hk-tree-view li.expanded > ul {
 	display: block;
 }
 
-.hk-tree-view li.selected > a {
+.hk-tree-view li.expanded > .item > .icon {
+	background: green;
+}
+
+/* Selected State */
+
+.hk-tree-view li.selected > .item {
 	background: red;
 }

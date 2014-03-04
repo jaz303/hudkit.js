@@ -2126,10 +2126,7 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/Toolbar")
 },{"domutil":27,"fs":33}],18:[function(require,module,exports){
-(function (__dirname){// TODO: flair
-// TODO: scrollable
-// TODO: separate actuator icon/link
-// TODO: multiple selection
+(function (__dirname){// TODO: multiple selection
 
 // TODO: refresh
 // TODO: context menu
@@ -2142,6 +2139,9 @@ exports.attach = function(instance) {
 // TODO: some sort of guard object that can only ever be
 // executing/waiting for a single callback, and operation
 // can be cancelled... based on the following...
+
+var du = require('domutil');
+
 function cancellable(fn, ifCancelled) {
     var cancelled = false, fn = function() {
         if (cancelled) {
@@ -2209,6 +2209,20 @@ exports.initialize = function(ctx, k, theme) {
                         evt.preventDefault();
                         evt.stopPropagation();
 
+                        // click on icon to toggle expanded state
+                        if (evt.target.className.match(/icon/)) {
+                            var li = evt.target.parentNode.parentNode;
+                            if (li.treeViewContainer) {
+                                if (li.treeViewChildrenLoaded) {
+                                    du.toggleClass(li, 'expanded');
+                                } else {
+                                    self._loadChildren(li);
+                                }
+                                return;
+                            }
+                        }
+
+                        // otherwise, select
                         var li = self._itemForEvent(evt);
 
                         if (!li)
@@ -2216,15 +2230,6 @@ exports.initialize = function(ctx, k, theme) {
 
                         // selection
                         self._setSelection(li);
-
-                        // handle expansion
-                        if (li.treeViewContainer) {
-                            if (li.treeViewChildrenLoaded) {
-                                li.classList.toggle('expanded');
-                            } else {
-                                self._loadChildren(li);        
-                            }
-                        }
 
                     });
 
@@ -2286,7 +2291,7 @@ exports.initialize = function(ctx, k, theme) {
                             self._appendItems(list, children);
 
                             setTimeout(function() {
-                                li.classList.add('expanded');
+                                du.addClass(li, 'expanded');
                                 self._busy = false;
                             }, 0);
 
@@ -2300,18 +2305,44 @@ exports.initialize = function(ctx, k, theme) {
                     var li          = this.document.createElement('li'),
                         isContainer = this._delegate.itemIsContainer(item);
 
-                    li.classList.add(isContainer ? 'hk-tree-view-container' : 'hk-tree-view-leaf');
-
+                    du.addClass(li, isContainer ? 'hk-tree-view-container' : 'hk-tree-view-leaf');
+                    
                     var itemClass = this._delegate.itemClass(item);
                     if (itemClass) {
-                        li.classList.add(itemClass);    
+                        du.addClass(li, itemClass);
                     }
 
-                    var txt = this.document.createElement('a');
-                    txt.href = '#';
-                    txt.textContent = this._delegate.itemTitle(item);
+                    var itemEl = this.document.createElement('div');
+                    itemEl.className = 'item';
 
-                    li.appendChild(txt);
+                    var icon = this.document.createElement('span');
+                    icon.className = 'icon';
+                    icon.innerHTML = '&nbsp;';
+                    itemEl.appendChild(icon);
+
+                    var title = this.document.createElement('span');
+                    title.className = 'title';
+                    title.textContent = this._delegate.itemTitle(item);
+                    itemEl.appendChild(title);
+
+                    var flair = this._delegate.itemFlair(item);
+                    if (flair.length > 0) {
+                        var flairWrapper = this.document.createElement('div');
+                        flairWrapper.className = 'hk-tree-view-flair';
+                        flair.forEach(function(f) {
+                            var flairEl = this.document.createElement('span');
+                            flairEl.className = f.className;
+                            if ('text' in f) {
+                                flairEl.textContent = f.text;
+                            } else if ('html' in f) {
+                                flairEl.innerHTML = f.html;
+                            }
+                            flairWrapper.appendChild(flairEl);
+                        }, this);
+                        itemEl.appendChild(flairWrapper);
+                    }
+
+                    li.appendChild(itemEl);
                     li.treeViewItem = item;
                     li.treeViewContainer = isContainer;
                     li.treeViewChildrenLoaded = false;
@@ -2347,8 +2378,11 @@ exports.initialize = function(ctx, k, theme) {
                 },
 
                 _itemForEvent: function(evt) {
-                    if (evt.target.nodeName.toLowerCase() === 'a') {
+                    var cn = evt.target.className;
+                    if (cn.match(/item/)) {
                         return evt.target.parentNode;
+                    } else if (cn.match(/icon|title/)) {
+                        return evt.target.parentNode.parentNode;
                     } else {
                         return null;
                     }
@@ -2363,12 +2397,12 @@ exports.initialize = function(ctx, k, theme) {
 };
 
 var fs = require('fs'),
-    CSS = ".hk-tree-view {\n\tbackground: #202020;\n\tcolor: white;\n}\n\n.hk-tree-view a {\n\tdisplay: block;\n\tcolor: white;\n\tpadding: 3px;\n}\n\n.hk-tree-view ul {\n\tdisplay: block;\n\tlist-style: none;\n\tmargin: 0;\n\tpadding: 0;\n}\n\n.hk-tree-view li {\n\tdisplay: block;\n\tlist-style: none;\n\tmargin: 0;\n\tpadding: 0;\n}\n\n.hk-tree-view ul ul {\n\tmargin-left: 20px;\n}\n\n.hk-tree-view li > ul {\n\tdisplay: none;\n}\n\n.hk-tree-view li.expanded > ul {\n\tdisplay: block;\n}\n\n.hk-tree-view li.selected > a {\n\tbackground: red;\n}";
+    CSS = ".hk-tree-view {\n\tbackground: #202020;\n\toverflow: auto;\n}\n\n.hk-tree-view .item {\n\tdisplay: block;\n\tpadding: 3px;\n}\n\n.hk-tree-view .icon {\n\tdisplay: inline-block;\n\twidth: 16px;\n\tbackground: blue;\n}\n\n.hk-tree-view .title {\n\tdisplay: inline-block;\n\tmargin-left: 5px;\n\tcolor: white;\n}\n\n.hk-tree-view ul {\n\tdisplay: block;\n\tlist-style: none;\n\tmargin: 0;\n\tpadding: 0;\n}\n\n.hk-tree-view li {\n\tdisplay: block;\n\tlist-style: none;\n\tmargin: 0;\n\tpadding: 0;\n}\n\n.hk-tree-view ul ul {\n\tmargin-left: 20px;\n}\n\n.hk-tree-view li > ul {\n\tdisplay: none;\n}\n\n/* Flair */\n\n.hk-tree-view-flair {\n\tfloat: right;\n}\n\n.hk-tree-view-flair > * {\n\tdisplay: inline-block;\n\ttext-align: center;\n\tmargin-left: 3px;\n}\n\n/* Expanded State */\n\n.hk-tree-view li.expanded > ul {\n\tdisplay: block;\n}\n\n.hk-tree-view li.expanded > .item > .icon {\n\tbackground: green;\n}\n\n/* Selected State */\n\n.hk-tree-view li.selected > .item {\n\tbackground: red;\n}";
 
 exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }}).call(this,"/../lib/TreeView")
-},{"fs":33}],19:[function(require,module,exports){
+},{"domutil":27,"fs":33}],19:[function(require,module,exports){
 (function (__dirname){var	Class   = require('classkit').Class,
 	du 		= require('domutil');
 
@@ -2811,7 +2845,6 @@ function hasClass(ele, className) {
 }
 
 function addClass(ele, value) {
-  console.log(arguments);
     var classes = (value || "").match(core_rnotwhite) || [],
             cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
 
@@ -2979,7 +3012,7 @@ exports.startCapture = function(doc, events) {
     }
 
     var overlay = createOverlay(doc);
-    document.body.appendChild(overlay);
+    doc.body.appendChild(overlay);
     activeCaptures.push(overlay);
 
     for (var k in events) {
