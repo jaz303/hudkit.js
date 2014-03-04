@@ -2126,9 +2126,7 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/Toolbar")
 },{"domutil":27,"fs":33}],18:[function(require,module,exports){
-(function (__dirname){// TODO: multiple selection
-
-// TODO: refresh
+(function (__dirname){// TODO: refresh
 // TODO: context menu
 
 // TODO: observation
@@ -2407,14 +2405,20 @@ exports.initialize = function(ctx, k, theme) {
                 },
 
                 _itemForEvent: function(evt) {
-                    var cn = evt.target.className;
-                    if (cn.match(/item/)) {
-                        return evt.target.parentNode;
-                    } else if (cn.match(/icon|title/)) {
-                        return evt.target.parentNode.parentNode;
-                    } else {
+
+                    var nn = evt.target.nodeName.toLowerCase();
+
+                    if (nn === 'ul' || nn === 'li') {
                         return null;
                     }
+
+                    var curr = evt.target;
+                    while (curr && curr.nodeName.toLowerCase() !== 'li') {
+                        curr = curr.parentNode;
+                    }
+
+                    return curr || null;
+
                 }
 
             }
