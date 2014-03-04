@@ -2,10 +2,13 @@ This is more convenient for now, will switch to GH issues if people start using 
 
 ## TODO
 
+  * Move constants to instance prototype
+  * Modules should follow node conventions and return something useful
   * Console auto-complete
   * Console history
   * Icons in buttons/anywhere else
   * Split pane - min/max size policy
+  * Split pane - resize policy (proportional, one pane fixed)
   * Split pane - absolute pixel size support
 
 ## Bugs
