@@ -41,6 +41,9 @@ function init() {
 }
 
 hk.register(require('./lib/Widget'));
+hk.register(require('./lib/InlineWidget'));
+hk.register(require('./lib/BlockWidget'));
+
 hk.register(require('./lib/RootPane'));
 hk.register(require('./lib/Box'));
 hk.register(require('./lib/SplitPane'));
@@ -55,10 +58,99 @@ hk.register(require('./lib/TabPane'));
 hk.register(require('./lib/Toolbar'));
 hk.register(require('./lib/StatusBar'));
 hk.register(require('./lib/TreeView'));
-},{"./lib/Box":3,"./lib/Button":4,"./lib/ButtonBar":5,"./lib/Canvas2D":6,"./lib/Console":7,"./lib/Container":8,"./lib/Context":9,"./lib/Instance":10,"./lib/MultiSplitPane":11,"./lib/Panel":12,"./lib/RootPane":13,"./lib/SplitPane":14,"./lib/StatusBar":15,"./lib/TabPane":16,"./lib/Toolbar":17,"./lib/TreeView":18,"./lib/Widget":19,"./lib/constants":20,"./lib/registry":21,"./lib/signals":22,"./lib/theme":23,"fs":33}],3:[function(require,module,exports){
+},{"./lib/BlockWidget":3,"./lib/Box":4,"./lib/Button":5,"./lib/ButtonBar":6,"./lib/Canvas2D":7,"./lib/Console":8,"./lib/Container":9,"./lib/Context":10,"./lib/InlineWidget":11,"./lib/Instance":12,"./lib/MultiSplitPane":13,"./lib/Panel":14,"./lib/RootPane":15,"./lib/SplitPane":16,"./lib/StatusBar":17,"./lib/TabPane":18,"./lib/Toolbar":19,"./lib/TreeView":20,"./lib/Widget":21,"./lib/constants":22,"./lib/registry":23,"./lib/signals":24,"./lib/theme":25,"fs":35}],3:[function(require,module,exports){
+(function (__dirname){var du = require('domutil');
+
 exports.initialize = function(ctx, k, theme) {
 
-    ctx.registerWidget('Box', ctx.Widget.extend(function(_sc, _sm) {
+	ctx.registerWidget('BlockWidget', ctx.Widget.extend(function(_sc, _sm) {
+
+		return [
+
+			function(hk, rect) {
+				
+				_sc.call(this, hk);
+				
+				du.addClass(this._root, 'hk-block-widget');
+
+				if (rect) {
+				    this.setBounds(rect.x, rect.y, rect.width, rect.height, true);
+				} else {
+				    var size = this._defaultSize();
+				    this.setBounds(0, 0, size.width, size.height);
+				}
+
+			},
+
+			'methods', {
+
+				setRect: function(rect) {
+				    return this.setBounds(rect.x, rect.y, rect.width, rect.height);
+				},
+
+				/**
+				 * Set the position and size of this widget
+				 * Of all the public methods for manipulating a widget's size, setBounds()
+				 * is the one that does the actual work. If you need to override resizing
+				 * behaviour in a subclass (e.g. see hk.RootPane), this is the only method
+				 * you need to override.
+				 */
+				setBounds: function(x, y, width, height) {
+				    this._setBounds(x, y, width, height);
+				    this._applyBounds();
+				},
+
+				_setBounds: function(x, y, width, height) {
+				    this.x = x;
+				    this.y = y;
+				    this.width = width;
+				    this.height = height;
+				},
+
+				_applyBounds: function() {
+				    this._applyPosition();
+				    this._applySize();
+				},
+
+				_unapplyBounds: function() {
+				    this._root.style.left = '';
+			        this._root.style.top = '';
+			        this._root.style.width = '';
+			        this._root.style.height = '';
+				},
+
+				_applyPosition: function() {
+				    this._root.style.left = this.x + 'px';
+				    this._root.style.top = this.y + 'px';
+				},
+
+				_applySize: function() {
+				    this._root.style.width = this.width + 'px';
+				    this._root.style.height = this.height + 'px';
+				},
+
+				_defaultSize: function() {
+                    return {width: 100, height: 100};
+                }
+
+			}
+
+		]
+
+	}));
+
+}
+
+var fs = require('fs'),
+    CSS = ".hk-block-widget {\n\tdisplay: block;\n\tposition: absolute;\n\twidth: auto;\n\theight: auto;\n}";
+
+exports.attach = function(instance) {
+	instance.appendCSS(CSS);
+}}).call(this,"/../lib/BlockWidget")
+},{"domutil":29,"fs":35}],4:[function(require,module,exports){
+exports.initialize = function(ctx, k, theme) {
+
+    ctx.registerWidget('Box', ctx.BlockWidget.extend(function(_sc, _sm) {
 
         return [
 
@@ -94,28 +186,24 @@ exports.attach = function(instance) {
     // no styles here
 }
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
 
-    ctx.registerWidget('Button', ctx.Widget.extend(function(_sc, _sm) {
+    ctx.registerWidget('Button', ctx.InlineWidget.extend(function(_sc, _sm) {
 
         return [
 
-            function(hk, rect, type) {
-
-                if (typeof rect === 'string') {
-                    type = rect;
-                    rect = null;
-                }
+            function(hk, type) {
                 
                 this._action = null;
                 this._buttonType = type || 'rounded';
                 this._buttonClass = '';
 
-                _sc.call(this, hk, rect);
+                _sc.call(this, hk);
 
+                this._baseClass = this._root.className;
                 this._updateClass();
 
                 var self = this;
@@ -191,10 +279,6 @@ exports.initialize = function(ctx, k, theme) {
 
                 },
 
-                _defaultPositionMode: function() {
-                    return k.POSITION_MODE_AUTO;
-                },
-
                 _sync: function() {
 
                     var title   = "",
@@ -216,7 +300,7 @@ exports.initialize = function(ctx, k, theme) {
 
                 _updateClass: function() {
 
-                    var className = 'hk-button-common';
+                    var className = this._baseClass + ' hk-button-common';
                     className += ' hk-' + this._buttonType + '-button';
                     className += ' ' + this._buttonClass;
 
@@ -237,16 +321,16 @@ exports.initialize = function(ctx, k, theme) {
 }
 
 var fs = require('fs'),
-    CSS = ".hk-button-common {\n  font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n  line-height: 1;\n  background: $HK_BUTTON_BG_COLOR;\n  color: $HK_TEXT_COLOR;\n}\n\n.hk-button-common.disabled {\n  color: #d0d0d0;\n}\n\n.hk-button-common:not(.disabled):active {\n  background: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-rounded-button {\n  display: inline-block;\n  padding: 1px 10px 2px 10px;\n  border-radius: 7px;\n}\n";
+    CSS = ".hk-button-common {\n  font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n  line-height: 1;\n  background: $HK_BUTTON_BG_COLOR;\n  color: $HK_TEXT_COLOR;\n}\n\n.hk-button-common.disabled {\n  color: #d0d0d0;\n}\n\n.hk-button-common:not(.disabled):active {\n  background: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-rounded-button {\n  padding: 1px 10px 2px 10px;\n  border-radius: 7px;\n}\n";
 
 exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Button")
-},{"domutil":27,"fs":33}],5:[function(require,module,exports){
+},{"domutil":29,"fs":35}],6:[function(require,module,exports){
 (function (__dirname){exports.initialize = function(ctx, k, theme) {
 
-    ctx.registerWidget('ButtonBar', ctx.Widget.extend(function(_sc, _sm) {
+    ctx.registerWidget('ButtonBar', ctx.BlockWidget.extend(function(_sc, _sm) {
 
         return [
 
@@ -259,7 +343,6 @@ exports.attach = function(instance) {
                 addButton: function(button) {
                     
                     button.setButtonType('button-bar');
-                    button._setPositionMode(k.POSITION_MODE_AUTO);
                     
                     this._attachChildViaElement(button, this._root);
                     this._buttons.push(button);
@@ -287,10 +370,10 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/ButtonBar")
-},{"fs":33}],6:[function(require,module,exports){
+},{"fs":35}],7:[function(require,module,exports){
 (function (__dirname){exports.initialize = function(ctx, k, theme) {
 
-    ctx.registerWidget('Canvas2D', ctx.Widget.extend(function(_sc, _sm) {
+    ctx.registerWidget('Canvas2D', ctx.BlockWidget.extend(function(_sc, _sm) {
 
         return [
 
@@ -333,7 +416,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Canvas2D")
-},{"fs":33}],7:[function(require,module,exports){
+},{"fs":35}],8:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 var DEFAULT_PROMPT = {text: '>'},
@@ -341,7 +424,7 @@ var DEFAULT_PROMPT = {text: '>'},
 
 exports.initialize = function(ctx, k, theme) {
 
-	ctx.registerWidget('Console', ctx.Widget.extend(function(_sc, _sm) {
+	ctx.registerWidget('Console', ctx.BlockWidget.extend(function(_sc, _sm) {
 
 		return [
 
@@ -657,10 +740,10 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Console")
-},{"domutil":27,"fs":33}],8:[function(require,module,exports){
+},{"domutil":29,"fs":35}],9:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
-	ctx.registerWidget('Container', ctx.Widget.extend(function(_sc, _sm) {
+	ctx.registerWidget('Container', ctx.BlockWidget.extend(function(_sc, _sm) {
 
 		return [
 
@@ -780,7 +863,7 @@ exports.attach = function(instance) {
 
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var registry 	= require('./registry'),
 	signals		= require('./signals'),
 	constants 	= require('./constants');
@@ -811,7 +894,33 @@ var Context = module.exports = {
 signals.widgetRegistered.connect(function(name, ctor) {
 	Context[name] = ctor;
 });
-},{"./constants":20,"./registry":21,"./signals":22}],10:[function(require,module,exports){
+},{"./constants":22,"./registry":23,"./signals":24}],11:[function(require,module,exports){
+(function (__dirname){var du = require('domutil');
+
+exports.initialize = function(ctx, k, theme) {
+
+	ctx.registerWidget('InlineWidget', ctx.Widget.extend(function(_sc, _sm) {
+
+		return [
+
+			function(hk) {
+				_sc.call(this, hk);
+				du.addClass(this._root, 'hk-inline-widget');
+			}
+
+		]
+
+	}));
+
+}
+
+var fs = require('fs'),
+    CSS = ".hk-inline-widget {\n\tdisplay: inline-block;\n\twidth: auto;\n\theight: auto;\n}";
+
+exports.attach = function(instance) {
+	instance.appendCSS(CSS);
+}}).call(this,"/../lib/InlineWidget")
+},{"domutil":29,"fs":35}],12:[function(require,module,exports){
 (function (__dirname){var fs 			= require('fs'),
 	styleTag 	= require('style-tag'),
     action      = require('hudkit-action'),
@@ -881,7 +990,7 @@ signals.widgetRegistered.connect(function(name, ctor) {
     }
 
 });}).call(this,"/../lib")
-},{"./constants":20,"./registry":21,"./signals":22,"./theme":23,"fs":33,"hudkit-action":28,"style-tag":31}],11:[function(require,module,exports){
+},{"./constants":22,"./registry":23,"./signals":24,"./theme":25,"fs":35,"hudkit-action":30,"style-tag":33}],13:[function(require,module,exports){
 var du      = require('domutil'),
     rattrap = require('rattrap'),
     signal  = require('signalkit');
@@ -890,7 +999,7 @@ exports.initialize = function(ctx, k, theme) {
 
     var DIVIDER_SIZE = theme.getInt('HK_SPLIT_PANE_DIVIDER_SIZE');
 
-    ctx.registerWidget('MultiSplitPane', ctx.Widget.extend(function(_sc, _sm) {
+    ctx.registerWidget('MultiSplitPane', ctx.BlockWidget.extend(function(_sc, _sm) {
 
         return [
 
@@ -1253,7 +1362,7 @@ exports.initialize = function(ctx, k, theme) {
 exports.attach = function(instance) {
 
 }
-},{"domutil":27,"rattrap":29,"signalkit":30}],12:[function(require,module,exports){
+},{"domutil":29,"rattrap":31,"signalkit":32}],14:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
 	ctx.registerWidget('Panel', ctx.Container.extend(function(_sc, _sm) {
@@ -1281,7 +1390,7 @@ exports.attach = function(instance) {
 
 };
 
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function (__dirname){var fs      = require('fs'),
     trbl    = require('trbl');
 
@@ -1289,7 +1398,7 @@ var DEFAULT_PADDING = 8;
 
 exports.initialize = function(ctx, k, theme) {
 
-    ctx.registerWidget('RootPane', ctx.Widget.extend(function(_sc, _sm) {
+    ctx.registerWidget('RootPane', ctx.BlockWidget.extend(function(_sc, _sm) {
 
         return [
 
@@ -1459,7 +1568,7 @@ exports.attach = function(instance) {
     instance.appendCSS(".hk-root-pane {\n\ttop: 0;\n\tleft: 0;\n\tright: 0;\n\tbottom: 0;\n\toverflow: hidden;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}");
 }
 }).call(this,"/../lib/RootPane")
-},{"fs":33,"trbl":32}],14:[function(require,module,exports){
+},{"fs":35,"trbl":34}],16:[function(require,module,exports){
 (function (__dirname){var du      = require('domutil'),
     rattrap = require('rattrap');
 
@@ -1479,7 +1588,7 @@ exports.initialize = function(ctx, k, theme) {
 	//
 	// Widget
 
-	ctx.registerWidget('SplitPane', ctx.Widget.extend(function(_sc, _sm) {
+	ctx.registerWidget('SplitPane', ctx.BlockWidget.extend(function(_sc, _sm) {
 
 	    return [
 
@@ -1713,7 +1822,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(css);
 }}).call(this,"/../lib/SplitPane")
-},{"domutil":27,"fs":33,"rattrap":29}],15:[function(require,module,exports){
+},{"domutil":29,"fs":35,"rattrap":31}],17:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 function TextCell(doc) {
@@ -1745,7 +1854,7 @@ TextCell.prototype.setMaxWidth = function(maxWidth) {
 
 exports.initialize = function(ctx, k, theme) {
 
-    ctx.registerWidget('StatusBar', ctx.Widget.extend(function(_sc, _sm) {
+    ctx.registerWidget('StatusBar', ctx.BlockWidget.extend(function(_sc, _sm) {
 
         return [
 
@@ -1805,12 +1914,12 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/StatusBar")
-},{"domutil":27,"fs":33}],16:[function(require,module,exports){
+},{"domutil":29,"fs":35}],18:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
 
-	ctx.registerWidget('TabPane', ctx.Widget.extend(function(_sc, _sm) {
+	ctx.registerWidget('TabPane', ctx.BlockWidget.extend(function(_sc, _sm) {
 
 		return [
 
@@ -2066,12 +2175,12 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/TabPane")
-},{"domutil":27,"fs":33}],17:[function(require,module,exports){
+},{"domutil":29,"fs":35}],19:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
 
-	ctx.registerWidget('Toolbar', ctx.Widget.extend(function(_sc, _sm) {
+	ctx.registerWidget('Toolbar', ctx.BlockWidget.extend(function(_sc, _sm) {
 
 		return [
 
@@ -2090,7 +2199,6 @@ exports.initialize = function(ctx, k, theme) {
 	            addWidget: function(widget, align) {
 					align = align || k.TOOLBAR_ALIGN_LEFT;
 					var target = (align === k.TOOLBAR_ALIGN_LEFT) ? this._left : this._right;
-					widget._setPositionMode(k.POSITION_MODE_AUTO);
 					this._attachChildViaElement(widget, target);
 					return widget;
 				},
@@ -2120,12 +2228,12 @@ exports.initialize = function(ctx, k, theme) {
 }
 
 var fs = require('fs'),
-    CSS = ".hk-toolbar {\n    \n}\n\n.hk-toolbar-items {\n\n}\n\n.hk-toolbar-items.hk-toolbar-items-left {\n    float: left;\n}\n\n.hk-toolbar-items.hk-toolbar-items-right {\n    float: right;\n}\n\n.hk-toolbar-items > * {\n    margin-right: 2px;\n    display: inline-block;\n    height: $HK_TOOLBAR_HEIGHT;\n\n    box-sizing: border-box;\n    -moz-box-sizing: border-box;\n}\n\n.hk-toolbar-button {\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    padding: $HK_TOOLBAR_V_PADDING 3px;\n}\n";
+    CSS = ".hk-toolbar {\n    \n}\n\n.hk-toolbar-items {\n\n}\n\n.hk-toolbar-items.hk-toolbar-items-left {\n    float: left;\n}\n\n.hk-toolbar-items.hk-toolbar-items-right {\n    float: right;\n}\n\n.hk-toolbar-items > * {\n    margin-right: 2px;\n    height: $HK_TOOLBAR_HEIGHT;\n\n    box-sizing: border-box;\n    -moz-box-sizing: border-box;\n}\n\n.hk-toolbar-button {\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    padding: $HK_TOOLBAR_V_PADDING 3px;\n}\n";
 
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/Toolbar")
-},{"domutil":27,"fs":33}],18:[function(require,module,exports){
+},{"domutil":29,"fs":35}],20:[function(require,module,exports){
 (function (__dirname){// TODO: refresh
 // TODO: context menu
 
@@ -2155,7 +2263,7 @@ function cancellable(fn, ifCancelled) {
 
 exports.initialize = function(ctx, k, theme) {
 
-    ctx.registerWidget('TreeView', ctx.Widget.extend(function(_sc, _sm) {
+    ctx.registerWidget('TreeView', ctx.BlockWidget.extend(function(_sc, _sm) {
 
         return [
 
@@ -2408,6 +2516,8 @@ exports.initialize = function(ctx, k, theme) {
 
                     var nn = evt.target.nodeName.toLowerCase();
 
+                    // ignore direct clicks on li because this means user clicked
+                    // dead space to left of expanded node.
                     if (nn === 'ul' || nn === 'li') {
                         return null;
                     }
@@ -2435,40 +2545,27 @@ var fs = require('fs'),
 exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }}).call(this,"/../lib/TreeView")
-},{"domutil":27,"fs":33}],19:[function(require,module,exports){
+},{"domutil":29,"fs":35}],21:[function(require,module,exports){
 (function (__dirname){var	Class   = require('classkit').Class,
 	du 		= require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
 
-    ctx.defineConstants({
-        POSITION_MODE_MANUAL    : 'manual',
-        POSITION_MODE_AUTO      : 'auto'
-    });
-
     ctx.registerWidget('Widget', Class.extend(function(_sc, _sm) {
 
         return [
 
-            function(hk, rect) {
+            function(hk) {
 
                 this._hk = hk;
                 
                 this._parent = null;
                 this._hidden = false;
-                this._positionMode = this._defaultPositionMode();
-
+                
                 var root = this._buildStructure();
                 if (root) this._root = root;
                 if (!this._root) throw new Error("widget root not built");
-                du.addClass(this._root, 'hk-widget hk-position-manual');
-
-                if (rect) {
-                    this.setBounds(rect.x, rect.y, rect.width, rect.height, true);
-                } else {
-                    var size = this._defaultSize();
-                    this.setBounds(0, 0, size.width, size.height);
-                }
+                du.addClass(this._root, 'hk-widget');
 
             },
 
@@ -2504,23 +2601,7 @@ exports.initialize = function(ctx, k, theme) {
                 isHidden: function() { return this._hidden; },
                 setHidden: function(hidden) {
                     this._hidden = !!hidden;
-                    this._root.style.display = this._hidden ? 'none' : this._cssDisplayMode();
-                },
-
-                setRect: function(rect) {
-                    return this.setBounds(rect.x, rect.y, rect.width, rect.height);
-                },
-
-                /**
-                 * Set the position and size of this widget
-                 * Of all the public methods for manipulating a widget's size, setBounds()
-                 * is the one that does the actual work. If you need to override resizing
-                 * behaviour in a subclass (e.g. see hk.RootPane), this is the only method
-                 * you need to override.
-                 */
-                setBounds: function(x, y, width, height) {
-                    this._setBounds(x, y, width, height);
-                    this._applyBounds();
+                    this._root.style.display = this._hidden ? 'none' : '';
                 },
 
                 /**
@@ -2537,77 +2618,6 @@ exports.initialize = function(ctx, k, theme) {
                  */
                 _buildStructure: function() {
                     throw new Error("widgets must override Widget.prototype._buildStructure()");
-                },
-
-                _setBounds: function(x, y, width, height) {
-                    this.x = x;
-                    this.y = y;
-                    this.width = width;
-                    this.height = height;
-                },
-
-                _applyBounds: function() {
-                    this._applyPosition();
-                    this._applySize();
-                },
-
-                _unapplyBounds: function() {
-                    if (this._positionMode === k.POSITION_MODE_AUTO) {
-                        this._root.style.left = '';
-                        this._root.style.top = '';
-                        this._root.style.width = '';
-                        this._root.style.height = '';
-                    }
-                },
-
-                _applyPosition: function() {
-                    if (this._positionMode === k.POSITION_MODE_MANUAL) {
-                        this._root.style.left = this.x + 'px';
-                        this._root.style.top = this.y + 'px';    
-                    }
-                },
-
-                _applySize: function() {
-                    if (this._positionMode === k.POSITION_MODE_MANUAL) {
-                        this._root.style.width = this.width + 'px';
-                        this._root.style.height = this.height + 'px';
-                    }
-                },
-
-                // a widget can be in one of two position modes:
-                // manual: CSS position absolute, explicit top, left, width, height
-                // auto: no predefined rules, completely defined by CSS on a per-widget basis
-                _setPositionMode: function(newMode) {
-
-                    if (newMode === this._positionMode)
-                        return;
-
-                    this._positionMode = newMode;
-
-                    if (newMode === k.POSITION_MODE_MANUAL) {
-                        du.removeClass(this._root, 'hk-position-auto');
-                        du.addClass(this._root, 'hk-position-manual');
-                        this._applyBounds();
-                    } else if (newMode === k.POSITION_MODE_AUTO) {
-                        du.removeClass(this._root, 'hk-position-manual');
-                        du.addClass(this._root, 'hk-position-auto');
-                        this._unapplyBounds();
-                    } else {
-                        throw new Error("unknown position mode: " + newMode);
-                    }
-
-                },
-
-                _defaultPositionMode: function() {
-                    return k.POSITION_MODE_MANUAL;
-                },
-
-                _defaultSize: function() {
-                    return {width: 100, height: 100};
-                },
-
-                _cssDisplayMode: function() {
-                    return 'block';
                 },
 
                 _attachChildViaElement: function(childWidget, ele) {
@@ -2665,15 +2675,15 @@ exports.initialize = function(ctx, k, theme) {
 }
 
 var fs = require('fs'),
-    CSS = ".hk-widget {\n\toverflow: hidden;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n}\n\n.hk-position-manual {\n\tposition: absolute;\n}\n\n.hk-position-auto {\n\t/* placeholder only */\n}\n";
+    CSS = ".hk-widget {\n\toverflow: hidden;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n}\n";
 
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Widget")
-},{"classkit":24,"domutil":27,"fs":33}],20:[function(require,module,exports){
+},{"classkit":26,"domutil":29,"fs":35}],22:[function(require,module,exports){
 module.exports = {};
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var signals = require('./signals');
 
 module.exports = {
@@ -2709,7 +2719,7 @@ function widgets() {
 	return widgetMap;
 }
 
-},{"./signals":22}],22:[function(require,module,exports){
+},{"./signals":24}],24:[function(require,module,exports){
 var signal = require('signalkit');
 
 function s(signalName) {
@@ -2718,7 +2728,7 @@ function s(signalName) {
 
 s('moduleRegistered');
 s('widgetRegistered');
-},{"signalkit":30}],23:[function(require,module,exports){
+},{"signalkit":32}],25:[function(require,module,exports){
 // TODO: this is eventually to be handled by Unwise,
 // with live updating when themes change.
 
@@ -2778,7 +2788,7 @@ module.exports = {
     }
 };
 
-},{}],24:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 function Class() {};
   
 Class.prototype.method = function(name) {
@@ -2822,7 +2832,7 @@ Class.Features = {
 
 exports.Class = Class;
 
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 exports.hasClass = hasClass;
 exports.addClass = addClass;
 exports.removeClass = removeClass;
@@ -2861,7 +2871,7 @@ function toggleClass(el, classes) {
         el.classList.toggle(classes);
     }
 }
-},{}],26:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 exports.hasClass = hasClass;
 exports.addClass = addClass;
 exports.removeClass = removeClass;
@@ -2926,7 +2936,7 @@ function toggleClass(ele, value) {
         }
     }
 }
-},{}],27:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 var clazz;
 
 if (typeof DOMTokenList !== 'undefined') {
@@ -2967,7 +2977,7 @@ module.exports = {
         return el && el.nodeType === 1;
     }
 };
-},{"./impl/classes-classlist.js":25,"./impl/classes-string.js":26}],28:[function(require,module,exports){
+},{"./impl/classes-classlist.js":27,"./impl/classes-string.js":28}],30:[function(require,module,exports){
 var signal = require('signalkit');
 
 var ActionProto = Object.create(Function.prototype);
@@ -3007,7 +3017,7 @@ module.exports = function(fn, opts) {
 
 }
 
-},{"signalkit":30}],29:[function(require,module,exports){
+},{"signalkit":32}],31:[function(require,module,exports){
 var activeCaptures = [];
 
 function createOverlay(doc) {
@@ -3065,7 +3075,7 @@ exports.startCapture = function(doc, events) {
 
 }
 
-},{}],30:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 (function (process){//
 // Helpers
 
@@ -3136,7 +3146,7 @@ Signal.prototype.clear = function() {
 
 module.exports = function(name) { return new Signal(name); }
 module.exports.Signal = Signal;}).call(this,require("/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":34}],31:[function(require,module,exports){
+},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":36}],33:[function(require,module,exports){
 // adapted from
 // http://stackoverflow.com/questions/524696/how-to-create-a-style-tag-with-javascript
 module.exports = function(doc, initialCss) {
@@ -3176,7 +3186,7 @@ module.exports = function(doc, initialCss) {
     return set;
 
 }
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 // [a] => [a,a,a,a]
 // [a,b] => [a,b,a,b]
 // [a,b,c] => [a,b,c,b]
@@ -3221,9 +3231,9 @@ module.exports = function(thing) {
         return [val, val, val, val];
     }
 }
-},{}],33:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 
-},{}],34:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};

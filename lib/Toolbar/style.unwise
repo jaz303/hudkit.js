@@ -16,7 +16,6 @@
 
 .hk-toolbar-items > * {
     margin-right: 2px;
-    display: inline-block;
     height: $HK_TOOLBAR_HEIGHT;
 
     box-sizing: border-box;

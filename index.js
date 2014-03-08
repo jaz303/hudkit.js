@@ -33,6 +33,9 @@ function init() {
 }
 
 hk.register(require('./lib/Widget'));
+hk.register(require('./lib/InlineWidget'));
+hk.register(require('./lib/BlockWidget'));
+
 hk.register(require('./lib/RootPane'));
 hk.register(require('./lib/Box'));
 hk.register(require('./lib/SplitPane'));
