@@ -58,7 +58,8 @@ hk.register(require('./lib/TabPane'));
 hk.register(require('./lib/Toolbar'));
 hk.register(require('./lib/StatusBar'));
 hk.register(require('./lib/TreeView'));
-},{"./lib/BlockWidget":3,"./lib/Box":4,"./lib/Button":5,"./lib/ButtonBar":6,"./lib/Canvas2D":7,"./lib/Console":8,"./lib/Container":9,"./lib/Context":10,"./lib/InlineWidget":11,"./lib/Instance":12,"./lib/MultiSplitPane":13,"./lib/Panel":14,"./lib/RootPane":15,"./lib/SplitPane":16,"./lib/StatusBar":17,"./lib/TabPane":18,"./lib/Toolbar":19,"./lib/TreeView":20,"./lib/Widget":21,"./lib/constants":22,"./lib/registry":23,"./lib/signals":24,"./lib/theme":25,"fs":35}],3:[function(require,module,exports){
+hk.register(require('./lib/Knob'));
+},{"./lib/BlockWidget":3,"./lib/Box":4,"./lib/Button":5,"./lib/ButtonBar":6,"./lib/Canvas2D":7,"./lib/Console":8,"./lib/Container":9,"./lib/Context":10,"./lib/InlineWidget":11,"./lib/Instance":12,"./lib/Knob":13,"./lib/MultiSplitPane":14,"./lib/Panel":15,"./lib/RootPane":16,"./lib/SplitPane":17,"./lib/StatusBar":18,"./lib/TabPane":19,"./lib/Toolbar":20,"./lib/TreeView":21,"./lib/Widget":22,"./lib/constants":23,"./lib/registry":24,"./lib/signals":25,"./lib/theme":26,"fs":36}],3:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -147,7 +148,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/BlockWidget")
-},{"domutil":29,"fs":35}],4:[function(require,module,exports){
+},{"domutil":30,"fs":36}],4:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('Box', ctx.BlockWidget.extend(function(_sc, _sm) {
@@ -327,7 +328,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Button")
-},{"domutil":29,"fs":35}],6:[function(require,module,exports){
+},{"domutil":30,"fs":36}],6:[function(require,module,exports){
 (function (__dirname){exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('ButtonBar', ctx.BlockWidget.extend(function(_sc, _sm) {
@@ -370,7 +371,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/ButtonBar")
-},{"fs":35}],7:[function(require,module,exports){
+},{"fs":36}],7:[function(require,module,exports){
 (function (__dirname){exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('Canvas2D', ctx.BlockWidget.extend(function(_sc, _sm) {
@@ -416,7 +417,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Canvas2D")
-},{"fs":35}],8:[function(require,module,exports){
+},{"fs":36}],8:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 var DEFAULT_PROMPT = {text: '>'},
@@ -740,7 +741,7 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Console")
-},{"domutil":29,"fs":35}],9:[function(require,module,exports){
+},{"domutil":30,"fs":36}],9:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
 	ctx.registerWidget('Container', ctx.BlockWidget.extend(function(_sc, _sm) {
@@ -894,7 +895,7 @@ var Context = module.exports = {
 signals.widgetRegistered.connect(function(name, ctor) {
 	Context[name] = ctor;
 });
-},{"./constants":22,"./registry":23,"./signals":24}],11:[function(require,module,exports){
+},{"./constants":23,"./registry":24,"./signals":25}],11:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -920,7 +921,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/InlineWidget")
-},{"domutil":29,"fs":35}],12:[function(require,module,exports){
+},{"domutil":30,"fs":36}],12:[function(require,module,exports){
 (function (__dirname){var fs 			= require('fs'),
 	styleTag 	= require('style-tag'),
     action      = require('hudkit-action'),
@@ -990,7 +991,149 @@ signals.widgetRegistered.connect(function(name, ctor) {
     }
 
 });}).call(this,"/../lib")
-},{"./constants":22,"./registry":23,"./signals":24,"./theme":25,"fs":35,"hudkit-action":30,"style-tag":33}],13:[function(require,module,exports){
+},{"./constants":23,"./registry":24,"./signals":25,"./theme":26,"fs":36,"hudkit-action":31,"style-tag":34}],13:[function(require,module,exports){
+(function (__dirname){var du      = require('domutil'),
+    rattrap = require('rattrap');
+
+var DEFAULT_SIZE    = 18,
+    GAP_SIZE        = Math.PI / 6,
+    RANGE           = (Math.PI * 2) - (2 * GAP_SIZE),
+    START_ANGLE     = Math.PI / 2 + GAP_SIZE,
+    END_ANGLE       = Math.PI / 2 - GAP_SIZE;
+
+exports.initialize = function(ctx, k, theme) {
+
+    ctx.registerWidget('Knob', ctx.InlineWidget.extend(function(_sc, _sm) {
+
+        return [
+
+            function(hk) {
+
+                this._size = DEFAULT_SIZE;
+                
+                _sc.call(this, hk);
+
+                this._minValue = 0;
+                this._maxValue = 100;
+                this._dragDirection = k.HORIZONTAL;
+                this._value = 0;
+                this._ctx = this._root.getContext('2d');
+                
+                this._bind();
+                this._redraw();
+
+            },
+
+            'methods', {
+
+                dispose: function() {
+                    this.setAction(null);
+                    _sm.dispose.call(this);
+                },
+
+                getValue: function() {
+                    return this._value;
+                },
+
+                setValue: function(v) {
+
+                    if (v < this._minValue) v = this._minValue;
+                    if (v > this._maxValue) v = this._maxValue;
+
+                    if (v === this._value) {
+                        return;
+                    }
+
+                    this._value = v;
+
+                    this._redraw();
+
+                },
+                
+                _buildStructure: function() {
+                    
+                    this._root = this.document.createElement('canvas');
+                    this._root.width = this._size;
+                    this._root.height = this._size;
+                    this._root.className = 'hk-knob';
+
+                },
+
+                _bind: function() {
+
+                    var self = this;
+
+                    this._root.addEventListener('mousedown', function(evt) {
+
+                        var startX      = evt.pageX,
+                            startY      = evt.pageY;
+                            startV      = self.getValue(),
+                            horizontal  = (self._dragDirection === k.HORIZONTAL);
+
+                        var stopCapture = rattrap.startCapture(self.document, {
+                            cursor: horizontal ? 'col-resize' : 'row-resize',
+                            mousemove: function(evt) {
+
+                                var delta;
+                                if (horizontal) {
+                                    delta = evt.pageX - startX;
+                                } else {
+                                    delta = startY - evt.pageY;
+                                }
+
+                                self.setValue(startV + delta);
+
+                            },
+                            mouseup: function(evt) {
+                                stopCapture();
+                            }
+                        });
+                    
+                    });
+
+                },
+
+                _redraw: function() {
+
+                    var ctx         = this._ctx,
+                        filledRatio = (this._value - this._minValue) / (this._maxValue - this._minValue),
+                        fillAngle   = START_ANGLE + (filledRatio * RANGE),
+                        cx          = this._size / 2,
+                        cy          = this._size / 2;
+                        radius      = Math.min(cx, cy) - 3;
+                    
+                    ctx.clearRect(0, 0, this._size, this._size);
+                    ctx.lineWidth = 2;
+                    
+                    ctx.strokeStyle = '#EF701E';
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, radius, START_ANGLE, fillAngle, false);
+                    ctx.stroke();
+                    
+                    ctx.strokeStyle = '#1D222F';
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, radius, END_ANGLE, fillAngle, true);
+                    ctx.lineTo(cx, cy);
+                    ctx.stroke();
+
+                }
+            
+            }
+
+        ];
+
+    }));
+
+}
+
+var fs = require('fs'),
+    CSS = ".hk-knob {\n\twidth: 18px;\n\theight: 18px;\n\tmargin: 0;\n\tpadding: 0;\n\tbackground-color: $HK_BUTTON_BG_COLOR;\n\tborder: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n}";
+
+exports.attach = function(instance) {
+    instance.appendCSS(CSS);
+}
+}).call(this,"/../lib/Knob")
+},{"domutil":30,"fs":36,"rattrap":32}],14:[function(require,module,exports){
 var du      = require('domutil'),
     rattrap = require('rattrap'),
     signal  = require('signalkit');
@@ -1362,7 +1505,7 @@ exports.initialize = function(ctx, k, theme) {
 exports.attach = function(instance) {
 
 }
-},{"domutil":29,"rattrap":31,"signalkit":32}],14:[function(require,module,exports){
+},{"domutil":30,"rattrap":32,"signalkit":33}],15:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
 	ctx.registerWidget('Panel', ctx.Container.extend(function(_sc, _sm) {
@@ -1390,7 +1533,7 @@ exports.attach = function(instance) {
 
 };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 (function (__dirname){var fs      = require('fs'),
     trbl    = require('trbl');
 
@@ -1568,7 +1711,7 @@ exports.attach = function(instance) {
     instance.appendCSS(".hk-root-pane {\n\ttop: 0;\n\tleft: 0;\n\tright: 0;\n\tbottom: 0;\n\toverflow: hidden;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}");
 }
 }).call(this,"/../lib/RootPane")
-},{"fs":35,"trbl":34}],16:[function(require,module,exports){
+},{"fs":36,"trbl":35}],17:[function(require,module,exports){
 (function (__dirname){var du      = require('domutil'),
     rattrap = require('rattrap');
 
@@ -1581,7 +1724,9 @@ exports.initialize = function(ctx, k, theme) {
 	// Constants
 
 	ctx.defineConstants({
-	    SPLIT_PANE_HORIZONTAL   : SPLIT_PANE_HORIZONTAL,
+		HORIZONTAL 				: 'h',
+		VERTICAL 				: 'v',
+		SPLIT_PANE_HORIZONTAL   : SPLIT_PANE_HORIZONTAL,
 	    SPLIT_PANE_VERTICAL     : SPLIT_PANE_VERTICAL
 	});
 
@@ -1822,7 +1967,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(css);
 }}).call(this,"/../lib/SplitPane")
-},{"domutil":29,"fs":35,"rattrap":31}],17:[function(require,module,exports){
+},{"domutil":30,"fs":36,"rattrap":32}],18:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 function TextCell(doc) {
@@ -1914,7 +2059,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/StatusBar")
-},{"domutil":29,"fs":35}],18:[function(require,module,exports){
+},{"domutil":30,"fs":36}],19:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -2175,7 +2320,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/TabPane")
-},{"domutil":29,"fs":35}],19:[function(require,module,exports){
+},{"domutil":30,"fs":36}],20:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -2233,7 +2378,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/Toolbar")
-},{"domutil":29,"fs":35}],20:[function(require,module,exports){
+},{"domutil":30,"fs":36}],21:[function(require,module,exports){
 (function (__dirname){// TODO: refresh
 // TODO: context menu
 
@@ -2545,7 +2690,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }}).call(this,"/../lib/TreeView")
-},{"domutil":29,"fs":35}],21:[function(require,module,exports){
+},{"domutil":30,"fs":36}],22:[function(require,module,exports){
 (function (__dirname){var	Class   = require('classkit').Class,
 	du 		= require('domutil');
 
@@ -2681,9 +2826,9 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Widget")
-},{"classkit":26,"domutil":29,"fs":35}],22:[function(require,module,exports){
+},{"classkit":27,"domutil":30,"fs":36}],23:[function(require,module,exports){
 module.exports = {};
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 var signals = require('./signals');
 
 module.exports = {
@@ -2719,7 +2864,7 @@ function widgets() {
 	return widgetMap;
 }
 
-},{"./signals":24}],24:[function(require,module,exports){
+},{"./signals":25}],25:[function(require,module,exports){
 var signal = require('signalkit');
 
 function s(signalName) {
@@ -2728,7 +2873,7 @@ function s(signalName) {
 
 s('moduleRegistered');
 s('widgetRegistered');
-},{"signalkit":32}],25:[function(require,module,exports){
+},{"signalkit":33}],26:[function(require,module,exports){
 // TODO: this is eventually to be handled by Unwise,
 // with live updating when themes change.
 
@@ -2788,7 +2933,7 @@ module.exports = {
     }
 };
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 function Class() {};
   
 Class.prototype.method = function(name) {
@@ -2832,7 +2977,7 @@ Class.Features = {
 
 exports.Class = Class;
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 exports.hasClass = hasClass;
 exports.addClass = addClass;
 exports.removeClass = removeClass;
@@ -2871,7 +3016,7 @@ function toggleClass(el, classes) {
         el.classList.toggle(classes);
     }
 }
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 exports.hasClass = hasClass;
 exports.addClass = addClass;
 exports.removeClass = removeClass;
@@ -2936,7 +3081,7 @@ function toggleClass(ele, value) {
         }
     }
 }
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var clazz;
 
 if (typeof DOMTokenList !== 'undefined') {
@@ -2977,7 +3122,7 @@ module.exports = {
         return el && el.nodeType === 1;
     }
 };
-},{"./impl/classes-classlist.js":27,"./impl/classes-string.js":28}],30:[function(require,module,exports){
+},{"./impl/classes-classlist.js":28,"./impl/classes-string.js":29}],31:[function(require,module,exports){
 var signal = require('signalkit');
 
 var ActionProto = Object.create(Function.prototype);
@@ -3017,7 +3162,7 @@ module.exports = function(fn, opts) {
 
 }
 
-},{"signalkit":32}],31:[function(require,module,exports){
+},{"signalkit":33}],32:[function(require,module,exports){
 var activeCaptures = [];
 
 function createOverlay(doc) {
@@ -3075,7 +3220,7 @@ exports.startCapture = function(doc, events) {
 
 }
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 (function (process){//
 // Helpers
 
@@ -3146,7 +3291,7 @@ Signal.prototype.clear = function() {
 
 module.exports = function(name) { return new Signal(name); }
 module.exports.Signal = Signal;}).call(this,require("/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":36}],33:[function(require,module,exports){
+},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":37}],34:[function(require,module,exports){
 // adapted from
 // http://stackoverflow.com/questions/524696/how-to-create-a-style-tag-with-javascript
 module.exports = function(doc, initialCss) {
@@ -3186,7 +3331,7 @@ module.exports = function(doc, initialCss) {
     return set;
 
 }
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 // [a] => [a,a,a,a]
 // [a,b] => [a,b,a,b]
 // [a,b,c] => [a,b,c,b]
@@ -3231,9 +3376,9 @@ module.exports = function(thing) {
         return [val, val, val, val];
     }
 }
-},{}],35:[function(require,module,exports){
-
 },{}],36:[function(require,module,exports){
+
+},{}],37:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};

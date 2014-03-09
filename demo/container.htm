@@ -66,8 +66,11 @@
             console.log("BAR");
         }, {title: 'Bar'});
 
+        var k1 = hk.knob();
+
         toolbar.addAction(a1);
         toolbar.addAction(a2);
+        toolbar.addWidget(k1);
 
         hk.root.setToolbar(toolbar);
 
