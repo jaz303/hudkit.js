@@ -1,0 +1,14 @@
+.hk-text-field {
+	vertical-align: top;
+    height: 18px;
+    padding: 0 4px;
+    line-height: 1;
+    font-size: 10px;
+    background-color: $HK_BUTTON_BG_COLOR;
+    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;
+}
+
+.hk-text-field:focus {
+	outline: none;
+	border-color: $HK_CONTROL_ACTIVE_BG_COLOR;
+}

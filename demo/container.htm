@@ -50,11 +50,11 @@
 
         hk.root.setRootWidget(panel);
 
-        document.addEventListener('keypress', function(evt) {
-            if (String.fromCharCode(evt.charCode) == 't') {
-                split.toggleWidgetAtIndex(0);
-            }
-        });
+        // document.addEventListener('keypress', function(evt) {
+        //     if (String.fromCharCode(evt.charCode) == 't') {
+        //         split.toggleWidgetAtIndex(0);
+        //     }
+        // });
 
         var toolbar = hk.toolbar();
 
@@ -66,11 +66,14 @@
             console.log("BAR");
         }, {title: 'Bar'});
 
-        var k1 = hk.knob();
-
         toolbar.addAction(a1);
         toolbar.addAction(a2);
+
+        var k1 = hk.knob();
         toolbar.addWidget(k1);
+
+        var t1 = hk.textField();
+        toolbar.addWidget(t1);
 
         hk.root.setToolbar(toolbar);
 
