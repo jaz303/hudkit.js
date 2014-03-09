@@ -50,11 +50,11 @@
 
         hk.root.setRootWidget(panel);
 
-        // document.addEventListener('keypress', function(evt) {
-        //     if (String.fromCharCode(evt.charCode) == 't') {
-        //         split.toggleWidgetAtIndex(0);
-        //     }
-        // });
+        document.addEventListener('keypress', function(evt) {
+            if (String.fromCharCode(evt.charCode) == 't') {
+                split.toggleWidgetAtIndex(0);
+            }
+        });
 
         var toolbar = hk.toolbar();
 
@@ -72,8 +72,17 @@
         var k1 = hk.knob();
         toolbar.addWidget(k1);
 
+        var k2 = hk.knob();
+        toolbar.addWidget(k2);
+
+        var k3 = hk.knob();
+        toolbar.addWidget(k3);
+
         var t1 = hk.textField();
         toolbar.addWidget(t1);
+
+        var s1 = hk.select();
+        toolbar.addWidget(s1);
 
         hk.root.setToolbar(toolbar);
 
