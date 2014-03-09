@@ -22,6 +22,7 @@ Approach 1 is more 'pure' but it doesn't address the canvas issue. Approach 2 is
 
 ## TODO
 
+  * Horizontal slider to support rounding/increments. Knob too.
   * Toolbar size should be set in code and be adjustable
   * Move constants to instance prototype
   * Modules should follow node conventions and return something useful
