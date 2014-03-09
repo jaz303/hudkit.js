@@ -60,7 +60,8 @@ hk.register(require('./lib/StatusBar'));
 hk.register(require('./lib/TreeView'));
 hk.register(require('./lib/Knob'));
 hk.register(require('./lib/TextField'));
-},{"./lib/BlockWidget":3,"./lib/Box":4,"./lib/Button":5,"./lib/ButtonBar":6,"./lib/Canvas2D":7,"./lib/Console":8,"./lib/Container":9,"./lib/Context":10,"./lib/InlineWidget":11,"./lib/Instance":12,"./lib/Knob":13,"./lib/MultiSplitPane":14,"./lib/Panel":15,"./lib/RootPane":16,"./lib/SplitPane":17,"./lib/StatusBar":18,"./lib/TabPane":19,"./lib/TextField":20,"./lib/Toolbar":21,"./lib/TreeView":22,"./lib/Widget":23,"./lib/constants":24,"./lib/registry":25,"./lib/signals":26,"./lib/theme":27,"fs":37}],3:[function(require,module,exports){
+hk.register(require('./lib/Select'));
+},{"./lib/BlockWidget":3,"./lib/Box":4,"./lib/Button":5,"./lib/ButtonBar":6,"./lib/Canvas2D":7,"./lib/Console":8,"./lib/Container":9,"./lib/Context":10,"./lib/InlineWidget":11,"./lib/Instance":12,"./lib/Knob":13,"./lib/MultiSplitPane":14,"./lib/Panel":15,"./lib/RootPane":16,"./lib/Select":17,"./lib/SplitPane":18,"./lib/StatusBar":19,"./lib/TabPane":20,"./lib/TextField":21,"./lib/Toolbar":22,"./lib/TreeView":23,"./lib/Widget":24,"./lib/constants":25,"./lib/registry":26,"./lib/signals":27,"./lib/theme":28,"fs":38}],3:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -149,7 +150,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/BlockWidget")
-},{"domutil":31,"fs":37}],4:[function(require,module,exports){
+},{"domutil":32,"fs":38}],4:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('Box', ctx.BlockWidget.extend(function(_sc, _sm) {
@@ -329,7 +330,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Button")
-},{"domutil":31,"fs":37}],6:[function(require,module,exports){
+},{"domutil":32,"fs":38}],6:[function(require,module,exports){
 (function (__dirname){exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('ButtonBar', ctx.BlockWidget.extend(function(_sc, _sm) {
@@ -372,7 +373,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/ButtonBar")
-},{"fs":37}],7:[function(require,module,exports){
+},{"fs":38}],7:[function(require,module,exports){
 (function (__dirname){exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('Canvas2D', ctx.BlockWidget.extend(function(_sc, _sm) {
@@ -418,7 +419,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Canvas2D")
-},{"fs":37}],8:[function(require,module,exports){
+},{"fs":38}],8:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 var DEFAULT_PROMPT = {text: '>'},
@@ -742,7 +743,7 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Console")
-},{"domutil":31,"fs":37}],9:[function(require,module,exports){
+},{"domutil":32,"fs":38}],9:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
 	ctx.registerWidget('Container', ctx.BlockWidget.extend(function(_sc, _sm) {
@@ -896,7 +897,7 @@ var Context = module.exports = {
 signals.widgetRegistered.connect(function(name, ctor) {
 	Context[name] = ctor;
 });
-},{"./constants":24,"./registry":25,"./signals":26}],11:[function(require,module,exports){
+},{"./constants":25,"./registry":26,"./signals":27}],11:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -922,7 +923,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/InlineWidget")
-},{"domutil":31,"fs":37}],12:[function(require,module,exports){
+},{"domutil":32,"fs":38}],12:[function(require,module,exports){
 (function (__dirname){var fs 			= require('fs'),
 	styleTag 	= require('style-tag'),
     action      = require('hudkit-action'),
@@ -992,7 +993,7 @@ signals.widgetRegistered.connect(function(name, ctor) {
     }
 
 });}).call(this,"/../lib")
-},{"./constants":24,"./registry":25,"./signals":26,"./theme":27,"fs":37,"hudkit-action":32,"style-tag":35}],13:[function(require,module,exports){
+},{"./constants":25,"./registry":26,"./signals":27,"./theme":28,"fs":38,"hudkit-action":33,"style-tag":36}],13:[function(require,module,exports){
 (function (__dirname){var du      = require('domutil'),
     rattrap = require('rattrap');
 
@@ -1133,7 +1134,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Knob")
-},{"domutil":31,"fs":37,"rattrap":33}],14:[function(require,module,exports){
+},{"domutil":32,"fs":38,"rattrap":34}],14:[function(require,module,exports){
 var du      = require('domutil'),
     rattrap = require('rattrap'),
     signal  = require('signalkit');
@@ -1505,7 +1506,7 @@ exports.initialize = function(ctx, k, theme) {
 exports.attach = function(instance) {
 
 }
-},{"domutil":31,"rattrap":33,"signalkit":34}],15:[function(require,module,exports){
+},{"domutil":32,"rattrap":34,"signalkit":35}],15:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
 	ctx.registerWidget('Panel', ctx.Container.extend(function(_sc, _sm) {
@@ -1711,7 +1712,50 @@ exports.attach = function(instance) {
     instance.appendCSS(".hk-root-pane {\n\ttop: 0;\n\tleft: 0;\n\tright: 0;\n\tbottom: 0;\n\toverflow: hidden;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}");
 }
 }).call(this,"/../lib/RootPane")
-},{"fs":37,"trbl":36}],17:[function(require,module,exports){
+},{"fs":38,"trbl":37}],17:[function(require,module,exports){
+(function (__dirname){var du = require('domutil');
+
+exports.initialize = function(ctx, k, theme) {
+
+    ctx.registerWidget('Select', ctx.InlineWidget.extend(function(_sc, _sm) {
+
+        return [
+
+            function(hk) {
+                _sc.call(this, hk);
+            },
+
+            'methods', {
+
+                dispose: function() {
+                    _sm.dispose.call(this);
+                },
+                
+                _buildStructure: function() {
+                    this._root = this.document.createElement('select');
+                    this._root.type = 'text'
+                    this._root.className = 'hk-select';
+
+                    this._root.innerHTML = "<option>Choice 1</option><option>Choice 2</option><option>Choice 3</option>";
+
+                }
+            
+            }
+
+        ];
+
+    }));
+
+}
+
+var fs = require('fs'),
+    CSS = ".hk-select {\n\tvertical-align: top;\n\theight: 18px;\n}";
+
+exports.attach = function(instance) {
+    instance.appendCSS(CSS);
+}
+}).call(this,"/../lib/Select")
+},{"domutil":32,"fs":38}],18:[function(require,module,exports){
 (function (__dirname){var du      = require('domutil'),
     rattrap = require('rattrap');
 
@@ -1967,7 +2011,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(css);
 }}).call(this,"/../lib/SplitPane")
-},{"domutil":31,"fs":37,"rattrap":33}],18:[function(require,module,exports){
+},{"domutil":32,"fs":38,"rattrap":34}],19:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 function TextCell(doc) {
@@ -2059,7 +2103,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/StatusBar")
-},{"domutil":31,"fs":37}],19:[function(require,module,exports){
+},{"domutil":32,"fs":38}],20:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -2320,7 +2364,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/TabPane")
-},{"domutil":31,"fs":37}],20:[function(require,module,exports){
+},{"domutil":32,"fs":38}],21:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -2353,6 +2397,18 @@ exports.initialize = function(ctx, k, theme) {
                     this._root = this.document.createElement('input');
                     this._root.type = 'text'
                     this._root.className = 'hk-text-field';
+
+                    this._root.addEventListener('keydown', function(evt) {
+                        evt.stopPropagation();
+                    });
+
+                    this._root.addEventListener('keyup', function(evt) {
+                        evt.stopPropagation();
+                    });
+
+                    this._root.addEventListener('keypress', function(evt) {
+                        evt.stopPropagation();
+                    });
                 }
             
             }
@@ -2370,7 +2426,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/TextField")
-},{"domutil":31,"fs":37}],21:[function(require,module,exports){
+},{"domutil":32,"fs":38}],22:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -2428,7 +2484,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/Toolbar")
-},{"domutil":31,"fs":37}],22:[function(require,module,exports){
+},{"domutil":32,"fs":38}],23:[function(require,module,exports){
 (function (__dirname){// TODO: refresh
 // TODO: context menu
 
@@ -2740,7 +2796,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }}).call(this,"/../lib/TreeView")
-},{"domutil":31,"fs":37}],23:[function(require,module,exports){
+},{"domutil":32,"fs":38}],24:[function(require,module,exports){
 (function (__dirname){var	Class   = require('classkit').Class,
 	du 		= require('domutil');
 
@@ -2876,9 +2932,9 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Widget")
-},{"classkit":28,"domutil":31,"fs":37}],24:[function(require,module,exports){
+},{"classkit":29,"domutil":32,"fs":38}],25:[function(require,module,exports){
 module.exports = {};
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var signals = require('./signals');
 
 module.exports = {
@@ -2914,7 +2970,7 @@ function widgets() {
 	return widgetMap;
 }
 
-},{"./signals":26}],26:[function(require,module,exports){
+},{"./signals":27}],27:[function(require,module,exports){
 var signal = require('signalkit');
 
 function s(signalName) {
@@ -2923,7 +2979,7 @@ function s(signalName) {
 
 s('moduleRegistered');
 s('widgetRegistered');
-},{"signalkit":34}],27:[function(require,module,exports){
+},{"signalkit":35}],28:[function(require,module,exports){
 // TODO: this is eventually to be handled by Unwise,
 // with live updating when themes change.
 
@@ -2983,7 +3039,7 @@ module.exports = {
     }
 };
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 function Class() {};
   
 Class.prototype.method = function(name) {
@@ -3027,7 +3083,7 @@ Class.Features = {
 
 exports.Class = Class;
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 exports.hasClass = hasClass;
 exports.addClass = addClass;
 exports.removeClass = removeClass;
@@ -3066,7 +3122,7 @@ function toggleClass(el, classes) {
         el.classList.toggle(classes);
     }
 }
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 exports.hasClass = hasClass;
 exports.addClass = addClass;
 exports.removeClass = removeClass;
@@ -3131,7 +3187,7 @@ function toggleClass(ele, value) {
         }
     }
 }
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var clazz;
 
 if (typeof DOMTokenList !== 'undefined') {
@@ -3172,7 +3228,7 @@ module.exports = {
         return el && el.nodeType === 1;
     }
 };
-},{"./impl/classes-classlist.js":29,"./impl/classes-string.js":30}],32:[function(require,module,exports){
+},{"./impl/classes-classlist.js":30,"./impl/classes-string.js":31}],33:[function(require,module,exports){
 var signal = require('signalkit');
 
 var ActionProto = Object.create(Function.prototype);
@@ -3212,7 +3268,7 @@ module.exports = function(fn, opts) {
 
 }
 
-},{"signalkit":34}],33:[function(require,module,exports){
+},{"signalkit":35}],34:[function(require,module,exports){
 var activeCaptures = [];
 
 function createOverlay(doc) {
@@ -3270,7 +3326,7 @@ exports.startCapture = function(doc, events) {
 
 }
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 (function (process){//
 // Helpers
 
@@ -3341,7 +3397,7 @@ Signal.prototype.clear = function() {
 
 module.exports = function(name) { return new Signal(name); }
 module.exports.Signal = Signal;}).call(this,require("/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":38}],35:[function(require,module,exports){
+},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":39}],36:[function(require,module,exports){
 // adapted from
 // http://stackoverflow.com/questions/524696/how-to-create-a-style-tag-with-javascript
 module.exports = function(doc, initialCss) {
@@ -3381,7 +3437,7 @@ module.exports = function(doc, initialCss) {
     return set;
 
 }
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 // [a] => [a,a,a,a]
 // [a,b] => [a,b,a,b]
 // [a,b,c] => [a,b,c,b]
@@ -3426,9 +3482,9 @@ module.exports = function(thing) {
         return [val, val, val, val];
     }
 }
-},{}],37:[function(require,module,exports){
-
 },{}],38:[function(require,module,exports){
+
+},{}],39:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};

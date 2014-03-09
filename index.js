@@ -52,3 +52,4 @@ hk.register(require('./lib/StatusBar'));
 hk.register(require('./lib/TreeView'));
 hk.register(require('./lib/Knob'));
 hk.register(require('./lib/TextField'));
+hk.register(require('./lib/Select'));
