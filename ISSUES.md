@@ -1,5 +1,25 @@
 This is more convenient for now, will switch to GH issues if people start using this library...
 
+## Block/inline widgets
+
+__Block__ widgets are always absolutely positioned, and positioned/sized explicitly by their parent container.
+
+__Inline__ widgets are more complicated. Inline is in fact a slight misnomer - it really means the widgets _flow_ inside their parent; whether the actual mechanism for achieving this is `inline`, `inline-block` or `block` is immaterial. We can't simply use CSS for this, however, for a number of reasons.
+
+  * some parent widgets (e.g. `ButtonBar` with vertical orientation) may require `block` layout for child widgets, whereas `inline-block` is more suitable for `Toolbar` (scoped `.hk-inline-widget` selectors are a potential solution for this).
+
+  * it might be a requirement to give a specific widget, say, a fixed width, whilst the rest of the widgets inside a parent should assume their default/auto widths.
+
+  * canvas-backed inline widgets need to set the canvas size explicitly.
+
+There are two general solution paths:
+
+  1. expose a general Javascript API for assigning extra classes to widgets and delegating the layout issues entirely CSS.
+
+  2. provide 2 methods for inline widgets e.g. `widget.setLayoutSizingHints(hints)` and `widget.setUserSizingHints(hints)`, each receiving a set of constraints, where the latter (provided by the user) overrides the former (provided by the parent container). Each widget can then interpret and apply the union of these constraints however it so wishes.
+
+Approach 1 is more 'pure' but it doesn't address the canvas issue. Approach 2 is more appealing to me at the moment as it abstracts CSS, and one of hudkit's goals is ultimately to be retargetable to other rendering engines (e.g. SDL).
+
 ## TODO
 
   * Move constants to instance prototype
