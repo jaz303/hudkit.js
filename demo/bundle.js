@@ -275,7 +275,7 @@ exports.initialize = function(ctx, k, theme) {
                     
                     this._root = this.document.createElement('a');
                     this._root.href = '#';
-
+                    
                     this._text = this.document.createElement('span');
                     this._root.appendChild(this._text);
 
@@ -314,6 +314,11 @@ exports.initialize = function(ctx, k, theme) {
 
                     this._root.className = className;
 
+                },
+
+                _applySizeHints: function() {
+                    this._root.style.height = '50px';
+                    
                 }
             
             }
@@ -325,7 +330,7 @@ exports.initialize = function(ctx, k, theme) {
 }
 
 var fs = require('fs'),
-    CSS = ".hk-button-common {\n  font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n  line-height: 1;\n  background: $HK_BUTTON_BG_COLOR;\n  color: $HK_TEXT_COLOR;\n}\n\n.hk-button-common.disabled {\n  color: #d0d0d0;\n}\n\n.hk-button-common:not(.disabled):active {\n  background: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-rounded-button {\n  padding: 1px 10px 2px 10px;\n  border-radius: 7px;\n}\n";
+    CSS = ".hk-button-common {\n\t\n\tfont-family: $HK_CONTROL_FONT;\n\tfont-size: 11px;\n\tline-height: 1;\n\tbackground: $HK_BUTTON_BG_COLOR;\n\tcolor: $HK_TEXT_COLOR;\n\ttext-align: center;\n\n\theight: 18px;\n\n}\n\n.hk-button-common > span {\n\tdisplay: block;\n\t\n\t/* vertically align label inside button */\n\tposition: relative;\n\ttop: 50%;\n\ttransform: translateY(-50%);\n    -webkit-transform: translateY(-50%);\n}\n\n.hk-button-common.disabled {\n\tcolor: #d0d0d0;\n}\n\n.hk-button-common:not(.disabled):active {\n\tbackground: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-rounded-button {\n\tpadding: 1px 10px 2px 10px;\n\tborder-radius: 7px;\n}\n";
 
 exports.attach = function(instance) {
     instance.appendCSS(CSS);
@@ -966,7 +971,7 @@ exports.initialize = function(ctx, k, theme) {
                     
                     this._root = this.document.createElement('div');
                     this._root.className = 'hk-horizontal-slider';
-
+                    
                     this._fill = this.document.createElement('div');
                     this._fill.className = 'fill';
 
@@ -1025,6 +1030,10 @@ exports.initialize = function(ctx, k, theme) {
 
                 _offsetToValue: function(rect, offset) {
                     return this._minValue + ((offset / rect.width) * (this._maxValue - this._minValue));
+                },
+
+                _applySizeHints: function() {
+                    this._root.style.height = '50px';
                 }
             
             }
@@ -1036,7 +1045,7 @@ exports.initialize = function(ctx, k, theme) {
 }
 
 var fs = require('fs'),
-    CSS = ".hk-horizontal-slider {\n\theight: 18px;\n    width: 200px;\n    position: relative;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    background: black;\n    background-color: $HK_BUTTON_BG_COLOR;\n}\n\n.hk-horizontal-slider > .fill {\n\theight: 100%;\n\tdisplay: block;\n\twidth: 0;\n\tbackground-color: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-horizontal-slider > .caption {\n\tposition: absolute;\n\ttop: 50%;\n\tleft: 0;\n\twidth: 100%;\n\tfont-size: 11px;\n\tline-height: 1;\n\tmargin-top: -5px;\n\ttext-align: center;\n}";
+    CSS = ".hk-horizontal-slider {\n\tposition: relative;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    background: black;\n    background-color: $HK_BUTTON_BG_COLOR;\n    width: 200px;\n    height: 18px;\n}\n\n.hk-horizontal-slider > .fill {\n\theight: 100%;\n\tdisplay: block;\n\twidth: 0;\n\tbackground-color: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-horizontal-slider > .caption {\n\tposition: absolute;\n\ttop: 50%;\n\tleft: 0;\n\twidth: 100%;\n\tfont-size: 11px;\n\tline-height: 1;\n\tmargin-top: -5px;\n\ttext-align: center;\n}";
 
 exports.attach = function(instance) {
     instance.appendCSS(CSS);
@@ -1052,8 +1061,31 @@ exports.initialize = function(ctx, k, theme) {
 		return [
 
 			function(hk) {
+
+				this._layoutSizeHints = null;
+				this._userSizeHints = null;
+
 				_sc.call(this, hk);
 				du.addClass(this._root, 'hk-inline-widget');
+
+			},
+
+			'methods', {
+
+				setLayoutSizeHints: function(hints) {
+					this._layoutSizeHints = hints;
+					this._applySizeHints();
+				},
+
+				setUserSizeHints: function(hints) {
+					this._userSizeHints = hints;
+					this._applySizeHints();
+				},
+
+				_applySizeHints: function() {
+					// default implementation is no-op
+				}
+
 			}
 
 		]
@@ -1262,6 +1294,17 @@ exports.initialize = function(ctx, k, theme) {
                     ctx.lineTo(cx, cy);
                     ctx.stroke();
 
+                },
+
+                _applySizeHints: function() {
+
+                    this._size = 50;
+
+                    this._root.width = this._size;
+                    this._root.height = this._size;
+
+                    this._redraw();
+
                 }
             
             }
@@ -1273,7 +1316,7 @@ exports.initialize = function(ctx, k, theme) {
 }
 
 var fs = require('fs'),
-    CSS = ".hk-knob {\n    width: 18px;\n    height: 18px;\n    background-color: $HK_BUTTON_BG_COLOR;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n}";
+    CSS = ".hk-knob {\n    background-color: $HK_BUTTON_BG_COLOR;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n}";
 
 exports.attach = function(instance) {
     instance.appendCSS(CSS);
@@ -1683,7 +1726,8 @@ exports.attach = function(instance) {
 (function (__dirname){var fs      = require('fs'),
     trbl    = require('trbl');
 
-var DEFAULT_PADDING = 8;
+var DEFAULT_PADDING         = 8,
+    DEFAULT_TOOLBAR_HEIGHT  = 18;
 
 exports.initialize = function(ctx, k, theme) {
 
@@ -1694,6 +1738,7 @@ exports.initialize = function(ctx, k, theme) {
             function() {
 
                 this._padding           = [DEFAULT_PADDING, DEFAULT_PADDING, DEFAULT_PADDING, DEFAULT_PADDING];
+                this._toolbarHeight     = DEFAULT_TOOLBAR_HEIGHT;
                 this._toolbarVisible    = true;
                 this._toolbar           = null;
                 this._rootWidget        = null;
@@ -1720,6 +1765,22 @@ exports.initialize = function(ctx, k, theme) {
 
                 setBackgroundColor: function(color) {
                     this._root.style.backgroundColor = color;
+                },
+
+                setToolbarHeight: function(height) {
+
+                    if (height === this._toolbarHeight) {
+                        return;
+                    }
+
+                    if (height === null) {
+                        this._toolbarHeight = DEFAULT_TOOLBAR_HEIGHT;
+                    } else {
+                        this._toolbarHeight = parseInt(height, 10);
+                    }
+
+                    this._layout();
+
                 },
 
                 setToolbar: function(widget) {
@@ -1807,9 +1868,9 @@ exports.initialize = function(ctx, k, theme) {
                         this._toolbar.setBounds(left,
                                                 top,
                                                 width,
-                                                theme.getInt('HK_TOOLBAR_HEIGHT'));
+                                                this._toolbarHeight);
                         
-                        var delta = theme.getInt('HK_TOOLBAR_HEIGHT') + theme.getInt('HK_TOOLBAR_MARGIN_BOTTOM');
+                        var delta = this._toolbarHeight + theme.getInt('HK_TOOLBAR_MARGIN_BOTTOM');
                         rootTop += delta;
                         rootHeight -= delta;
                     
@@ -1894,7 +1955,7 @@ exports.initialize = function(ctx, k, theme) {
 }
 
 var fs = require('fs'),
-    CSS = ".hk-select {\n\tvertical-align: top;\n\theight: 18px;\n}";
+    CSS = ".hk-select {\n\theight: 18px;\n}";
 
 exports.attach = function(instance) {
     instance.appendCSS(CSS);
@@ -2545,10 +2606,11 @@ exports.initialize = function(ctx, k, theme) {
                 },
                 
                 _buildStructure: function() {
+                    
                     this._root = this.document.createElement('input');
                     this._root.type = 'text'
                     this._root.className = 'hk-text-field';
-
+                    
                     this._root.addEventListener('keydown', function(evt) {
                         evt.stopPropagation();
                     });
@@ -2560,6 +2622,10 @@ exports.initialize = function(ctx, k, theme) {
                     this._root.addEventListener('keypress', function(evt) {
                         evt.stopPropagation();
                     });
+                },
+
+                _applySizeHints: function() {
+                    this._root.style.height = '50px';
                 }
             
             }
@@ -2571,7 +2637,7 @@ exports.initialize = function(ctx, k, theme) {
 }
 
 var fs = require('fs'),
-    CSS = ".hk-text-field {\n\tvertical-align: top;\n    height: 18px;\n    padding: 0 4px;\n    line-height: 1;\n    font-size: 10px;\n    background-color: $HK_BUTTON_BG_COLOR;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n}\n\n.hk-text-field:focus {\n\toutline: none;\n\tborder-color: $HK_CONTROL_ACTIVE_BG_COLOR;\n}";
+    CSS = ".hk-text-field {\n\tpadding: 0 4px;\n    line-height: 1;\n    font-size: 10px;\n    background-color: $HK_BUTTON_BG_COLOR;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    width: 200px;\n    height: 18px;\n}\n\n.hk-text-field:focus {\n\toutline: none;\n\tborder-color: $HK_CONTROL_ACTIVE_BG_COLOR;\n}";
 
 exports.attach = function(instance) {
     instance.appendCSS(CSS);
@@ -2587,7 +2653,12 @@ exports.initialize = function(ctx, k, theme) {
 		return [
 
 	        function() {
+
+	        	this._leftWidgets = [];
+	        	this._rightWidgets = [];
+
 	            _sc.apply(this, arguments);
+
 	        },
 
 	        'methods', {
@@ -2599,10 +2670,35 @@ exports.initialize = function(ctx, k, theme) {
 	            },
 
 	            addWidget: function(widget, align) {
+				
 					align = align || k.TOOLBAR_ALIGN_LEFT;
-					var target = (align === k.TOOLBAR_ALIGN_LEFT) ? this._left : this._right;
-					this._attachChildViaElement(widget, target);
+
+					if (align === k.TOOLBAR_ALIGN_LEFT) {
+						var targetEl 	= this._left,
+							targetArray	= this._leftWidgets;
+					} else {
+						var targetEl 	= this._right,
+							targetArray	= this._rightWidgets;
+					}
+					
+					this._attachChildViaElement(widget, targetEl);
+					targetArray.push(widget);
+
 					return widget;
+
+				},
+
+				setBounds: function(x, y, width, height) {
+					
+					_sm.setBounds.call(this, x, y, width, height);
+
+					function applyHints(widget) {
+						widget.setLayoutSizeHints({width: null, height: height});
+					}
+
+					this._leftWidgets.forEach(applyHints);
+					this._rightWidgets.forEach(applyHints);
+
 				},
 
 	            _buildStructure: function() {
@@ -2630,7 +2726,7 @@ exports.initialize = function(ctx, k, theme) {
 }
 
 var fs = require('fs'),
-    CSS = ".hk-toolbar {\n    \n}\n\n.hk-toolbar-items {\n\n}\n\n.hk-toolbar-items.hk-toolbar-items-left {\n    float: left;\n}\n\n.hk-toolbar-items.hk-toolbar-items-right {\n    float: right;\n}\n\n.hk-toolbar-items > * {\n    margin-right: 2px;\n    height: $HK_TOOLBAR_HEIGHT;\n\n    box-sizing: border-box;\n    -moz-box-sizing: border-box;\n}\n\n.hk-toolbar-button {\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    padding: $HK_TOOLBAR_V_PADDING 3px;\n}\n";
+    CSS = ".hk-toolbar {\n    \n}\n\n.hk-toolbar-items {\n\n}\n\n.hk-toolbar-items.hk-toolbar-items-left {\n    float: left;\n}\n\n.hk-toolbar-items.hk-toolbar-items-right {\n    float: right;\n}\n\n.hk-toolbar-items > * {\n    margin-right: 2px;\n    vertical-align: top;\n}\n\n.hk-toolbar-button {\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    padding-left: 3px;\n    padding-right: 3px;\n}\n";
 
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
@@ -3164,7 +3260,6 @@ var theme = {
 
     'HK_BLOCK_BORDER_RADIUS'        : '10px',
 
-    'HK_TOOLBAR_HEIGHT'             : '18px',
     'HK_TOOLBAR_ITEM_BORDER_COLOR'  : '#A6B5BB',
 
     'HK_TOOLBAR_V_PADDING'          : '3px',

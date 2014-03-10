@@ -1,6 +1,4 @@
 .hk-knob {
-    width: 18px;
-    height: 18px;
     background-color: $HK_BUTTON_BG_COLOR;
     border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;
 }

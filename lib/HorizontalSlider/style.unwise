@@ -1,10 +1,10 @@
 .hk-horizontal-slider {
-	height: 18px;
-    width: 200px;
-    position: relative;
+	position: relative;
     border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;
     background: black;
     background-color: $HK_BUTTON_BG_COLOR;
+    width: 200px;
+    height: 18px;
 }
 
 .hk-horizontal-slider > .fill {

@@ -1,4 +1,3 @@
 .hk-select {
-	vertical-align: top;
 	height: 18px;
 }
