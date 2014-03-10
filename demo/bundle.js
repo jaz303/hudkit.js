@@ -2688,6 +2688,11 @@ exports.attach = function(instance) {
 
 exports.initialize = function(ctx, k, theme) {
 
+	ctx.defineConstants({
+		TOOLBAR_ALIGN_LEFT	: 'left',
+		TOOLBAR_ALIGN_RIGHT	: 'right'
+	});
+
 	ctx.registerWidget('Toolbar', ctx.BlockWidget.extend(function(_sc, _sm) {
 
 		return [

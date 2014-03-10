@@ -60,11 +60,11 @@
 
         var a1 = hk.action(function() {
             console.log("FOO");
-        }, {title: 'Foo'});
+        }, {title: 'Foo 1'});
 
         var a2 = hk.action(function() {
             console.log("BAR");
-        }, {title: 'Bar'});
+        }, {title: 'Bar 2'});
 
         toolbar.addAction(a1);
         toolbar.addAction(a2);
@@ -90,7 +90,8 @@
 
         hk.root.setToolbar(toolbar);
 
-        
+        toolbar.addAction(a1, hk.k.TOOLBAR_ALIGN_RIGHT);
+        toolbar.addAction(a2, hk.k.TOOLBAR_ALIGN_RIGHT);
         
 
       }
