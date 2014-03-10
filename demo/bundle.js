@@ -2092,10 +2092,16 @@ exports.initialize = function(ctx, k, theme) {
 	                    var dividerSize     = theme.getInt('HK_SPLIT_PANE_DIVIDER_SIZE');
 	                    
 	                    var rootPos         = self._root.getBoundingClientRect(),
-	                        offsetX         = evt.offsetX,
-	                        offsetY         = evt.offsetY,
 	                        lastValidSplit  = self._split;
-	                    
+
+	                    if ('offsetX' in evt) {
+	                    	var offsetX = evt.offsetX,
+	                    		offsetY = evt.offsetY;
+	                    } else {
+	                    	var offsetX = evt.layerX,
+	                    		offsetY = evt.layerY;
+	                    }
+
 	                    function moveGhost() {
 	                        if (self._orientation === SPLIT_PANE_VERTICAL) {
 	                            self._ghost.style.left = Math.floor(lastValidSplit * (rootPos.width - dividerSize)) + 'px';
@@ -2127,7 +2133,7 @@ exports.initialize = function(ctx, k, theme) {
 	                                    topMax  = (rootPos.bottom - dividerSize);
 	                                if (top < topMin) top = topMin;
 	                                if (top > topMax) top = topMax;
-	                                
+
 	                                lastValidSplit = (top - topMin) / (rootPos.height - dividerSize);
 	                                moveGhost();
 	                            }
