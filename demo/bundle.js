@@ -317,8 +317,8 @@ exports.initialize = function(ctx, k, theme) {
                 },
 
                 _applySizeHints: function() {
-                    this._root.style.height = '50px';
-                    
+                    this._applyHintedProperty(this._root, 'width');
+                    this._applyHintedProperty(this._root, 'height');
                 }
             
             }
@@ -1033,7 +1033,8 @@ exports.initialize = function(ctx, k, theme) {
                 },
 
                 _applySizeHints: function() {
-                    this._root.style.height = '50px';
+                    this._applyHintedProperty(this._root, 'width');
+                    this._applyHintedProperty(this._root, 'height');
                 }
             
             }
@@ -1084,6 +1085,33 @@ exports.initialize = function(ctx, k, theme) {
 
 				_applySizeHints: function() {
 					// default implementation is no-op
+				},
+
+				_getHintedProperty: function(prop) {
+
+					if (this._layoutSizeHints && (prop in this._layoutSizeHints)) {
+						return this._layoutSizeHints[prop];
+					}
+
+					if (this._userSizeHints && (prop in this._userSizeHints)) {
+						return this._userSizeHints[prop];
+					}
+
+					return null;
+
+				},
+
+				// for a given style property, apply it to el based on supplied hints.
+				// layout hints take precedence over user hints, and if neither are set
+				// the style property is set to the empty string (i.e. fall back to
+				// whatever is specified in CSS)
+				_applyHintedProperty: function(el, prop) {
+					var val = this._getHintedProperty(prop);
+					if (val !== null) {
+						el.style[prop] = val + 'px';
+					} else {
+						el.style[prop] = '';
+					}
 				}
 
 			}
@@ -1298,7 +1326,18 @@ exports.initialize = function(ctx, k, theme) {
 
                 _applySizeHints: function() {
 
-                    this._size = 50;
+                    var requestedWidth = this._getHintedProperty('width'),
+                        requestedHeight = this._getHintedProperty('height');
+
+                    if (requestedWidth === null && requestedHeight === null) {
+                        this._size = DEFAULT_SIZE;
+                    } else if (requestedWidth === null) {
+                        this._size = requestedHeight;
+                    } else if (requestedHeight === null) {
+                        this._size = requestedWidth;
+                    } else {
+                        this._size = Math.min(requestedWidth, requestedHeight);
+                    }
 
                     this._root.width = this._size;
                     this._root.height = this._size;
@@ -2625,7 +2664,8 @@ exports.initialize = function(ctx, k, theme) {
                 },
 
                 _applySizeHints: function() {
-                    this._root.style.height = '50px';
+                    this._applyHintedProperty(this._root, 'width');
+                    this._applyHintedProperty(this._root, 'height');
                 }
             
             }
@@ -2693,7 +2733,7 @@ exports.initialize = function(ctx, k, theme) {
 					_sm.setBounds.call(this, x, y, width, height);
 
 					function applyHints(widget) {
-						widget.setLayoutSizeHints({width: null, height: height});
+						widget.setLayoutSizeHints({height: height});
 					}
 
 					this._leftWidgets.forEach(applyHints);
