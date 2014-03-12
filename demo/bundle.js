@@ -467,11 +467,6 @@ exports.initialize = function(ctx, k, theme) {
                         // TODO: trigger listeners
                     });
 
-                },
-
-                _applySizeHints: function() {
-                    this._applyHintedProperty(this._root, 'width');
-                    this._applyHintedProperty(this._root, 'height');
                 }
             
             }
