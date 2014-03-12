@@ -62,7 +62,8 @@ hk.register(require('./lib/Knob'));
 hk.register(require('./lib/TextField'));
 hk.register(require('./lib/Select'));
 hk.register(require('./lib/HorizontalSlider'));
-},{"./lib/BlockWidget":3,"./lib/Box":4,"./lib/Button":5,"./lib/ButtonBar":6,"./lib/Canvas2D":7,"./lib/Console":8,"./lib/Container":9,"./lib/Context":10,"./lib/HorizontalSlider":11,"./lib/InlineWidget":12,"./lib/Instance":13,"./lib/Knob":14,"./lib/MultiSplitPane":15,"./lib/Panel":16,"./lib/RootPane":17,"./lib/Select":18,"./lib/SplitPane":19,"./lib/StatusBar":20,"./lib/TabPane":21,"./lib/TextField":22,"./lib/Toolbar":23,"./lib/TreeView":24,"./lib/Widget":25,"./lib/constants":26,"./lib/registry":27,"./lib/signals":28,"./lib/theme":29,"fs":39}],3:[function(require,module,exports){
+hk.register(require('./lib/PropertyEditor'));
+},{"./lib/BlockWidget":3,"./lib/Box":4,"./lib/Button":5,"./lib/ButtonBar":6,"./lib/Canvas2D":7,"./lib/Console":8,"./lib/Container":9,"./lib/Context":10,"./lib/HorizontalSlider":11,"./lib/InlineWidget":12,"./lib/Instance":13,"./lib/Knob":14,"./lib/MultiSplitPane":15,"./lib/Panel":16,"./lib/PropertyEditor":17,"./lib/RootPane":18,"./lib/Select":19,"./lib/SplitPane":20,"./lib/StatusBar":21,"./lib/TabPane":22,"./lib/TextField":23,"./lib/Toolbar":24,"./lib/TreeView":25,"./lib/Widget":26,"./lib/constants":27,"./lib/registry":28,"./lib/signals":29,"./lib/theme":30,"fs":40}],3:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -151,7 +152,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/BlockWidget")
-},{"domutil":33,"fs":39}],4:[function(require,module,exports){
+},{"domutil":34,"fs":40}],4:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('Box', ctx.BlockWidget.extend(function(_sc, _sm) {
@@ -336,7 +337,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Button")
-},{"domutil":33,"fs":39}],6:[function(require,module,exports){
+},{"domutil":34,"fs":40}],6:[function(require,module,exports){
 (function (__dirname){exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('ButtonBar', ctx.BlockWidget.extend(function(_sc, _sm) {
@@ -379,7 +380,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/ButtonBar")
-},{"fs":39}],7:[function(require,module,exports){
+},{"fs":40}],7:[function(require,module,exports){
 (function (__dirname){exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('Canvas2D', ctx.BlockWidget.extend(function(_sc, _sm) {
@@ -425,7 +426,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Canvas2D")
-},{"fs":39}],8:[function(require,module,exports){
+},{"fs":40}],8:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 var DEFAULT_PROMPT = {text: '>'},
@@ -749,7 +750,7 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Console")
-},{"domutil":33,"fs":39}],9:[function(require,module,exports){
+},{"domutil":34,"fs":40}],9:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
 	ctx.registerWidget('Container', ctx.BlockWidget.extend(function(_sc, _sm) {
@@ -903,7 +904,7 @@ var Context = module.exports = {
 signals.widgetRegistered.connect(function(name, ctor) {
 	Context[name] = ctor;
 });
-},{"./constants":26,"./registry":27,"./signals":28}],11:[function(require,module,exports){
+},{"./constants":27,"./registry":28,"./signals":29}],11:[function(require,module,exports){
 (function (__dirname){var du      = require('domutil'),
     rattrap = require('rattrap');
 
@@ -1052,7 +1053,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/HorizontalSlider")
-},{"domutil":33,"fs":39,"rattrap":35}],12:[function(require,module,exports){
+},{"domutil":34,"fs":40,"rattrap":36}],12:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -1128,7 +1129,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/InlineWidget")
-},{"domutil":33,"fs":39}],13:[function(require,module,exports){
+},{"domutil":34,"fs":40}],13:[function(require,module,exports){
 (function (__dirname){var fs 			= require('fs'),
 	styleTag 	= require('style-tag'),
     action      = require('hudkit-action'),
@@ -1198,7 +1199,7 @@ signals.widgetRegistered.connect(function(name, ctor) {
     }
 
 });}).call(this,"/../lib")
-},{"./constants":26,"./registry":27,"./signals":28,"./theme":29,"fs":39,"hudkit-action":34,"style-tag":37}],14:[function(require,module,exports){
+},{"./constants":27,"./registry":28,"./signals":29,"./theme":30,"fs":40,"hudkit-action":35,"style-tag":38}],14:[function(require,module,exports){
 (function (__dirname){var du      = require('domutil'),
     rattrap = require('rattrap');
 
@@ -1361,7 +1362,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Knob")
-},{"domutil":33,"fs":39,"rattrap":35}],15:[function(require,module,exports){
+},{"domutil":34,"fs":40,"rattrap":36}],15:[function(require,module,exports){
 var du      = require('domutil'),
     rattrap = require('rattrap'),
     signal  = require('signalkit');
@@ -1733,7 +1734,7 @@ exports.initialize = function(ctx, k, theme) {
 exports.attach = function(instance) {
 
 }
-},{"domutil":33,"rattrap":35,"signalkit":36}],16:[function(require,module,exports){
+},{"domutil":34,"rattrap":36,"signalkit":37}],16:[function(require,module,exports){
 exports.initialize = function(ctx, k, theme) {
 
 	ctx.registerWidget('Panel', ctx.Container.extend(function(_sc, _sm) {
@@ -1762,6 +1763,214 @@ exports.attach = function(instance) {
 };
 
 },{}],17:[function(require,module,exports){
+(function (__dirname){// TODO: binding
+// TODO: transform functions (esp. for text fields)
+// TODO: veto functionality for updates
+
+function makeSimpleEditor(hk, builder, get, set, options) {
+
+    var widget = hk[builder]();
+
+    function sync() {
+        widget.setValue(get());
+    }
+
+    // TODO: find widget change to options.set()
+    //widget.onChange.connect(set)
+
+    for (var arg in options) {
+        var setter = 'set' + arg[0].toUpperCase() + arg.substring(1);
+        widget[setter](options[arg]);
+    }
+
+    return { widget: widget, sync: sync };
+
+}
+
+var editors = {
+    knob: function(hk, get, set, options) {
+        return makeSimpleEditor(hk, 'knob', get, set, options);
+    },
+    text: function(hk, get, set, options) {
+        return makeSimpleEditor(hk, 'textField', get, set, options);
+    },
+    slider: function(hk, get, set, options) {
+        return makeSimpleEditor(hk, 'horizontalSlider', get, set, options);
+    }
+};
+
+exports.initialize = function(ctx, k, theme) {
+
+    var PropertyEditor = ctx.BlockWidget.extend(function(_sc, _sm) {
+
+        return [
+
+            function(hk, rect) {
+
+            	this._delegate = null;
+                this._properties = null;
+
+                _sc.call(this, hk, rect);
+
+            },
+
+            'methods', {
+
+            	getDelegate: function() {
+            		return this._delegate;
+            	},
+
+            	setDelegate: function(d) {
+            		
+            		if (d === this._delegate) {
+            			return;
+            		}
+
+                    if (this._delegate) {
+                        this._teardown();
+                    }
+
+                    this._delegate = d;
+                    this._table.innerHTML = '';
+
+                    if (d) {
+                        this._rebuild();
+                    }
+
+            	},
+
+                _buildStructure: function() {
+                    
+                    this._root = this.document.createElement('div');
+                    this._root.className = 'hk-property-editor';
+
+                    this._table = this.document.createElement('table');
+
+                    this._root.appendChild(this._table);
+
+                },
+
+                _rebuild: function() {
+
+                    this._properties = {};
+
+                    var d = this._delegate;
+
+                    var groupCount = (typeof d.getPropertyGroupCount === 'function')
+                                        ? d.getPropertyGroupCount()
+                                        : 1;
+
+                    var useGroupHeaders = (typeof this._delegate.getPropertyGroupTitle === 'function');
+
+                    var groupHeader = null;
+                    for (var i = 0; i < groupCount; ++i) {
+                        
+                        if (useGroupHeaders && (groupHeader = this._buildGroupHeader(i))) {
+                            this._table.appendChild(groupHeader);
+                        }
+
+                        var tbody = this.document.createElement('tbody');
+                        this._table.appendChild(tbody);
+                        this._appendGroupEditors(tbody, i);
+
+                    }
+
+                },
+
+                _buildGroupHeader: function(ix) {
+
+                    var header = this.document.createElement('thead'),
+                        row = this.document.createElement('tr'),
+                        col = this.document.createElement('th');
+
+                    col.setAttribute('colspan', 2);
+                    col.textContent = this._delegate.getPropertyGroupTitle(ix);
+
+                    row.appendChild(col);
+                    header.appendChild(row);
+
+                    return header;
+
+                },
+
+                _appendGroupEditors: function(tbody, groupIx) {
+
+                    var properties = this._delegate.getPropertyGroupPropertyNames(groupIx);
+                    properties.forEach(function(name) {
+
+                        var row = this.document.createElement('tr');
+                        tbody.appendChild(row);
+
+                        var cap = this.document.createElement('th');
+                        row.appendChild(cap);
+                        cap.textContent = this._delegate.getPropertyCaption(name);
+                        
+                        var cell = this.document.createElement('td');
+                        row.appendChild(cell);
+
+                        var editor = this._buildPropertyInput(
+                            name,
+                            this._delegate.getPropertyType(name),
+                            this._delegate.getPropertyOptions(name)
+                        );
+
+                        // store widget instance, sync fn etc
+                        this._properties[name] = editor;
+
+                        this._attachChildViaElement(editor.widget, cell);
+                        editor.sync();
+
+                    }, this);
+
+                    return tbody;
+
+                },
+
+                _buildPropertyInput: function(name, type, options) {
+
+                    var d = this._delegate;
+
+                    return editors[type](
+                        this._hk,
+                        function get() { return d.getPropertyValue(name); },
+                        function set(v) { d.setPropertyValue(name, v); },
+                        options || {}
+                    );
+
+                },
+
+                _teardown: function() {
+                    // TODO:
+                    // unbind all event listeners
+                    // detach all widgets from parent
+                    // dispose all widgets
+                    this._properties = null;
+                }
+            
+            }
+
+        ];
+
+    });
+
+    PropertyEditor.registerEditor = function(type, builder) {
+        if (type in editors) {
+            throw new Error("duplicate editor type: " + type);
+        }
+        editors[type] = builder;
+    }
+
+    ctx.registerWidget('PropertyEditor', PropertyEditor);
+
+}
+
+var fs = require('fs'),
+	css = ".hk-property-editor {\n\t\n}\n\n.hk-property-editor table {\n\twidth: 100%;\n}\n\n.hk-property-editor thead {\n\tbackground-color: #929DA8;\n}\n\n.hk-property-editor thead th {\n\ttext-align: left;\n\tpadding: 3px;\n\tcolor: black;\n}\n\n.hk-property-editor tbody th, td {\n\tpadding-top: 3px;\n\tpadding-bottom: 3px;\n\tvertical-align: middle;\n}\n\n.hk-property-editor tbody tr:first-child td,\n.hk-property-editor tbody tr:first-child th {\n\tpadding-top: 6px;\t\n}\n\n.hk-property-editor tbody tr:last-child td,\n.hk-property-editor tbody tr:last-child th {\n\tpadding-bottom: 6px;\t\n}\n\n.hk-property-editor tbody th {\n\ttext-align: left;\n\tpadding-right: 5px;\n\tcolor: white;\n}\n\n.hk-property-editor tbody td {\n\ttext-align: right;\n}\n\n.hk-property-editor .hk-text-field,\n.hk-property-editor .hk-horizontal-slider {\n\twidth: 100%;\n}";
+
+exports.attach = function(instance) {
+	instance.appendCSS(css);
+}}).call(this,"/../lib/PropertyEditor")
+},{"fs":40}],18:[function(require,module,exports){
 (function (__dirname){var fs      = require('fs'),
     trbl    = require('trbl');
 
@@ -1957,7 +2166,7 @@ exports.attach = function(instance) {
     instance.appendCSS(".hk-root-pane {\n\ttop: 0;\n\tleft: 0;\n\tright: 0;\n\tbottom: 0;\n\toverflow: hidden;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}");
 }
 }).call(this,"/../lib/RootPane")
-},{"fs":39,"trbl":38}],18:[function(require,module,exports){
+},{"fs":40,"trbl":39}],19:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -2000,7 +2209,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Select")
-},{"domutil":33,"fs":39}],19:[function(require,module,exports){
+},{"domutil":34,"fs":40}],20:[function(require,module,exports){
 (function (__dirname){var du      = require('domutil'),
     rattrap = require('rattrap');
 
@@ -2262,7 +2471,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(css);
 }}).call(this,"/../lib/SplitPane")
-},{"domutil":33,"fs":39,"rattrap":35}],20:[function(require,module,exports){
+},{"domutil":34,"fs":40,"rattrap":36}],21:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 function TextCell(doc) {
@@ -2354,7 +2563,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/StatusBar")
-},{"domutil":33,"fs":39}],21:[function(require,module,exports){
+},{"domutil":34,"fs":40}],22:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -2615,7 +2824,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/TabPane")
-},{"domutil":33,"fs":39}],22:[function(require,module,exports){
+},{"domutil":34,"fs":40}],23:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -2683,7 +2892,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/TextField")
-},{"domutil":33,"fs":39}],23:[function(require,module,exports){
+},{"domutil":34,"fs":40}],24:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
@@ -2776,7 +2985,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }}).call(this,"/../lib/Toolbar")
-},{"domutil":33,"fs":39}],24:[function(require,module,exports){
+},{"domutil":34,"fs":40}],25:[function(require,module,exports){
 (function (__dirname){// TODO: refresh
 // TODO: context menu
 
@@ -3088,7 +3297,7 @@ var fs = require('fs'),
 exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }}).call(this,"/../lib/TreeView")
-},{"domutil":33,"fs":39}],25:[function(require,module,exports){
+},{"domutil":34,"fs":40}],26:[function(require,module,exports){
 (function (__dirname){var	Class   = require('classkit').Class,
 	du 		= require('domutil');
 
@@ -3224,9 +3433,9 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Widget")
-},{"classkit":30,"domutil":33,"fs":39}],26:[function(require,module,exports){
+},{"classkit":31,"domutil":34,"fs":40}],27:[function(require,module,exports){
 module.exports = {};
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var signals = require('./signals');
 
 module.exports = {
@@ -3262,7 +3471,7 @@ function widgets() {
 	return widgetMap;
 }
 
-},{"./signals":28}],28:[function(require,module,exports){
+},{"./signals":29}],29:[function(require,module,exports){
 var signal = require('signalkit');
 
 function s(signalName) {
@@ -3271,7 +3480,7 @@ function s(signalName) {
 
 s('moduleRegistered');
 s('widgetRegistered');
-},{"signalkit":36}],29:[function(require,module,exports){
+},{"signalkit":37}],30:[function(require,module,exports){
 // TODO: this is eventually to be handled by Unwise,
 // with live updating when themes change.
 
@@ -3330,7 +3539,7 @@ module.exports = {
     }
 };
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 function Class() {};
   
 Class.prototype.method = function(name) {
@@ -3374,7 +3583,7 @@ Class.Features = {
 
 exports.Class = Class;
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 exports.hasClass = hasClass;
 exports.addClass = addClass;
 exports.removeClass = removeClass;
@@ -3413,7 +3622,7 @@ function toggleClass(el, classes) {
         el.classList.toggle(classes);
     }
 }
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 exports.hasClass = hasClass;
 exports.addClass = addClass;
 exports.removeClass = removeClass;
@@ -3478,7 +3687,7 @@ function toggleClass(ele, value) {
         }
     }
 }
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var clazz;
 
 if (typeof DOMTokenList !== 'undefined') {
@@ -3519,7 +3728,7 @@ module.exports = {
         return el && el.nodeType === 1;
     }
 };
-},{"./impl/classes-classlist.js":31,"./impl/classes-string.js":32}],34:[function(require,module,exports){
+},{"./impl/classes-classlist.js":32,"./impl/classes-string.js":33}],35:[function(require,module,exports){
 var signal = require('signalkit');
 
 var ActionProto = Object.create(Function.prototype);
@@ -3559,7 +3768,7 @@ module.exports = function(fn, opts) {
 
 }
 
-},{"signalkit":36}],35:[function(require,module,exports){
+},{"signalkit":37}],36:[function(require,module,exports){
 var activeCaptures = [];
 
 function createOverlay(doc) {
@@ -3617,7 +3826,7 @@ exports.startCapture = function(doc, events) {
 
 }
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 (function (process){//
 // Helpers
 
@@ -3688,7 +3897,7 @@ Signal.prototype.clear = function() {
 
 module.exports = function(name) { return new Signal(name); }
 module.exports.Signal = Signal;}).call(this,require("/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":40}],37:[function(require,module,exports){
+},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":41}],38:[function(require,module,exports){
 // adapted from
 // http://stackoverflow.com/questions/524696/how-to-create-a-style-tag-with-javascript
 module.exports = function(doc, initialCss) {
@@ -3728,7 +3937,7 @@ module.exports = function(doc, initialCss) {
     return set;
 
 }
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 // [a] => [a,a,a,a]
 // [a,b] => [a,b,a,b]
 // [a,b,c] => [a,b,c,b]
@@ -3773,9 +3982,9 @@ module.exports = function(thing) {
         return [val, val, val, val];
     }
 }
-},{}],39:[function(require,module,exports){
-
 },{}],40:[function(require,module,exports){
+
+},{}],41:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};

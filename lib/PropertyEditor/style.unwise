@@ -1,0 +1,48 @@
+.hk-property-editor {
+	
+}
+
+.hk-property-editor table {
+	width: 100%;
+}
+
+.hk-property-editor thead {
+	background-color: #929DA8;
+}
+
+.hk-property-editor thead th {
+	text-align: left;
+	padding: 3px;
+	color: black;
+}
+
+.hk-property-editor tbody th, td {
+	padding-top: 3px;
+	padding-bottom: 3px;
+	vertical-align: middle;
+}
+
+.hk-property-editor tbody tr:first-child td,
+.hk-property-editor tbody tr:first-child th {
+	padding-top: 6px;	
+}
+
+.hk-property-editor tbody tr:last-child td,
+.hk-property-editor tbody tr:last-child th {
+	padding-bottom: 6px;	
+}
+
+.hk-property-editor tbody th {
+	text-align: left;
+	padding-right: 5px;
+	color: white;
+}
+
+.hk-property-editor tbody td {
+	text-align: right;
+}
+
+.hk-property-editor .hk-text-field,
+.hk-property-editor .hk-horizontal-slider {
+	width: 100%;
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE>
+
+<html>
+  <head>
+    <title>hudkit demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src='bundle.js'></script>
+    <script>
+      function init() {
+
+        var properties = {
+          foo: {
+            caption: "Foo",
+            type: "text",
+            value: 20
+          },
+          bar: {
+            caption: "Bar",
+            type: "text",
+            value: "Goodbye"
+          },
+          baz: {
+            caption: "Baz",
+            type: "knob",
+            value: 50
+          },
+          bleem: {
+            caption: "Bleem",
+            type: "slider",
+            options: {
+              caption: "BLEEM"
+            },
+            value: 30
+          }
+        }
+
+        var groups = [
+          { title: "Group 1",
+            properties: ['foo', 'bar']
+          },
+          { title: "Group 2",
+            properties: ['baz', 'bleem']
+          }
+        ];
+
+        var delegate = {
+          getPropertyGroupCount: function() {
+            return groups.length;
+          },
+          getPropertyGroupTitle: function(groupIx) {
+            return groups[groupIx].title;
+          },
+          getPropertyGroupPropertyNames: function(groupIx) {
+            return groups[groupIx].properties;
+          },
+          getPropertyCaption: function(name) {
+            return properties[name].caption;
+          },
+          getPropertyType: function(name) {
+            return properties[name].type;
+          },
+          getPropertyOptions: function(name) {
+            return properties[name].options || null;
+          },
+          getPropertyValue: function(name) {
+            return properties[name].value;
+          },
+          setPropertyValue: function(name, value) {
+            properties[name].value = value;
+            return true;
+          }
+        };
+
+        var p = hk.propertyEditor();
+        p.setDelegate(delegate);
+        
+        var b2 = hk.box();
+        b2.setBackgroundColor('green');
+
+        var sp = hk.splitPane();
+        sp.setOrientation(hk.k.SPLIT_PANE_VERTICAL);
+        sp.setLeftWidget(p);
+        sp.setRightWidget(b2);
+        sp.setSplit(0.2);
+
+        hk.root.setRootWidget(sp);
+
+      }
+    </script>
+  </head>
+  <body onload='hkinit(); init();'>
+  </body>
+</html>
