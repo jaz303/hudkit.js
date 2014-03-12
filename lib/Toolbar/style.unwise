@@ -15,7 +15,7 @@
 }
 
 .hk-toolbar-items > * {
-    margin-right: 2px;
+    margin-right: 2px !important;
     vertical-align: top;
 }
 

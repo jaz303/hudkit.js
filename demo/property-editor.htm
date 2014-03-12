@@ -9,6 +9,11 @@
       function init() {
 
         var properties = {
+          a: {
+            caption: "A",
+            type: "checkbox",
+            value: true
+          },
           foo: {
             caption: "Foo",
             type: "text",
@@ -22,7 +27,12 @@
           baz: {
             caption: "Baz",
             type: "knob",
-            value: 50
+            value: 50,
+            options: {
+              userSizeHints: {
+                width: 36
+              }
+            }
           },
           bleem: {
             caption: "Bleem",
@@ -31,15 +41,23 @@
               caption: "BLEEM"
             },
             value: 30
+          },
+          zoom: {
+            caption: "Zoomba",
+            type: "slider",
+            options: {
+              caption: "ZOOM"
+            },
+            value: 70
           }
         }
 
         var groups = [
           { title: "Group 1",
-            properties: ['foo', 'bar']
+            properties: ['a', 'foo', 'bar']
           },
           { title: "Group 2",
-            properties: ['baz', 'bleem']
+            properties: ['baz', 'bleem', 'zoom']
           }
         ];
 
