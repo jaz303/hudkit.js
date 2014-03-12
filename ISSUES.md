@@ -23,7 +23,7 @@ Approach 1 is more 'pure' but it doesn't address the canvas issue. Approach 2 is
 ## TODO
 
   * Horizontal slider to support rounding/increments. Knob too.
-  * Toolbar size should be set in code and be adjustable
+  * <del>Toolbar size should be set in code and be adjustable</del>
   * Move constants to instance prototype
   * Modules should follow node conventions and return something useful
   * Console auto-complete
@@ -52,16 +52,16 @@ I'm sure there are plenty...
 
   * Check-box
   * Color-picker
-  * Slider
-  * Knob
+  * <del>Slider</del>
+  * <del>Knob</del>
   * XY-pad
-  * Text field
+  * <del>Text field</del>
   * Text area
   * Form
   * Property inspector
-  * Tree view
+  * <del>Tree view</del>
   * List view
-  * Drop-down/select
+  * <del>Drop-down/select</del>
   * Slideout/over
   * Popover
   * Grid
