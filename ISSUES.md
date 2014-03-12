@@ -50,7 +50,7 @@ I'm sure there are plenty...
 
 ## Future Widgets
 
-  * Check-box
+  * <del>Check-box</del>
   * Color-picker
   * <del>Slider</del>
   * <del>Knob</del>
@@ -58,7 +58,7 @@ I'm sure there are plenty...
   * <del>Text field</del>
   * Text area
   * Form
-  * Property inspector
+  * <del>Property inspector</del>
   * <del>Tree view</del>
   * List view
   * <del>Drop-down/select</del>
