@@ -11,13 +11,14 @@
         var buttons = hk.buttonBar();
 
         var button1 = hk.button();
-        button1.setAction(hk.action(function() {
+        button1.bindAction(hk.action(function() {
             split.toggleWidgetAtIndex(0);
         }));
 
         var action2 = hk.action(function() { console.log("BUTTON 2"); });
         var button2 = hk.button();
-        button2.setAction(action2);
+        button2.bindAction(action2);
+
         // action2.disable();
 
         buttons.addButton(button1)
@@ -69,26 +70,57 @@
         toolbar.addAction(a1);
         toolbar.addAction(a2);
 
+        a1.setTitle("THIS IS ACTION 1");
+        a2.setEnabled(false);
+
         var k1 = hk.knob();
+        k1.onChange.connect(function(src, v) {
+            console.log("k1 = " + v);
+        });
+        k1.setMinValue(75);
+        k1.setMaxValue(125);
         toolbar.addWidget(k1);
 
         var k2 = hk.knob();
+        k2.onChange.connect(function(src, v) {
+            console.log("k2 = " + v);
+        });
         toolbar.addWidget(k2);
 
         var k3 = hk.knob();
+        k3.onChange.connect(function(src, v) {
+            console.log("k3 = " + v);
+        });
         toolbar.addWidget(k3);
 
         var cb = hk.checkbox();
+        cb.onChange.connect(function(src, value) {
+            console.log("checkbox = " + value);
+        });
         toolbar.addWidget(cb);
 
         var t1 = hk.textField();
+        
+        t1.onChange.connect(function(src, value) {
+            console.log("textfield value = " + value);
+        });
+
+        t1.onAction.connect(function(src, value) {
+            console.log("textfield action = " + value);
+        });
+
         toolbar.addWidget(t1);
 
         var s1 = hk.select();
         toolbar.addWidget(s1);
 
         var slider1 = hk.horizontalSlider();
+        slider1.onChange.connect(function(src, v) {
+            console.log("slider1 = " + v);
+        });
         slider1.setCaption("Volume");
+        slider1.setMinValue(10);
+        slider1.setMaxValue(1000);
         toolbar.addWidget(slider1);
 
         hk.root.setToolbar(toolbar);

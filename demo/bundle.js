@@ -196,25 +196,18 @@ exports.initialize = function(ctx, k, theme) {
 
             function(hk, type) {
                 
-                this._action = null;
+                _sc.call(this, hk);
+
+                this._addSignal('onAction');
+
+                this._enabled = true;
+                this._title = "";
+
                 this._buttonType = type || 'rounded';
                 this._buttonClass = '';
 
-                _sc.call(this, hk);
-
                 this._baseClass = this._root.className;
                 this._updateClass();
-
-                var self = this;
-                this._root.addEventListener('click', function(evt) {
-                    
-                    evt.preventDefault();
-                    evt.stopPropagation();
-                    
-                    if (self._action)
-                        self._action(self);
-                
-                });
 
             },
 
@@ -225,28 +218,65 @@ exports.initialize = function(ctx, k, theme) {
                     _sm.dispose.call(this);
                 },
 
-                getAction: function() {
-                    return this._action;
-                },
+                //
+                // Action
 
-                setAction: function(action) {
+                bindAction: function(action) {
 
-                    if (action === this._action)
-                        return;
+                    var self = this;
 
-                    if (this._action) {
-                        this._actionUnbind();
-                        this._action = null;
+                    function sync() {
+                        self.setTitle(action.getTitle());
+                        self.setEnabled(action.isEnabled());
                     }
 
-                    if (action) {
-                        this._action = action;
-                        this._actionUnbind = this._action.onchange.connect(this._sync.bind(this));
+                    var unbindAction    = this.onAction.connect(action),
+                        unbindSync      = action.onchange.connect(sync);
+
+                    sync();
+
+                    return function() {
+                        unbindAction();
+                        unbindSync();
                     }
 
-                    this._sync();
-
                 },
+
+                //
+                // Enabled
+
+                isEnabled: function() {
+                    return this._enabled;
+                },
+
+                setEnabled: function(enabled) {
+                    enabled = !!enabled;
+                    if (enabled !== this._enabled) {
+                        this._enabled = enabled;
+                        if (this._enabled) {
+                            du.removeClass(this._root, 'disabled');
+                        } else {
+                            du.addClass(this._root, 'disabled');
+                        }
+                    }
+                },
+
+                //
+                // Title
+
+                getTitle: function() {
+                    return this._title;
+                },
+
+                setTitle: function(title) {
+                    title = '' + title;
+                    if (title !== this._title) {
+                        this._title = this._text.textContent = title;
+                    }
+                },
+
+                //
+                // Type
 
                 getButtonType: function() {
                     return this._buttonType;
@@ -257,6 +287,9 @@ exports.initialize = function(ctx, k, theme) {
                     this._updateClass();
                 },
 
+                //
+                // Class
+
                 getButtonClass: function() {
                     return this._buttonClass;
                 },
@@ -265,8 +298,13 @@ exports.initialize = function(ctx, k, theme) {
                     this._buttonClass = className || '';
                     this._updateClass();
                 },
+
+                //
+                //
                 
                 _buildStructure: function() {
+
+                    var self = this;
                     
                     this._root = this.document.createElement('a');
                     this._root.href = '#';
@@ -274,26 +312,16 @@ exports.initialize = function(ctx, k, theme) {
                     this._text = this.document.createElement('span');
                     this._root.appendChild(this._text);
 
-                    this._updateClass();
+                    this._root.addEventListener('click', function(evt) {
+                        
+                        evt.preventDefault();
+                        evt.stopPropagation();
 
-                },
-
-                _sync: function() {
-
-                    var title   = "",
-                        enabled = true;
-
-                    if (this._action) {
-                        title = this._action.getTitle();
-                        enabled = this._action.isEnabled();
-                    }
-
-                    this._text.textContent = title;
-                    if (enabled) {
-                        du.removeClass(this._root, 'disabled');
-                    } else {
-                        du.addClass(this._root, 'disabled');
-                    }
+                        if (self._enabled) {
+                            self.onAction.emit(self);
+                        }
+                    
+                    });
 
                 },
 
@@ -303,7 +331,7 @@ exports.initialize = function(ctx, k, theme) {
                     className += ' hk-' + this._buttonType + '-button';
                     className += ' ' + this._buttonClass;
 
-                    if (this._action && !this._action.isEnabled()) {
+                    if (!this._enabled) {
                         className += ' disabled';
                     }
 
@@ -432,9 +460,12 @@ exports.initialize = function(ctx, k, theme) {
         return [
 
             function(hk) {
-                this._value = false;
                 _sc.call(this, hk);
+                this._addSignal('onChange');
+                this._value = false;
             },
+
+            'mixins', ['ValueWidget'],
 
             'methods', {
 
@@ -442,16 +473,18 @@ exports.initialize = function(ctx, k, theme) {
                     _sm.dispose.call(this);
                 },
 
-                getValue: function() {
-                    return this._value;
-                },
-
                 setValue: function(v) {
-                    this._value = !!v;
-                    if (this._value) {
-                        this._root.setAttribute('checked', 'checked');
+                    v = !!v;
+                    if (v !== this._value) {
+                        this._value = v;
+                        if (v) {
+                            this._root.setAttribute('checked', 'checked');
+                        } else {
+                            this._root.removeAttribute('checked');
+                        }
+                        return true;
                     } else {
-                        this._root.removeAttribute('checked');
+                        return false;
                     }
                 },
                 
@@ -464,7 +497,7 @@ exports.initialize = function(ctx, k, theme) {
                     var self = this;
                     this._root.addEventListener('change', function(evt) {
                         self._value = self._root.checked;
-                        // TODO: trigger listeners
+                        self._broadcastChange();
                     });
 
                 }
@@ -1022,37 +1055,20 @@ exports.initialize = function(ctx, k, theme) {
                 this._maxValue = 100;
                 this._value = 50;
                 this._caption = '';
+
+                this._addSignal('onChange');
                 
                 this._bind();
                 this._update();
 
             },
 
+            'mixins', ['ValueWidget', 'ValueRange'],
+
             'methods', {
 
                 dispose: function() {
                     _sm.dispose.call(this);
-                },
-
-                getValue: function() {
-                    return this._value;
-                },
-
-                setValue: function(v) {
-
-                    if (v < this._minValue) v = this._minValue;
-                    if (v > this._maxValue) v = this._maxValue;
-
-                    v = Math.floor(v);
-
-                    if (v === this._value) {
-                        return;
-                    }
-
-                    this._value = v;
-
-                    this._update();
-
                 },
 
                 getCaption: function() {
@@ -1066,6 +1082,25 @@ exports.initialize = function(ctx, k, theme) {
                     }
                     this._caption = c;
                     this._updateCaption(this._caption);
+                },
+
+                _setValue: function(v) {
+
+                    if (v < this._minValue) v = this._minValue;
+                    if (v > this._maxValue) v = this._maxValue;
+
+                    v = Math.floor(v);
+
+                    if (v === this._value) {
+                        return false;
+                    }
+
+                    this._value = v;
+
+                    this._update();
+
+                    return true;
+
                 },
                 
                 _buildStructure: function() {
@@ -1301,7 +1336,8 @@ signals.widgetRegistered.connect(function(name, ctor) {
 });}).call(this,"/../lib")
 },{"./constants":28,"./registry":29,"./signals":30,"./theme":31,"fs":41,"hudkit-action":36,"style-tag":39}],15:[function(require,module,exports){
 (function (__dirname){var du      = require('domutil'),
-    rattrap = require('rattrap');
+    rattrap = require('rattrap'),
+    signal  = require('signalkit');
 
 var DEFAULT_SIZE    = 18,
     GAP_SIZE        = Math.PI / 6,
@@ -1318,7 +1354,7 @@ exports.initialize = function(ctx, k, theme) {
             function(hk) {
 
                 this._size = DEFAULT_SIZE;
-                
+
                 _sc.call(this, hk);
 
                 this._minValue = 0;
@@ -1326,11 +1362,15 @@ exports.initialize = function(ctx, k, theme) {
                 this._dragDirection = k.HORIZONTAL;
                 this._value = 0;
                 this._ctx = this._root.getContext('2d');
+
+                this._addSignal('onChange');
                 
                 this._bind();
-                this._redraw();
+                this._update();
 
             },
+
+            'mixins', ['ValueWidget', 'ValueRange'],
 
             'methods', {
 
@@ -1338,52 +1378,20 @@ exports.initialize = function(ctx, k, theme) {
                     _sm.dispose.call(this);
                 },
 
-                getValue: function() {
-                    return this._value;
-                },
-
-                setValue: function(v) {
+                _setValue: function(v) {
 
                     if (v < this._minValue) v = this._minValue;
                     if (v > this._maxValue) v = this._maxValue;
 
                     if (v === this._value) {
-                        return;
+                        return false;
                     }
 
                     this._value = v;
 
-                    this._redraw();
+                    this._update();
 
-                },
-
-                setMinValue: function(min) {
-                    
-                    if (min === this._minValue) {
-                        return;
-                    }
-
-                    this._minValue = min;
-                    if (this._value < min) {
-                        this._value = min;
-                    }
-                        
-                    this._redraw();
-
-                },
-
-                setMaxValue: function(max) {
-
-                    if (max === this._maxValue) {
-                        return;
-                    }
-                        
-                    this._maxValue = max;
-                    if (this._value > max) {
-                        this._value = max;
-                    }
-                        
-                    this._redraw();
+                    return true;
 
                 },
                 
@@ -1430,7 +1438,7 @@ exports.initialize = function(ctx, k, theme) {
 
                 },
 
-                _redraw: function() {
+                _update: function() {
 
                     var ctx         = this._ctx,
                         filledRatio = (this._value - this._minValue) / (this._maxValue - this._minValue),
@@ -1473,7 +1481,7 @@ exports.initialize = function(ctx, k, theme) {
                     this._root.width = this._size;
                     this._root.height = this._size;
 
-                    this._redraw();
+                    this._update();
 
                 }
             
@@ -1492,7 +1500,7 @@ exports.attach = function(instance) {
     instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Knob")
-},{"domutil":35,"fs":41,"rattrap":37}],16:[function(require,module,exports){
+},{"domutil":35,"fs":41,"rattrap":37,"signalkit":38}],16:[function(require,module,exports){
 var du      = require('domutil'),
     rattrap = require('rattrap'),
     signal  = require('signalkit');
@@ -2960,6 +2968,11 @@ exports.attach = function(instance) {
 },{"domutil":35,"fs":41}],24:[function(require,module,exports){
 (function (__dirname){var du = require('domutil');
 
+// TODO: do we need a way of handling escape key to reset
+// TODO: there are a whole pile of event handlers we could expose via signals:
+//       onKeyDown, onKeyUp, onKeyPress, onFocus, onBlur, onInput. That's a lot
+//       of overhead - worth investigating lazy-loading via getters?
+
 exports.initialize = function(ctx, k, theme) {
 
     ctx.registerWidget('TextField', ctx.InlineWidget.extend(function(_sc, _sm) {
@@ -2968,8 +2981,12 @@ exports.initialize = function(ctx, k, theme) {
 
             function(hk) {
                 _sc.call(this, hk);
+                this._addSignal('onChange');
+                this._addSignal('onAction');
                 this._value = '';
             },
+
+            'mixins', ['ValueWidget'],
 
             'methods', {
 
@@ -2977,26 +2994,47 @@ exports.initialize = function(ctx, k, theme) {
                     _sm.dispose.call(this);
                 },
 
-                getValue: function() {
-                    return this._value;
-                },
-
-                setValue: function(v) {
-                    this._value = v;
-                    this._root.value = v;
+                _setValue: function(v) {
+                    if (v !== this._value) {
+                        this._value = this._root.value = v;
+                        return true;
+                    } else {
+                        return false;
+                    }
                 },
                 
                 _buildStructure: function() {
+
+                    var self = this;
                     
                     this._root = this.document.createElement('input');
                     this._root.type = 'text'
                     this._root.className = 'hk-text-field';
+
+                    this._root.addEventListener('change', function(evt) {
+                        // normal rules don't apply here.
+                        // textfield value is guaranteed to have changed so
+                        // just sync property and broadcast the change.
+                        self._value = self._root.value;
+                        self._broadcastChange();
+                    });
+
+                    var ready = true;
                     
                     this._root.addEventListener('keydown', function(evt) {
+                        if (ready && evt.which === 13) {
+                            ready = false;
+                            // sync the value here before firing action because
+                            // keydown is fired before "change" (enter key causes
+                            // change event)
+                            self._value = self._root.value;
+                            self.onAction.emit(this, self._value);
+                        }
                         evt.stopPropagation();
                     });
 
                     this._root.addEventListener('keyup', function(evt) {
+                        ready = true;
                         evt.stopPropagation();
                     });
 
@@ -3052,7 +3090,7 @@ exports.initialize = function(ctx, k, theme) {
 	            
 	            addAction: function(action, align) {
 					var button = this._hk.button('toolbar');
-					button.setAction(action);
+					button.bindAction(action);
 					return this.addWidget(button, align);
 	            },
 
@@ -3432,11 +3470,12 @@ exports.attach = function(instance) {
 }}).call(this,"/../lib/TreeView")
 },{"domutil":35,"fs":41}],27:[function(require,module,exports){
 (function (__dirname){var	Class   = require('classkit').Class,
+    signal  = require('signalkit'),
 	du 		= require('domutil');
 
 exports.initialize = function(ctx, k, theme) {
 
-    ctx.registerWidget('Widget', Class.extend(function(_sc, _sm) {
+    var Widget = Class.extend(function(_sc, _sm) {
 
         return [
 
@@ -3549,13 +3588,116 @@ exports.initialize = function(ctx, k, theme) {
 
                 _clearInterval: function(id) {
                     return this._hk.window.clearInterval(id);
+                },
+
+                //
+                // Signals/properties
+
+                _addSignal: function(name) {
+                    this[name] = signal(name);
                 }
             
             }
         
         ];
 
-    }));
+    });
+
+    //
+    // Mixin support
+
+    var MIXINS = {};
+
+    Widget.registerMixin = function(name, obj) {
+        if (name in MIXINS) {
+            throw new Error("duplicate mixin: " + name);
+        }
+        MIXINS[name] = obj;
+    }
+
+    Widget.Features.mixins = function(ctor, mixinList) {
+        mixinList.forEach(function(m) {
+            var mixin = MIXINS[m];
+            if (!mixin) {
+                throw new Error("unknown mixin: " + m);
+            }
+            for (var k in mixin) {
+                ctor.prototype[k] = mixin[k];
+            }
+        });
+    }
+
+    //
+    // Default mixins
+
+    /*
+     * ValueWidget mixin denotes any widget that represents a value.
+     *  This mixin requires that the implementing widget have the following:
+     *
+     *   _value => the widget's current value
+     *   onChange => a signal for broadcasting changes
+     * 
+     * Additionally, the private _setValue() function may be overridden to
+     * apply custom transform/display update logic
+     */
+    Widget.registerMixin('ValueWidget', {
+        getValue: function() {
+            return this._value;
+        },
+
+        setValue: function(value) {
+            this._setValue(value) && this._broadcastChange();
+        },
+
+        _setValue: function(v) {
+            this._value = v;
+        },
+
+        _broadcastChange: function() {
+            this.onChange.emit(this, this.getValue());
+        }
+    });
+
+    Widget.registerMixin('ValueRange', {
+        getMinValue: function() {
+            return this._minValue;
+        },
+
+        getMaxValue: function() {
+            return this._maxValue;
+        },
+
+        setMinValue: function(min) {
+            if (min === this._minValue) {
+                return;
+            }
+
+            this._minValue = min;
+            if (this._value < min) {
+                this._value = min;
+            }
+                
+            this._update();
+        },
+
+        setMaxValue: function(max) {
+            if (max === this._maxValue) {
+                return;
+            }
+                
+            this._maxValue = max;
+            if (this._value > max) {
+                this._value = max;
+            }
+                
+            this._update();
+        }
+    });
+
+    //
+    //
+
+    ctx.registerWidget('Widget', Widget);
 
 }
 
@@ -3566,7 +3708,7 @@ exports.attach = function(instance) {
 	instance.appendCSS(CSS);
 }
 }).call(this,"/../lib/Widget")
-},{"classkit":32,"domutil":35,"fs":41}],28:[function(require,module,exports){
+},{"classkit":32,"domutil":35,"fs":41,"signalkit":38}],28:[function(require,module,exports){
 module.exports = {};
 },{}],29:[function(require,module,exports){
 var signals = require('./signals');
