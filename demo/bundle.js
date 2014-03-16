@@ -3540,6 +3540,16 @@ function defineConstants(ks) {
 	}
 }
 
+function getWidget(name) {
+
+	if (!(name in registry.widgets)) {
+		throw new Error("unknown widget type: " + name);
+	}
+
+	return registry.widgets[name];
+
+}
+
 function registerWidget(name, ctor) {
 	
 	if (name in registry.widgets) {
