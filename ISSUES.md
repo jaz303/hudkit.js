@@ -24,6 +24,8 @@ There are two general solution paths:
 
 Approach 1 is more 'pure' but it doesn't address the canvas issue. Approach 2 is more appealing to me at the moment as it abstracts CSS, and one of hudkit's goals is ultimately to be retargetable to other rendering engines (e.g. SDL).
 
+I ended implementing inline widgets; it works ok so far. I would still like to find a flexible solution that doesn't involve making a distinction between block/inline widgets.
+
 ## TODO
 
   * Horizontal slider to support rounding/increments. Knob too.
@@ -54,22 +56,21 @@ I'm sure there are plenty...
 
 ## Future Widgets
 
+  * Text area
+  * XY-pad
+  * List view
+  * Form
+  * Dialog
+  * Popover
+    * Color-picker
+  * Slideout/over
+  * Node editor
+  * Graph view
+  * Menus - not sure if necessary
   * <del>Check-box</del>
-  * Color-picker
   * <del>Slider</del>
   * <del>Knob</del>
-  * XY-pad
   * <del>Text field</del>
-  * Text area
-  * Form
   * <del>Property inspector</del>
   * <del>Tree view</del>
-  * List view
   * <del>Drop-down/select</del>
-  * Slideout/over
-  * Popover
-  * Grid
-  * Graph view
-  * Node editor
-  * Dialog
-  * Menus - not sure if necessary
