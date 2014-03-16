@@ -1,5 +1,9 @@
 This is more convenient for now, will switch to GH issues if people start using this library...
 
+## Traits
+
+I'd like to rip out the class-based inheritance model and substitute traits instead.
+
 ## Block/inline widgets
 
 __Block__ widgets are always absolutely positioned, and positioned/sized explicitly by their parent container.
