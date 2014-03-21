@@ -420,7 +420,7 @@ ctx.registerWidget('Checkbox', module.exports = InlineWidget.extend(function(_sc
                 _sm.dispose.call(this);
             },
 
-            setValue: function(v) {
+            _setValue: function(v) {
                 v = !!v;
                 if (v !== this._value) {
                     this._value = v;
@@ -1036,9 +1036,10 @@ ctx.registerWidget('HorizontalSlider', module.exports = InlineWidget.extend(func
                         if (offset < 0) offset = 0;
                         if (offset > rect.width) offset = rect.width;
 
-                        self._setValue(self._offsetToValue(rect, offset));
-                        self._broadcastChange();
-                    
+                        if (self._setValue(self._offsetToValue(rect, offset))) {
+                            self._broadcastChange();
+                        }
+                        
                     }
                     
                     var stopCapture = rattrap.startCapture(self.document, {
@@ -1296,9 +1297,10 @@ ctx.registerWidget('Knob', module.exports = InlineWidget.extend(function(_sc, _s
                             } else {
                                 delta = startY - evt.pageY;
                             }
-
-                            self._setValue(startV + delta);
-                            self._broadcastChange();
+                            
+                            if (self._setValue(startV + delta)) {
+                                self._broadcastChange();
+                            }
 
                         },
                         mouseup: function(evt) {
@@ -3480,7 +3482,8 @@ Widget.Features.mixins = function(ctor, mixinList) {
  *   onChange => a signal for broadcasting requested changes
  * 
  * Additionally, the private _setValue() function may be overridden to
- * apply custom transform/display update logic
+ * apply custom transform/display update logic. This should return true
+ * if the value did in fact change.
  *
  * The onChange signal should only be emitted in response to user
  * interaction with the widget, and not in response to external requests
@@ -3497,6 +3500,8 @@ Widget.registerMixin('ValueWidget', {
 
     _setValue: function(v) {
         this._value = v;
+        // we'll just assume the value has changed here; best not to
+        // assume that values can be compared with == or ===.
         return true;
     },
 
