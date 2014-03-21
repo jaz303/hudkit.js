@@ -4,7 +4,8 @@ window.hkinit = function() {
 	window.hk = hudkit.instance(window);	
 }
 
-},{"../":2}],2:[function(require,module,exports){
+window.propertyObject = require('hudkit-property-object');
+},{"../":2,"hudkit-property-object":36}],2:[function(require,module,exports){
 module.exports = require('./lib/core');
 
 require('./lib/Widget');
@@ -423,11 +424,7 @@ ctx.registerWidget('Checkbox', module.exports = InlineWidget.extend(function(_sc
                 v = !!v;
                 if (v !== this._value) {
                     this._value = v;
-                    if (v) {
-                        this._root.setAttribute('checked', 'checked');
-                    } else {
-                        this._root.removeAttribute('checked');
-                    }
+                    this._root.checked = v;
                     return true;
                 } else {
                     return false;
@@ -1039,7 +1036,8 @@ ctx.registerWidget('HorizontalSlider', module.exports = InlineWidget.extend(func
                         if (offset < 0) offset = 0;
                         if (offset > rect.width) offset = rect.width;
 
-                        self.setValue(self._offsetToValue(rect, offset));
+                        self._setValue(self._offsetToValue(rect, offset));
+                        self._broadcastChange();
                     
                     }
                     
@@ -1085,7 +1083,7 @@ ctx.registerWidget('HorizontalSlider', module.exports = InlineWidget.extend(func
 }));
 
 ctx.registerCSS(".hk-horizontal-slider {\n\tposition: relative;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    background: black;\n    background-color: $HK_BUTTON_BG_COLOR;\n    width: 200px;\n    height: 18px;\n}\n\n.hk-horizontal-slider > .fill {\n\theight: 100%;\n\tdisplay: block;\n\twidth: 0;\n\tbackground-color: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-horizontal-slider > .caption {\n\tposition: absolute;\n\ttop: 50%;\n\tleft: 0;\n\twidth: 100%;\n\tfont-size: 11px;\n\tline-height: 1;\n\tmargin-top: -5px;\n\ttext-align: center;\n}");}).call(this,"/../lib/HorizontalSlider")
-},{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":36}],12:[function(require,module,exports){
+},{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":38}],12:[function(require,module,exports){
 (function (__dirname){var ctx 	= require('../core'),
 	theme 	= require('../theme'),
 	k		= require('../constants'),
@@ -1205,7 +1203,7 @@ Instance.prototype.appendCSS = function(css) {
 
 }
 }).call(this,"/../lib")
-},{"./constants":27,"./registry":29,"./theme":30,"fs":40,"hudkit-action":35,"style-tag":38}],14:[function(require,module,exports){
+},{"./constants":27,"./registry":29,"./theme":30,"fs":42,"hudkit-action":35,"style-tag":40}],14:[function(require,module,exports){
 (function (__dirname){var ctx             = require('../core'),
     theme           = require('../theme'),
     k               = require('../constants'),
@@ -1299,7 +1297,8 @@ ctx.registerWidget('Knob', module.exports = InlineWidget.extend(function(_sc, _s
                                 delta = startY - evt.pageY;
                             }
 
-                            self.setValue(startV + delta);
+                            self._setValue(startV + delta);
+                            self._broadcastChange();
 
                         },
                         mouseup: function(evt) {
@@ -1365,7 +1364,7 @@ ctx.registerWidget('Knob', module.exports = InlineWidget.extend(function(_sc, _s
 }));
 
 ctx.registerCSS(".hk-knob {\n    background-color: $HK_BUTTON_BG_COLOR;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n}");}).call(this,"/../lib/Knob")
-},{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":36,"signalkit":37}],15:[function(require,module,exports){
+},{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":38,"signalkit":39}],15:[function(require,module,exports){
 var ctx             = require('../core'),
     theme           = require('../theme'),
     k               = require('../constants'),
@@ -1733,7 +1732,7 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
     ];
 
 }));
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":36,"signalkit":37}],16:[function(require,module,exports){
+},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":38,"signalkit":39}],16:[function(require,module,exports){
 var ctx          = require('../core'),
     theme        = require('../theme'),
     k            = require('../constants'),
@@ -1763,11 +1762,7 @@ ctx.registerWidget('Panel', module.exports = Container.extend(function(_sc, _sm)
     k               = require('../constants'),
     BlockWidget     = require('../BlockWidget');
 
-// TODO: binding
-// TODO: transform functions (esp. for text fields)
-// TODO: veto functionality for updates
-
-function makeSimpleEditor(hk, builder, get, set, options) {
+function makeSimpleEditor(hk, builder, get, set, config) {
 
     var widget = hk[builder]();
 
@@ -1775,15 +1770,22 @@ function makeSimpleEditor(hk, builder, get, set, options) {
         widget.setValue(get());
     }
 
-    // TODO: find widget change to options.set()
-    //widget.onChange.connect(set)
+    var cancel = widget.onChange.connect(function(src, val) {
+        if (!set(val)) {
+            widget.setValue(get());
+        };
+    });
 
-    for (var arg in options) {
+    for (var arg in config) {
         var setter = 'set' + arg[0].toUpperCase() + arg.substring(1);
-        widget[setter](options[arg]);
+        widget[setter](config[arg]);
     }
 
-    return { widget: widget, sync: sync };
+    return {
+        widget      : widget,
+        sync        : sync,
+        teardown    : cancel
+    };
 
 }
 
@@ -1821,21 +1823,40 @@ var PropertyEditor = module.exports = BlockWidget.extend(function(_sc, _sm) {
                 return this._delegate;
             },
 
-            setDelegate: function(d) {
+            setDelegate: function(newDelegate) {
                 
-                if (d === this._delegate) {
+                if (newDelegate === this._delegate) {
                     return;
                 }
+
+                this._table.innerHTML = '';
+                this._properties = null;
 
                 if (this._delegate) {
                     this._teardown();
                 }
 
-                this._delegate = d;
-                this._table.innerHTML = '';
+                this._delegate = newDelegate || null;
 
-                if (d) {
+                if (this._delegate) {
+
+                    var self = this;
+                    
+                    // bind to receive notifications about property values changing
+                    var cancel1 = this._delegate.onPropertyChange(function(src, evt) {
+                        self._properties[evt.property].sync();
+                    });
+
+                    // TODO: bind to receive notifications of new/removed properties
+                    // var cancel2 = ...;
+
+                    this._delegateCancel = function() {
+                        cancel1();
+                        // cancel2();
+                    }
+
                     this._rebuild();
+
                 }
 
             },
@@ -1854,14 +1875,14 @@ var PropertyEditor = module.exports = BlockWidget.extend(function(_sc, _sm) {
             _rebuild: function() {
 
                 this._properties = {};
-
+                
                 var d = this._delegate;
 
                 var groupCount = (typeof d.getPropertyGroupCount === 'function')
                                     ? d.getPropertyGroupCount()
                                     : 1;
 
-                var useGroupHeaders = (typeof this._delegate.getPropertyGroupTitle === 'function');
+                var useGroupHeaders = (typeof d.getPropertyGroupTitle === 'function');
 
                 var groupHeader = null;
                 for (var i = 0; i < groupCount; ++i) {
@@ -1880,12 +1901,17 @@ var PropertyEditor = module.exports = BlockWidget.extend(function(_sc, _sm) {
 
             _buildGroupHeader: function(ix) {
 
+                var title = this._delegate.getPropertyGroupTitle(ix);
+                if (typeof title !== 'string') {
+                    return null;
+                }
+
                 var header = this.document.createElement('thead'),
                     row = this.document.createElement('tr'),
                     col = this.document.createElement('th');
 
                 col.setAttribute('colspan', 2);
-                col.textContent = this._delegate.getPropertyGroupTitle(ix);
+                col.textContent = title;
 
                 row.appendChild(col);
                 header.appendChild(row);
@@ -1896,23 +1922,25 @@ var PropertyEditor = module.exports = BlockWidget.extend(function(_sc, _sm) {
 
             _appendGroupEditors: function(tbody, groupIx) {
 
-                var properties = this._delegate.getPropertyGroupPropertyNames(groupIx);
+                var properties = this._delegate.getPropertyNames(groupIx);
                 properties.forEach(function(name) {
+
+                    var desc = this._delegate.getPropertyDescriptor(name);
 
                     var row = this.document.createElement('tr');
                     tbody.appendChild(row);
 
                     var cap = this.document.createElement('th');
                     row.appendChild(cap);
-                    cap.textContent = this._delegate.getPropertyCaption(name);
+                    cap.textContent = desc.caption || '';
                     
                     var cell = this.document.createElement('td');
                     row.appendChild(cell);
 
                     var editor = this._buildPropertyInput(
                         name,
-                        this._delegate.getPropertyType(name),
-                        this._delegate.getPropertyOptions(name)
+                        desc.type || 'text',
+                        desc.config || {}
                     );
 
                     // store widget instance, sync fn etc
@@ -1934,18 +1962,20 @@ var PropertyEditor = module.exports = BlockWidget.extend(function(_sc, _sm) {
                 return editors[type](
                     this._hk,
                     function get() { return d.getPropertyValue(name); },
-                    function set(v) { d.setPropertyValue(name, v); },
+                    function set(v) { return d.setPropertyValue(name, v); },
                     options || {}
                 );
 
             },
 
             _teardown: function() {
-                // TODO:
-                // unbind all event listeners
-                // detach all widgets from parent
-                // dispose all widgets
-                this._properties = null;
+                this._delegateCancel();
+                for (var k in this._properties) {
+                    var prop = this._properties[k];
+                    prop.teardown();
+                    this._removeChild(prop.widget);
+                    prop.widget.dispose();
+                }
             }
         
         }
@@ -2156,7 +2186,7 @@ var RootPane = module.exports = BlockWidget.extend(function(_sc, _sm) {
 
 ctx.registerCSS(".hk-root-pane {\n\ttop: 0;\n\tleft: 0;\n\tright: 0;\n\tbottom: 0;\n\toverflow: hidden;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}");
 ctx.registerWidget('RootPane', RootPane);}).call(this,"/../lib/RootPane")
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"trbl":39}],19:[function(require,module,exports){
+},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"trbl":41}],19:[function(require,module,exports){
 (function (__dirname){var ctx             = require('../core'),
     theme           = require('../theme'),
     k               = require('../constants'),
@@ -2451,7 +2481,7 @@ ctx.registerWidget('SplitPane', module.exports = BlockWidget.extend(function(_sc
 }));
 
 ctx.registerCSS(".hk-split-pane > .hk-split-pane-divider {\n\tposition: absolute;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}\n\n.hk-split-pane > .hk-split-pane-ghost {\n\tbackground-color: #ff3300;\n\topacity: 0.7;\n}\n\n.hk-split-pane.horizontal > .hk-split-pane-divider {\n\tleft: 0; right: 0;\n\theight: $HK_SPLIT_PANE_DIVIDER_SIZE;\n\tcursor: row-resize;\n}\n\n.hk-split-pane.vertical > .hk-split-pane-divider {\n\ttop: 0; bottom: 0;\n\twidth: $HK_SPLIT_PANE_DIVIDER_SIZE;\n\tcursor: col-resize;\n}\n");}).call(this,"/../lib/SplitPane")
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":36}],21:[function(require,module,exports){
+},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":38}],21:[function(require,module,exports){
 (function (__dirname){var ctx             = require('../core'),
     theme           = require('../theme'),
     k               = require('../constants'),
@@ -3370,7 +3400,7 @@ var Widget = module.exports = Class.extend(function(_sc, _sm) {
                 // proven to be required...
                 var existingParent = childWidget.getParent();
                 if (existingParent) {
-                    throw "can't attach child widget - child already has a parent!";
+                    throw new Error("can't attach child widget - child already has a parent!");
                 }
 
                 ele = ele || this.getRoot();
@@ -3379,12 +3409,13 @@ var Widget = module.exports = Class.extend(function(_sc, _sm) {
 
             },
 
-            _removeChildViaElement: function(childWidget, ele) {
+            _removeChild: function(childWidget) {
+                return this._removeChildViaElement(childWidget, childWidget.getRoot().parentNode);
+            },
 
-                ele = ele || this.getRoot();
+            _removeChildViaElement: function(childWidget, ele) {
                 ele.removeChild(childWidget.getRoot());
                 childWidget.setParent(null);
-
             },
 
             //
@@ -3443,13 +3474,17 @@ Widget.Features.mixins = function(ctor, mixinList) {
 
 /*
  * ValueWidget mixin denotes any widget that represents a value.
- *  This mixin requires that the implementing widget have the following:
+ * This mixin requires that the implementing widget have the following:
  *
  *   _value => the widget's current value
- *   onChange => a signal for broadcasting changes
+ *   onChange => a signal for broadcasting requested changes
  * 
  * Additionally, the private _setValue() function may be overridden to
  * apply custom transform/display update logic
+ *
+ * The onChange signal should only be emitted in response to user
+ * interaction with the widget, and not in response to external requests
+ * to change the widget's displayed value.
  */
 Widget.registerMixin('ValueWidget', {
     getValue: function() {
@@ -3457,11 +3492,12 @@ Widget.registerMixin('ValueWidget', {
     },
 
     setValue: function(value) {
-        this._setValue(value) && this._broadcastChange();
+        return this._setValue(value);
     },
 
     _setValue: function(v) {
         this._value = v;
+        return true;
     },
 
     _broadcastChange: function() {
@@ -3507,7 +3543,7 @@ Widget.registerMixin('ValueRange', {
 
 ctx.registerCSS(".hk-widget {\n\toverflow: hidden;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n}\n");
 ctx.registerWidget('Widget', Widget);}).call(this,"/../lib/Widget")
-},{"../constants":27,"../core":28,"../theme":30,"classkit":31,"domutil":34,"signalkit":37}],27:[function(require,module,exports){
+},{"../constants":27,"../core":28,"../theme":30,"classkit":31,"domutil":34,"signalkit":39}],27:[function(require,module,exports){
 module.exports = {};
 },{}],28:[function(require,module,exports){
 var registry				= require('./registry'),
@@ -3520,6 +3556,7 @@ exports.k 					= constants;
 
 exports.defineConstant 		= defineConstant;
 exports.defineConstants		= defineConstants;
+exports.getWidget 			= getWidget;
 exports.registerWidget		= registerWidget;
 exports.registerInitializer	= registerInitializer;
 exports.registerCSS 		= registerCSS;
@@ -3889,7 +3926,196 @@ module.exports = function(fn, opts) {
 
 }
 
-},{"signalkit":37}],36:[function(require,module,exports){
+},{"signalkit":39}],36:[function(require,module,exports){
+var signal = require('signalkit');
+
+module.exports = function() {
+	return new PropertyObject();
+}
+
+function PropertyObject() {
+	
+	this._values 		= {};
+	this._groups 		= [];
+	this._properties	= {};
+
+	// onChange is exposed for convenience only, the official interface
+	// (for use in a PropertyEditor widget) is onPropertyChange(fn)
+	this.onChange = signal('onChange');
+
+}
+
+PropertyObject.prototype.group = function(title) {
+
+	var po 		= this,
+		gix		= this._groups.length,
+		names 	= [];
+
+	var group = {
+		title: title,
+		propertyNames: names,
+		add: function(name, type, initialValue, options) {
+
+			if (name in po._properties) {
+				throw new Error("duplicate property: " + name);
+			}
+
+			options = options || {};
+			options.type = type;
+
+			if (!('caption' in options)) {
+				// TODO: humanize name
+				options.caption = name;
+			}
+
+			names.push(name);
+			po._values[name] = initialValue;
+			po._properties[name] = options;
+
+			return this;
+
+		},
+		back: function() {
+			return po;
+		}
+	};
+
+	this._groups.push(group);
+
+	return group;
+
+}
+
+PropertyObject.prototype.getPropertyGroupCount = function() {
+	return this._groups.length;
+}
+
+PropertyObject.prototype.getPropertyGroupTitle = function(groupIx) {
+	return this._groups[groupIx].title;
+}
+
+PropertyObject.prototype.getPropertyNames = function(groupIx) {
+	return this._groups[groupIx].propertyNames;
+}
+
+PropertyObject.prototype.getPropertyDescriptor = function(name) {
+	return this._properties[name];
+}
+
+PropertyObject.prototype.getPropertyValue = function(key) {
+	return this._values[key];
+}
+
+PropertyObject.prototype.setPropertyValue = function(key, newValue, oldValue) {
+	
+	this._values[key] = newValue;
+	
+	this.onChange.emit(this, {
+		property 	: key,
+		oldValue	: oldValue,
+		newValue	: newValue,
+		values 		: this._values
+	});
+
+	return true;
+
+}
+
+PropertyObject.prototype.onPropertyChange = function(cb) {
+	return this.onChange.connect(cb);
+}
+
+// again, these are just convenience methods for the end-user; not part
+// of the official PropertyEditor delegate interface
+PropertyObject.prototype.get = PropertyObject.prototype.getPropertyValue;
+PropertyObject.prototype.set = PropertyObject.prototype.setPropertyValue;
+
+},{"signalkit":37}],37:[function(require,module,exports){
+(function (process){//
+// Helpers
+
+if (typeof process !== 'undefined') {
+    var nextTick = process.nextTick;
+} else {
+    var nextTick = function(fn) { setTimeout(fn, 0); }
+}
+
+function makeUnsubscriber(listeners, handlerFn) {
+    var cancelled = false;
+    return function() {
+        if (cancelled) return;
+        for (var i = listeners.length - 1; i >= 0; --i) {
+            if (listeners[i] === handlerFn) {
+                listeners.splice(i, 1);
+                cancelled = true;
+                break;
+            }
+        }
+    }
+}
+
+//
+// Signals
+
+function Signal(name) {
+    this.name = name;
+    this._listeners = [];
+}
+
+Signal.prototype.onError = function(err) {
+    nextTick(function() { throw err; });
+}
+
+Signal.prototype.emit = function() {
+    for (var ls = this._listeners, i = ls.length - 1; i >= 0; --i) {
+        try {
+            ls[i].apply(null, arguments);
+        } catch (err) {
+            if (this.onError(err) === false) {
+                break;
+            }
+        }
+    }
+}
+
+Signal.prototype.connect = function(target, action) {
+    if (target && action) {
+        var handler = function() {
+            target[action].apply(target, arguments);
+        }
+    } else if (typeof target === 'function') {
+        var handler = target;
+    } else {
+        throw "signal connect expects either handler function or target/action pair";
+    }
+    this._listeners.push(handler);
+    return makeUnsubscriber(this._listeners, handler);
+}
+
+Signal.prototype.once = function(target, action) {
+    var cancel = this.connect(function() {
+        if (target && action) {
+            target[action].apply(target, arguments);
+        } else if (typeof target === 'function') {
+            target.apply(null, arguments);
+        } else {
+            throw "signal connect expects either handler function or target/action pair";
+        }
+        cancel();
+    });
+    return cancel;
+}
+
+Signal.prototype.clear = function() {
+    this._listeners = [];
+}
+
+//
+// Exports
+
+module.exports = function(name) { return new Signal(name); }
+module.exports.Signal = Signal;}).call(this,require("/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":43}],38:[function(require,module,exports){
 var activeCaptures = [];
 
 function createOverlay(doc) {
@@ -3947,7 +4173,7 @@ exports.startCapture = function(doc, events) {
 
 }
 
-},{}],37:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 (function (process){//
 // Helpers
 
@@ -4018,7 +4244,7 @@ Signal.prototype.clear = function() {
 
 module.exports = function(name) { return new Signal(name); }
 module.exports.Signal = Signal;}).call(this,require("/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":41}],38:[function(require,module,exports){
+},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":43}],40:[function(require,module,exports){
 // adapted from
 // http://stackoverflow.com/questions/524696/how-to-create-a-style-tag-with-javascript
 module.exports = function(doc, initialCss) {
@@ -4058,7 +4284,7 @@ module.exports = function(doc, initialCss) {
     return set;
 
 }
-},{}],39:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 // [a] => [a,a,a,a]
 // [a,b] => [a,b,a,b]
 // [a,b,c] => [a,b,c,b]
@@ -4103,9 +4329,9 @@ module.exports = function(thing) {
         return [val, val, val, val];
     }
 }
-},{}],40:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 
-},{}],41:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};

@@ -8,96 +8,44 @@
     <script>
       function init() {
 
-        var properties = {
-          a: {
-            caption: "A",
-            type: "checkbox",
-            value: true
-          },
-          foo: {
-            caption: "Foo",
-            type: "text",
-            value: 20
-          },
-          bar: {
-            caption: "Bar",
-            type: "text",
-            value: "Goodbye"
-          },
-          baz: {
-            caption: "Baz",
-            type: "knob",
-            value: 50,
-            options: {
-              userSizeHints: {
-                width: 36
-              }
-            }
-          },
-          bleem: {
-            caption: "Bleem",
-            type: "slider",
-            options: {
-              caption: "BLEEM"
-            },
-            value: 30
-          },
-          zoom: {
-            caption: "Zoomba",
-            type: "slider",
-            options: {
-              caption: "ZOOM"
-            },
-            value: 70
-          }
-        }
+        window.po = propertyObject();
 
-        var groups = [
-          { title: "Group 1",
-            properties: ['a', 'foo', 'bar']
-          },
-          { title: "Group 2",
-            properties: ['baz', 'bleem', 'zoom']
-          }
-        ];
+        po.group('Group 1')
+            .add('a', 'checkbox', false, {caption: 'Got A?'})
+            .add('foo', 'text', 20, {caption: 'Foo'})
+            .add('bar', 'text', 'Goodbye', {caption: 'Bar'})
+            .back()
+          .group('Group 2')
+            .add('bleem', 'slider', 30, {
+              caption: 'Bleem',
+              // this becomes setCaption() on the slider widget
+              config: { caption: 'BLEEM' }
+            })
+            .add('baz', 'knob', 50, {
+              caption: 'Baz',
+              config: { userSizeHints: { width: 36 } }
+            })
+            .add('zoom', 'slider', 70, {
+              config: { caption: 'ZOOM' }
+            });
 
-        var delegate = {
-          getPropertyGroupCount: function() {
-            return groups.length;
-          },
-          getPropertyGroupTitle: function(groupIx) {
-            return groups[groupIx].title;
-          },
-          getPropertyGroupPropertyNames: function(groupIx) {
-            return groups[groupIx].properties;
-          },
-          getPropertyCaption: function(name) {
-            return properties[name].caption;
-          },
-          getPropertyType: function(name) {
-            return properties[name].type;
-          },
-          getPropertyOptions: function(name) {
-            return properties[name].options || null;
-          },
-          getPropertyValue: function(name) {
-            return properties[name].value;
-          },
-          setPropertyValue: function(name, value) {
-            properties[name].value = value;
-            return true;
-          }
-        };
-
-        var p = hk.propertyEditor();
-        p.setDelegate(delegate);
-        
         var b2 = hk.box();
         b2.setBackgroundColor('green');
 
+        var p1 = hk.propertyEditor();
+        p1.setDelegate(po);
+
+        var p2 = hk.propertyEditor();
+        p2.setDelegate(po);
+
+        var sp2 = hk.splitPane();
+        sp2.setOrientation(hk.k.SPLIT_PANE_HORIZONTAL);
+        sp2.setTopWidget(p1);
+        sp2.setBottomWidget(p2);
+
         var sp = hk.splitPane();
         sp.setOrientation(hk.k.SPLIT_PANE_VERTICAL);
-        sp.setLeftWidget(p);
+        sp.setLeftWidget(sp2);
         sp.setRightWidget(b2);
         sp.setSplit(0.2);
 
