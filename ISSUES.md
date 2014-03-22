@@ -28,16 +28,17 @@ I ended implementing inline widgets; it works ok so far. I would still like to f
 
 ## TODO
 
+  * Alternative layout for property editor (dl/dt/dd)
+  * Split pane - absolute pixel size support
+  * Split pane - lock, lock absolute
+  * Split pane - min/max size policy
   * Horizontal slider to support rounding/increments. Knob too.
   * <del>Toolbar size should be set in code and be adjustable</del>
   * Move constants to instance prototype
-  * Modules should follow node conventions and return something useful
+  * <del>Modules should follow node conventions and return something useful</del>
   * Console auto-complete
   * Console history
   * Icons in buttons/anywhere else
-  * Split pane - min/max size policy
-  * Split pane - resize policy (proportional, one pane fixed)
-  * Split pane - absolute pixel size support
 
 ## Bugs
 
@@ -56,6 +57,8 @@ I'm sure there are plenty...
 
 ## Future Widgets
 
+  * Text/HTML content box
+  * HTML widget
   * Text area
   * XY-pad
   * List view
