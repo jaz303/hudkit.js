@@ -36,10 +36,12 @@
 	text-align: left;
 	padding-right: 5px;
 	color: white;
+	white-space: nowrap;
 }
 
 .hk-property-editor tbody td {
 	text-align: right;
+	width: 70%;
 }
 
 .hk-property-editor .hk-text-field,
