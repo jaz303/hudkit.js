@@ -32,7 +32,7 @@ require('./lib/PropertyEditor');
 require('./lib/Checkbox');
 require('./lib/TextField');
 },{"./lib/BlockWidget":3,"./lib/Box":4,"./lib/Button":5,"./lib/ButtonBar":6,"./lib/Canvas2D":7,"./lib/Checkbox":8,"./lib/Console":9,"./lib/Container":10,"./lib/HorizontalSlider":11,"./lib/InlineWidget":12,"./lib/Knob":14,"./lib/MultiSplitPane":15,"./lib/Panel":16,"./lib/PropertyEditor":17,"./lib/RootPane":18,"./lib/Select":19,"./lib/SplitPane":20,"./lib/StatusBar":21,"./lib/TabPane":22,"./lib/TextField":23,"./lib/Toolbar":24,"./lib/TreeView":25,"./lib/Widget":26,"./lib/core":28}],3:[function(require,module,exports){
-(function (__dirname){var ctx		= require('../core'),
+var ctx		= require('../core'),
 	theme 	= require('../theme'),
 	k		= require('../constants'),
 	Widget 	= require('../Widget'),
@@ -108,7 +108,7 @@ var BlockWidget = module.exports = Widget.extend(function(_sc, _sm) {
 });
 
 ctx.registerCSS(".hk-block-widget {\n\tdisplay: block;\n\tposition: absolute;\n\twidth: auto;\n\theight: auto;\n}");
-ctx.registerWidget('BlockWidget', BlockWidget);}).call(this,"/../lib/BlockWidget")
+ctx.registerWidget('BlockWidget', BlockWidget);
 },{"../Widget":26,"../constants":27,"../core":28,"../theme":30,"domutil":34}],4:[function(require,module,exports){
 var ctx         = require('../core'),
     theme       = require('../theme'),
@@ -147,7 +147,7 @@ var Box = module.exports = BlockWidget.extend(function(_sc, _sm) {
 
 ctx.registerWidget('Box', Box);
 },{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30}],5:[function(require,module,exports){
-(function (__dirname){var ctx             = require('../core'),
+var ctx             = require('../core'),
     theme           = require('../theme'),
     k               = require('../constants'),
     InlineWidget    = require('../InlineWidget'),
@@ -313,9 +313,9 @@ ctx.registerWidget('Button', module.exports = InlineWidget.extend(function(_sc, 
 
 }));
 
-ctx.registerCSS(".hk-button-common {\n\t\n\tfont-family: $HK_CONTROL_FONT;\n\tfont-size: 11px;\n\tline-height: 1;\n\tbackground: $HK_BUTTON_BG_COLOR;\n\tcolor: $HK_TEXT_COLOR;\n\ttext-align: center;\n\n\theight: 18px;\n\n}\n\n.hk-button-common > span {\n\tdisplay: block;\n\t\n\t/* vertically align label inside button */\n\tposition: relative;\n\ttop: 50%;\n\ttransform: translateY(-50%);\n    -webkit-transform: translateY(-50%);\n}\n\n.hk-button-common.disabled {\n\tcolor: #d0d0d0;\n}\n\n.hk-button-common:not(.disabled):active {\n\tbackground: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-rounded-button {\n\tpadding: 1px 10px 2px 10px;\n\tborder-radius: 7px;\n}\n");}).call(this,"/../lib/Button")
+ctx.registerCSS(".hk-button-common {\n\t\n\tfont-family: $HK_CONTROL_FONT;\n\tfont-size: 11px;\n\tline-height: 1;\n\tbackground: $HK_BUTTON_BG_COLOR;\n\tcolor: $HK_TEXT_COLOR;\n\ttext-align: center;\n\n\theight: 18px;\n\n}\n\n.hk-button-common > span {\n\tdisplay: block;\n\t\n\t/* vertically align label inside button */\n\tposition: relative;\n\ttop: 50%;\n\ttransform: translateY(-50%);\n    -webkit-transform: translateY(-50%);\n}\n\n.hk-button-common.disabled {\n\tcolor: #d0d0d0;\n}\n\n.hk-button-common:not(.disabled):active {\n\tbackground: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-rounded-button {\n\tpadding: 1px 10px 2px 10px;\n\tborder-radius: 7px;\n}\n");
 },{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34}],6:[function(require,module,exports){
-(function (__dirname){var ctx         = require('../core'),
+var ctx         = require('../core'),
     theme       = require('../theme'),
     k           = require('../constants'),
     BlockWidget = require('../BlockWidget');
@@ -351,9 +351,9 @@ ctx.registerWidget('ButtonBar', module.exports = BlockWidget.extend(function(_sc
 
 }));
 
-ctx.registerCSS(".hk-button-bar {\n    \n}\n\n.hk-button-bar-button {\n    display: block;\n    width: 20px;\n    height: 20px;\n    border-radius: 10px;\n    margin: 0 4px 4px 0;\n}\n\n.hk-button-bar-button span {\n    display: none;\n}\n");}).call(this,"/../lib/ButtonBar")
+ctx.registerCSS(".hk-button-bar {\n    \n}\n\n.hk-button-bar-button {\n    display: block;\n    width: 20px;\n    height: 20px;\n    border-radius: 10px;\n    margin: 0 4px 4px 0;\n}\n\n.hk-button-bar-button span {\n    display: none;\n}\n");
 },{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30}],7:[function(require,module,exports){
-(function (__dirname){var ctx         = require('../core'),
+var ctx         = require('../core'),
     theme       = require('../theme'),
     k           = require('../constants'),
     BlockWidget = require('../BlockWidget');
@@ -392,7 +392,7 @@ ctx.registerWidget('Canvas2D', module.exports = BlockWidget.extend(function(_sc,
 
 }));
 
-ctx.registerCSS(".hk-canvas-2d {\n    background-color: #121212;\n    border-radius: $HK_BLOCK_BORDER_RADIUS;\n}\n\n.hk-canvas-2d:focus {\n\toutline: none;\n}\n");}).call(this,"/../lib/Canvas2D")
+ctx.registerCSS(".hk-canvas-2d {\n    background-color: #121212;\n    border-radius: $HK_BLOCK_BORDER_RADIUS;\n}\n\n.hk-canvas-2d:focus {\n\toutline: none;\n}\n");
 },{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30}],8:[function(require,module,exports){
 var ctx             = require('../core'),
     theme           = require('../theme'),
@@ -500,7 +500,7 @@ ctx.registerInitializer(function(instance) {
 
 });
 },{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34}],9:[function(require,module,exports){
-(function (__dirname){var ctx         = require('../core'),
+var ctx         = require('../core'),
     theme       = require('../theme'),
     k           = require('../constants'),
     BlockWidget = require('../BlockWidget'),
@@ -817,7 +817,7 @@ ctx.registerWidget('Console', module.exports = BlockWidget.extend(function(_sc, 
 }));
 
 ctx.registerCSS(".hk-console {\n    padding: 5px;\n    background: #AAB2B7;\n    border-radius: $HK_BLOCK_BORDER_RADIUS;\n    overflow: auto;\n    font: $HK_CONSOLE_FONT_SIZE/1.2 $HK_MONOSPACE_FONT;\n}\n\n.hk-console output {\n    \n}\n\n.hk-console .output-item {\n    display: -webkit-box;\n    -webkit-box-orient: horizontal;\n    -webkit-box-align: stretch;\n    clear: both;\n}\n\n.hk-console .input-line {\n    \n}\n    \n.hk-console .prompt {\n    white-space: nowrap;\n    margin-right: 5px;\n    display: -webkit-box;\n    -webkit-box-back: center;\n    -webkit-box-orient: vertical;\n}\n    \n.hk-console .command-wrapper {\n    display: block;\n    -webkit-box-flex: 1;\n}\n    \n.hk-console span.command {\n    display: inline-block;\n}\n\n.hk-console input.command {\n    border: none;\n    background: none;\n    padding: 0;\n    margin: 0;\n    width: 100%;\n    font: inherit;\n    -webkit-appearance: textfield;\n    -webkit-user-select: text;\n    cursor: auto;\n    display: inline-block;\n    text-align: start;\n}\n\n.hk-console input.command:focus {\n    outline: none;\n}\n");
-}).call(this,"/../lib/Console")
+
 },{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34}],10:[function(require,module,exports){
 var ctx         = require('../core'),
     theme       = require('../theme'),
@@ -938,7 +938,7 @@ ctx.registerWidget('Container', module.exports = BlockWidget.extend(function(_sc
 
 }));
 },{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30}],11:[function(require,module,exports){
-(function (__dirname){var ctx             = require('../core'),
+var ctx             = require('../core'),
     theme           = require('../theme'),
     k               = require('../constants'),
     InlineWidget    = require('../InlineWidget'),
@@ -1083,9 +1083,9 @@ ctx.registerWidget('HorizontalSlider', module.exports = InlineWidget.extend(func
 
 }));
 
-ctx.registerCSS(".hk-horizontal-slider {\n\tposition: relative;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    background: black;\n    background-color: $HK_BUTTON_BG_COLOR;\n    width: 200px;\n    height: 18px;\n}\n\n.hk-horizontal-slider > .fill {\n\theight: 100%;\n\tdisplay: block;\n\twidth: 0;\n\tbackground-color: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-horizontal-slider > .caption {\n\tposition: absolute;\n\ttop: 50%;\n\tleft: 0;\n\twidth: 100%;\n\tfont-size: 11px;\n\tline-height: 1;\n\tmargin-top: -5px;\n\ttext-align: center;\n}");}).call(this,"/../lib/HorizontalSlider")
+ctx.registerCSS(".hk-horizontal-slider {\n\tposition: relative;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    background: black;\n    background-color: $HK_BUTTON_BG_COLOR;\n    width: 200px;\n    height: 18px;\n}\n\n.hk-horizontal-slider > .fill {\n\theight: 100%;\n\tdisplay: block;\n\twidth: 0;\n\tbackground-color: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-horizontal-slider > .caption {\n\tposition: absolute;\n\ttop: 50%;\n\tleft: 0;\n\twidth: 100%;\n\tfont-size: 11px;\n\tline-height: 1;\n\tmargin-top: -5px;\n\ttext-align: center;\n}");
 },{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":38}],12:[function(require,module,exports){
-(function (__dirname){var ctx 	= require('../core'),
+var ctx 	= require('../core'),
 	theme 	= require('../theme'),
 	k		= require('../constants'),
 	Widget 	= require('../Widget'),
@@ -1155,9 +1155,9 @@ var InlineWidget = module.exports = Widget.extend(function(_sc, _sm) {
 });
 
 ctx.registerCSS(".hk-inline-widget {\n\tdisplay: inline-block;\n\twidth: auto;\n\theight: auto;\n}");
-ctx.registerWidget('InlineWidget', InlineWidget);}).call(this,"/../lib/InlineWidget")
+ctx.registerWidget('InlineWidget', InlineWidget);
 },{"../Widget":26,"../constants":27,"../core":28,"../theme":30,"domutil":34}],13:[function(require,module,exports){
-(function (__dirname){var fs 			= require('fs'),
+var fs 			= require('fs'),
 	styleTag 	= require('style-tag'),
     registry    = require('./registry'),
     action      = require('hudkit-action'),
@@ -1203,9 +1203,9 @@ Instance.prototype.appendCSS = function(css) {
     return styleTag(this.document, css);
 
 }
-}).call(this,"/../lib")
+
 },{"./constants":27,"./registry":29,"./theme":30,"fs":42,"hudkit-action":35,"style-tag":40}],14:[function(require,module,exports){
-(function (__dirname){var ctx             = require('../core'),
+var ctx             = require('../core'),
     theme           = require('../theme'),
     k               = require('../constants'),
     InlineWidget    = require('../InlineWidget'),
@@ -1365,7 +1365,7 @@ ctx.registerWidget('Knob', module.exports = InlineWidget.extend(function(_sc, _s
 
 }));
 
-ctx.registerCSS(".hk-knob {\n    background-color: $HK_BUTTON_BG_COLOR;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n}");}).call(this,"/../lib/Knob")
+ctx.registerCSS(".hk-knob {\n    background-color: $HK_BUTTON_BG_COLOR;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n}");
 },{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":38,"signalkit":39}],15:[function(require,module,exports){
 var ctx             = require('../core'),
     theme           = require('../theme'),
@@ -1759,7 +1759,7 @@ ctx.registerWidget('Panel', module.exports = Container.extend(function(_sc, _sm)
 
 }));
 },{"../Container":10,"../constants":27,"../core":28,"../theme":30}],17:[function(require,module,exports){
-(function (__dirname){var ctx             = require('../core'),
+var ctx             = require('../core'),
     theme           = require('../theme'),
     k               = require('../constants'),
     BlockWidget     = require('../BlockWidget');
@@ -1994,9 +1994,9 @@ PropertyEditor.registerEditor = function(type, builder) {
 }
 
 ctx.registerWidget('PropertyEditor', PropertyEditor);
-ctx.registerCSS(".hk-property-editor {\n\t\n}\n\n.hk-property-editor table {\n\twidth: 100%;\n}\n\n.hk-property-editor thead {\n\tbackground-color: #929DA8;\n}\n\n.hk-property-editor thead th {\n\ttext-align: left;\n\tpadding: 3px;\n\tcolor: black;\n}\n\n.hk-property-editor tbody th, td {\n\tpadding-top: 3px;\n\tpadding-bottom: 3px;\n\tvertical-align: middle;\n}\n\n.hk-property-editor tbody tr:first-child td,\n.hk-property-editor tbody tr:first-child th {\n\tpadding-top: 6px;\t\n}\n\n.hk-property-editor tbody tr:last-child td,\n.hk-property-editor tbody tr:last-child th {\n\tpadding-bottom: 6px;\t\n}\n\n.hk-property-editor tbody th {\n\ttext-align: left;\n\tpadding-right: 5px;\n\tcolor: white;\n}\n\n.hk-property-editor tbody td {\n\ttext-align: right;\n}\n\n.hk-property-editor .hk-text-field,\n.hk-property-editor .hk-horizontal-slider {\n\twidth: 100%;\n}");}).call(this,"/../lib/PropertyEditor")
+ctx.registerCSS(".hk-property-editor {\n\t\n}\n\n.hk-property-editor table {\n\twidth: 100%;\n}\n\n.hk-property-editor thead {\n\tbackground-color: #929DA8;\n}\n\n.hk-property-editor thead th {\n\ttext-align: left;\n\tpadding: 3px;\n\tcolor: black;\n}\n\n.hk-property-editor tbody th, td {\n\tpadding-top: 3px;\n\tpadding-bottom: 3px;\n\tvertical-align: middle;\n}\n\n.hk-property-editor tbody tr:first-child td,\n.hk-property-editor tbody tr:first-child th {\n\tpadding-top: 6px;\t\n}\n\n.hk-property-editor tbody tr:last-child td,\n.hk-property-editor tbody tr:last-child th {\n\tpadding-bottom: 6px;\t\n}\n\n.hk-property-editor tbody th {\n\ttext-align: left;\n\tpadding-right: 5px;\n\tcolor: white;\n\twhite-space: nowrap;\n}\n\n.hk-property-editor tbody td {\n\ttext-align: right;\n\twidth: 70%;\n}\n\n.hk-property-editor .hk-text-field,\n.hk-property-editor .hk-horizontal-slider {\n\twidth: 100%;\n}");
 },{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30}],18:[function(require,module,exports){
-(function (__dirname){var ctx         = require('../core'),
+var ctx         = require('../core'),
     theme       = require('../theme'),
     k           = require('../constants'),
     BlockWidget = require('../BlockWidget'),
@@ -2187,9 +2187,9 @@ var RootPane = module.exports = BlockWidget.extend(function(_sc, _sm) {
 });
 
 ctx.registerCSS(".hk-root-pane {\n\ttop: 0;\n\tleft: 0;\n\tright: 0;\n\tbottom: 0;\n\toverflow: hidden;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}");
-ctx.registerWidget('RootPane', RootPane);}).call(this,"/../lib/RootPane")
+ctx.registerWidget('RootPane', RootPane);
 },{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"trbl":41}],19:[function(require,module,exports){
-(function (__dirname){var ctx             = require('../core'),
+var ctx             = require('../core'),
     theme           = require('../theme'),
     k               = require('../constants'),
     InlineWidget    = require('../InlineWidget'),
@@ -2224,9 +2224,9 @@ ctx.registerWidget('Select', module.exports = InlineWidget.extend(function(_sc, 
 
 }));
 
-ctx.registerCSS(".hk-select {\n\theight: 18px;\n}");}).call(this,"/../lib/Select")
+ctx.registerCSS(".hk-select {\n\theight: 18px;\n}");
 },{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34}],20:[function(require,module,exports){
-(function (__dirname){var ctx             = require('../core'),
+var ctx             = require('../core'),
     theme           = require('../theme'),
     k               = require('../constants'),
     BlockWidget    	= require('../BlockWidget'),
@@ -2482,9 +2482,9 @@ ctx.registerWidget('SplitPane', module.exports = BlockWidget.extend(function(_sc
 
 }));
 
-ctx.registerCSS(".hk-split-pane > .hk-split-pane-divider {\n\tposition: absolute;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}\n\n.hk-split-pane > .hk-split-pane-ghost {\n\tbackground-color: #ff3300;\n\topacity: 0.7;\n}\n\n.hk-split-pane.horizontal > .hk-split-pane-divider {\n\tleft: 0; right: 0;\n\theight: $HK_SPLIT_PANE_DIVIDER_SIZE;\n\tcursor: row-resize;\n}\n\n.hk-split-pane.vertical > .hk-split-pane-divider {\n\ttop: 0; bottom: 0;\n\twidth: $HK_SPLIT_PANE_DIVIDER_SIZE;\n\tcursor: col-resize;\n}\n");}).call(this,"/../lib/SplitPane")
+ctx.registerCSS(".hk-split-pane > .hk-split-pane-divider {\n\tposition: absolute;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}\n\n.hk-split-pane > .hk-split-pane-ghost {\n\tbackground-color: #ff3300;\n\topacity: 0.7;\n}\n\n.hk-split-pane.horizontal > .hk-split-pane-divider {\n\tleft: 0; right: 0;\n\theight: $HK_SPLIT_PANE_DIVIDER_SIZE;\n\tcursor: row-resize;\n}\n\n.hk-split-pane.vertical > .hk-split-pane-divider {\n\ttop: 0; bottom: 0;\n\twidth: $HK_SPLIT_PANE_DIVIDER_SIZE;\n\tcursor: col-resize;\n}\n");
 },{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":38}],21:[function(require,module,exports){
-(function (__dirname){var ctx             = require('../core'),
+var ctx             = require('../core'),
     theme           = require('../theme'),
     k               = require('../constants'),
     BlockWidget     = require('../BlockWidget'),
@@ -2568,9 +2568,9 @@ ctx.registerWidget('StatusBar', module.exports = BlockWidget.extend(function(_sc
 
 }));
 
-ctx.registerCSS(".hk-status-bar {\n    background: #595959;\n    border-top: 1px solid #7D7D7D;\n    box-sizing: border-box;\n    padding: 0 5px;\n}\n\n.hk-status-bar .left-cells {\n    float: left;\n}\n\n.hk-status-bar .right-cells {\n    float: right;\n}\n\n.hk-status-bar .cell {\n    float: left;\n    height: 20px;\n}\n\n.hk-status-bar .cell.text {\n    color: white;\n    font-size: 11px;\n    font-family: Helvetica;\n    padding-top: 3px;\n    text-shadow: #202020 0 -1px 1px;\n}");}).call(this,"/../lib/StatusBar")
+ctx.registerCSS(".hk-status-bar {\n    background: #595959;\n    border-top: 1px solid #7D7D7D;\n    box-sizing: border-box;\n    padding: 0 5px;\n}\n\n.hk-status-bar .left-cells {\n    float: left;\n}\n\n.hk-status-bar .right-cells {\n    float: right;\n}\n\n.hk-status-bar .cell {\n    float: left;\n    height: 20px;\n}\n\n.hk-status-bar .cell.text {\n    color: white;\n    font-size: 11px;\n    font-family: Helvetica;\n    padding-top: 3px;\n    text-shadow: #202020 0 -1px 1px;\n}");
 },{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34}],22:[function(require,module,exports){
-(function (__dirname){var ctx             = require('../core'),
+var ctx             = require('../core'),
     theme           = require('../theme'),
     k               = require('../constants'),
     BlockWidget    	= require('../BlockWidget'),
@@ -2824,9 +2824,9 @@ ctx.registerWidget('TabPane', module.exports = BlockWidget.extend(function(_sc, 
 
 }));
 
-ctx.registerCSS(".hk-tab-pane .hk-tab-bar {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: $HK_TAB_HEIGHT;\n}\n\n.hk-tab-pane .hk-tab-bar > a {\n\n  /* control-font mixin */\n  font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n  line-height: 1;\n\n  background: $HK_TAB_BACKGROUND_COLOR;\n  display: block;\n  float: left;\n  margin-right: $HK_TAB_SPACING;\n  color: $HK_TEXT_COLOR;\n  text-decoration: none;\n  font-weight: bold;\n  padding: $HK_TAB_PADDING;\n  border-radius: $HK_TAB_BORDER_RADIUS;\n  min-width: 30px;\n  text-align: center; \n  \n}\n\n.hk-tab-pane .hk-tab-bar > a.active {\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.hk-tab-pane .hk-tab-container {\n  position: absolute;\n  top: $HK_TAB_CONTAINER_TOP;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: $HK_TAB_BACKGROUND_COLOR;\n  border-radius: 8px;\n}\n\n.hk-tab-pane .hk-tab-canvas {\n  position: absolute;\n}\n");}).call(this,"/../lib/TabPane")
+ctx.registerCSS(".hk-tab-pane .hk-tab-bar {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: $HK_TAB_HEIGHT;\n}\n\n.hk-tab-pane .hk-tab-bar > a {\n\n  /* control-font mixin */\n  font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n  line-height: 1;\n\n  background: $HK_TAB_BACKGROUND_COLOR;\n  display: block;\n  float: left;\n  margin-right: $HK_TAB_SPACING;\n  color: $HK_TEXT_COLOR;\n  text-decoration: none;\n  font-weight: bold;\n  padding: $HK_TAB_PADDING;\n  border-radius: $HK_TAB_BORDER_RADIUS;\n  min-width: 30px;\n  text-align: center; \n  \n}\n\n.hk-tab-pane .hk-tab-bar > a.active {\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.hk-tab-pane .hk-tab-container {\n  position: absolute;\n  top: $HK_TAB_CONTAINER_TOP;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: $HK_TAB_BACKGROUND_COLOR;\n  border-radius: 8px;\n}\n\n.hk-tab-pane .hk-tab-canvas {\n  position: absolute;\n}\n");
 },{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34}],23:[function(require,module,exports){
-(function (__dirname){var ctx             = require('../core'),
+var ctx             = require('../core'),
     theme           = require('../theme'),
     k               = require('../constants'),
     InlineWidget    = require('../InlineWidget'),
@@ -2916,9 +2916,9 @@ ctx.registerWidget('TextField', module.exports = InlineWidget.extend(function(_s
 
 }));
 
-ctx.registerCSS(".hk-text-field {\n\tpadding: 0 4px;\n    line-height: 1;\n    font-size: 10px;\n    background-color: $HK_BUTTON_BG_COLOR;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    width: 200px;\n    height: 18px;\n}\n\n.hk-text-field:focus {\n\toutline: none;\n\tborder-color: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n");}).call(this,"/../lib/TextField")
+ctx.registerCSS(".hk-text-field {\n\tpadding: 0 4px;\n    line-height: 1;\n    font-size: 10px;\n    background-color: $HK_BUTTON_BG_COLOR;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    width: 200px;\n    height: 18px;\n}\n\n.hk-text-field:focus {\n\toutline: none;\n\tborder-color: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n");
 },{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34}],24:[function(require,module,exports){
-(function (__dirname){var ctx         = require('../core'),
+var ctx         = require('../core'),
     theme       = require('../theme'),
     k           = require('../constants'),
     BlockWidget = require('../BlockWidget'),
@@ -3004,9 +3004,9 @@ ctx.registerWidget('Toolbar', module.exports = BlockWidget.extend(function(_sc, 
 
 }));
 
-ctx.registerCSS(".hk-toolbar {\n    \n}\n\n.hk-toolbar-items {\n\n}\n\n.hk-toolbar-items.hk-toolbar-items-left {\n    float: left;\n}\n\n.hk-toolbar-items.hk-toolbar-items-right {\n    float: right;\n}\n\n.hk-toolbar-items > * {\n    margin-right: 2px !important;\n    vertical-align: top;\n}\n\n.hk-toolbar-button {\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    padding-left: 3px;\n    padding-right: 3px;\n}\n");}).call(this,"/../lib/Toolbar")
+ctx.registerCSS(".hk-toolbar {\n    \n}\n\n.hk-toolbar-items {\n\n}\n\n.hk-toolbar-items.hk-toolbar-items-left {\n    float: left;\n}\n\n.hk-toolbar-items.hk-toolbar-items-right {\n    float: right;\n}\n\n.hk-toolbar-items > * {\n    margin-right: 2px !important;\n    vertical-align: top;\n}\n\n.hk-toolbar-button {\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    padding-left: 3px;\n    padding-right: 3px;\n}\n");
 },{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34}],25:[function(require,module,exports){
-(function (__dirname){var ctx         = require('../core'),
+var ctx         = require('../core'),
     theme       = require('../theme'),
     k           = require('../constants'),
     BlockWidget = require('../BlockWidget'),
@@ -3312,9 +3312,9 @@ var TreeView = module.exports = BlockWidget.extend(function(_sc, _sm) {
 });
 
 ctx.registerCSS(".hk-tree-view {\n\tbackground: #202020;\n\toverflow: auto;\n}\n\n.hk-tree-view .item {\n\tdisplay: block;\n\tpadding: 3px;\n}\n\n.hk-tree-view .icon {\n\tdisplay: inline-block;\n\twidth: 16px;\n\tbackground: blue;\n}\n\n.hk-tree-view .title {\n\tdisplay: inline-block;\n\tmargin-left: 5px;\n\tcolor: white;\n}\n\n.hk-tree-view ul {\n\tdisplay: block;\n\tlist-style: none;\n\tmargin: 0;\n\tpadding: 0;\n}\n\n.hk-tree-view li {\n\tdisplay: block;\n\tlist-style: none;\n\tmargin: 0;\n\tpadding: 0;\n}\n\n.hk-tree-view ul ul {\n\tmargin-left: 20px;\n}\n\n.hk-tree-view li > ul {\n\tdisplay: none;\n}\n\n/* Flair */\n\n.hk-tree-view-flair {\n\tfloat: right;\n}\n\n.hk-tree-view-flair > * {\n\tdisplay: inline-block;\n\ttext-align: center;\n\tmargin-left: 3px;\n}\n\n/* Expanded State */\n\n.hk-tree-view li.expanded > ul {\n\tdisplay: block;\n}\n\n.hk-tree-view li.expanded > .item > .icon {\n\tbackground: green;\n}\n\n/* Selected State */\n\n.hk-tree-view li.selected > .item {\n\tbackground: red;\n}");
-ctx.registerWidget('TreeView', TreeView);}).call(this,"/../lib/TreeView")
+ctx.registerWidget('TreeView', TreeView);
 },{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34}],26:[function(require,module,exports){
-(function (__dirname){var ctx     = require('../core'),
+var ctx     = require('../core'),
     theme   = require('../theme'),
     k       = require('../constants'),
     Class   = require('classkit').Class,
@@ -3547,7 +3547,7 @@ Widget.registerMixin('ValueRange', {
 });
 
 ctx.registerCSS(".hk-widget {\n\toverflow: hidden;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n}\n");
-ctx.registerWidget('Widget', Widget);}).call(this,"/../lib/Widget")
+ctx.registerWidget('Widget', Widget);
 },{"../constants":27,"../core":28,"../theme":30,"classkit":31,"domutil":34,"signalkit":39}],27:[function(require,module,exports){
 module.exports = {};
 },{}],28:[function(require,module,exports){
@@ -4008,10 +4008,22 @@ PropertyObject.prototype.getPropertyDescriptor = function(name) {
 }
 
 PropertyObject.prototype.getPropertyValue = function(key) {
+
+	if (!(key in this._values)) {
+		throw new Error("no such property: " + key);
+	}
+
 	return this._values[key];
+
 }
 
-PropertyObject.prototype.setPropertyValue = function(key, newValue, oldValue) {
+PropertyObject.prototype.setPropertyValue = function(key, newValue) {
+
+	if (!(key in this._values)) {
+		throw new Error("no such property: " + key);
+	}
+
+	var oldValue = this._values[key];
 	
 	this._values[key] = newValue;
 	

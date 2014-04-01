@@ -29,5 +29,8 @@
   },
   "devDependencies": {
     "brfs": "~1.0.0"
+  },
+  "browserify": {
+    "transform": [ "brfs" ]
   }
 }
