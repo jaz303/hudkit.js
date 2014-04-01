@@ -25,11 +25,10 @@
     "hudkit-action": "~0.1.0",
     "style-tag": "0.0.1",
     "signalkit": "~0.2.3",
-    "hudkit-property-object": "~0.1.0"
-  },
-  "devDependencies": {
+    "hudkit-property-object": "~0.1.0",
     "brfs": "~1.0.0"
   },
+  "devDependencies": {},
   "browserify": {
     "transform": [
       "brfs"
