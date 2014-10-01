@@ -4,6 +4,7 @@
   <head>
     <title>hudkit demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel='stylesheet' href='../css/hudkit.css'></link>
     <script src='bundle.js'></script>
     <script>
       function init() {
@@ -74,7 +75,7 @@
         a2.setEnabled(false);
 
         var k1 = hk.knob();
-        k1.onChange.connect(function(src, v) {
+        k1.value.connect(function(v) {
             console.log("k1 = " + v);
         });
         k1.setMinValue(75);
@@ -82,45 +83,45 @@
         toolbar.addWidget(k1);
 
         var k2 = hk.knob();
-        k2.onChange.connect(function(src, v) {
+        k2.value.connect(function(v) {
             console.log("k2 = " + v);
         });
         toolbar.addWidget(k2);
 
         var k3 = hk.knob();
-        k3.onChange.connect(function(src, v) {
+        k3.value.connect(function(v) {
             console.log("k3 = " + v);
         });
         toolbar.addWidget(k3);
 
-        var cb = hk.checkbox();
-        cb.onChange.connect(function(src, value) {
-            console.log("checkbox = " + value);
-        });
-        toolbar.addWidget(cb);
+        // var cb = hk.checkbox();
+        // cb.value.connect(function(src, value) {
+        //     console.log("checkbox = " + value);
+        // });
+        // toolbar.addWidget(cb);
 
-        var t1 = hk.textField();
+        // var t1 = hk.textField();
         
-        t1.onChange.connect(function(src, value) {
-            console.log("textfield value = " + value);
-        });
+        // t1.onChange.connect(function(src, value) {
+        //     console.log("textfield value = " + value);
+        // });
 
-        t1.onAction.connect(function(src, value) {
-            console.log("textfield action = " + value);
-        });
+        // t1.onAction.connect(function(src, value) {
+        //     console.log("textfield action = " + value);
+        // });
 
-        toolbar.addWidget(t1);
+        // toolbar.addWidget(t1);
 
-        var s1 = hk.select();
-        toolbar.addWidget(s1);
+        // var s1 = hk.select();
+        // toolbar.addWidget(s1);
 
         var slider1 = hk.horizontalSlider();
-        slider1.onChange.connect(function(src, v) {
+        slider1.value.connect(function(v) {
             console.log("slider1 = " + v);
         });
         slider1.setCaption("Volume");
         slider1.setMinValue(10);
-        slider1.setMaxValue(1000);
+        slider1.setMaxValue(50);
         toolbar.addWidget(slider1);
 
         hk.root.setToolbar(toolbar);

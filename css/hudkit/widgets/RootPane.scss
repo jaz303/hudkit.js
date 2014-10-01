@@ -1,0 +1,39 @@
+.hk-root-pane {
+	
+	$PADDING 		: 8px ;
+
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background-color: $HK_ROOT_BG_COLOR;
+	-webkit-user-select: none;
+	cursor: default;
+
+	> .toolbar-wrapper {
+		position: absolute;
+		top: $PADDING;
+		left: $PADDING;
+		right: $PADDING;
+		height: $HK_TOOLBAR_HEIGHT;
+	}
+
+	> .root-wrapper {
+		position: absolute;
+		top: $PADDING + $HK_TOOLBAR_HEIGHT + $PADDING;
+		left: $PADDING;
+		right: $PADDING;
+		bottom: $PADDING;
+	}
+
+	&.toolbar-hidden {
+		> .toolbar-wrapper {
+			display: none;
+		}
+		> .root-wrapper {
+			top: $PADDING;
+		}
+	}
+
+}

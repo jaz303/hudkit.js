@@ -3,4 +3,4 @@ window.hkinit = function() {
 	window.hk = hudkit.instance(window);	
 }
 
-window.propertyObject = require('hudkit-property-object');
+// window.propertyObject = require('hudkit-property-object');

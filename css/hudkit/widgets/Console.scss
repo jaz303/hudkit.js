@@ -1,0 +1,57 @@
+.hk-console {
+    padding: 5px;
+    background: #AAB2B7;
+    border-radius: $HK_BLOCK_BORDER_RADIUS;
+    overflow: auto;
+    font: $HK_CONSOLE_FONT_SIZE/1.2 $HK_MONOSPACE_FONT;
+
+    output {
+        
+    }
+
+    .output-item {
+        display: -webkit-box;
+        -webkit-box-orient: horizontal;
+        -webkit-box-align: stretch;
+        clear: both;
+    }
+
+    .input-line {
+        
+    }
+
+    .prompt {
+        white-space: nowrap;
+        margin-right: 5px;
+        display: -webkit-box;
+        -webkit-box-back: center;
+        -webkit-box-orient: vertical;
+    }
+
+    .command-wrapper {
+        display: block;
+        -webkit-box-flex: 1;
+    }
+
+    span.command {
+        display: inline-block;
+    }
+
+    input.command {
+        border: none;
+        background: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        font: inherit;
+        -webkit-appearance: textfield;
+        -webkit-user-select: text;
+        cursor: auto;
+        display: inline-block;
+        text-align: start;
+    }
+
+    input.command:focus {
+        outline: none;
+    }
+}

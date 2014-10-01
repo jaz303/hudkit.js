@@ -1,16 +1,14 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/jason/dev/projects/hudkit.js/demo/hk.js":[function(require,module,exports){
 window.hkinit = function() {
 	window.hudkit = require('../');
 	window.hk = hudkit.instance(window);	
 }
 
-window.propertyObject = require('hudkit-property-object');
-},{"../":2,"hudkit-property-object":36}],2:[function(require,module,exports){
+// window.propertyObject = require('hudkit-property-object');
+},{"../":"/Users/jason/dev/projects/hudkit.js/index.js"}],"/Users/jason/dev/projects/hudkit.js/index.js":[function(require,module,exports){
 module.exports = require('./lib/core');
 
 require('./lib/Widget');
-require('./lib/InlineWidget');
-require('./lib/BlockWidget');
 require('./lib/RootPane');
 require('./lib/Box');
 require('./lib/SplitPane');
@@ -21,110 +19,28 @@ require('./lib/Container');
 require('./lib/Panel');
 require('./lib/Button');
 require('./lib/ButtonBar');
-require('./lib/TabPane');
+// require('./lib/TabPane');
 require('./lib/Toolbar');
-require('./lib/StatusBar');
+// require('./lib/StatusBar');
 require('./lib/TreeView');
 require('./lib/Knob');
-require('./lib/Select');
+// require('./lib/Select');
 require('./lib/HorizontalSlider');
-require('./lib/PropertyEditor');
-require('./lib/Checkbox');
-require('./lib/TextField');
-},{"./lib/BlockWidget":3,"./lib/Box":4,"./lib/Button":5,"./lib/ButtonBar":6,"./lib/Canvas2D":7,"./lib/Checkbox":8,"./lib/Console":9,"./lib/Container":10,"./lib/HorizontalSlider":11,"./lib/InlineWidget":12,"./lib/Knob":14,"./lib/MultiSplitPane":15,"./lib/Panel":16,"./lib/PropertyEditor":17,"./lib/RootPane":18,"./lib/Select":19,"./lib/SplitPane":20,"./lib/StatusBar":21,"./lib/TabPane":22,"./lib/TextField":23,"./lib/Toolbar":24,"./lib/TreeView":25,"./lib/Widget":26,"./lib/core":28}],3:[function(require,module,exports){
-var ctx		= require('../core'),
-	theme 	= require('../theme'),
-	k		= require('../constants'),
-	Widget 	= require('../Widget'),
-	du 		= require('domutil');
+// require('./lib/PropertyEditor');
+// require('./lib/Checkbox');
+// require('./lib/TextField');
+},{"./lib/Box":"/Users/jason/dev/projects/hudkit.js/lib/Box/index.js","./lib/Button":"/Users/jason/dev/projects/hudkit.js/lib/Button/index.js","./lib/ButtonBar":"/Users/jason/dev/projects/hudkit.js/lib/ButtonBar/index.js","./lib/Canvas2D":"/Users/jason/dev/projects/hudkit.js/lib/Canvas2D/index.js","./lib/Console":"/Users/jason/dev/projects/hudkit.js/lib/Console/index.js","./lib/Container":"/Users/jason/dev/projects/hudkit.js/lib/Container/index.js","./lib/HorizontalSlider":"/Users/jason/dev/projects/hudkit.js/lib/HorizontalSlider/index.js","./lib/Knob":"/Users/jason/dev/projects/hudkit.js/lib/Knob/index.js","./lib/MultiSplitPane":"/Users/jason/dev/projects/hudkit.js/lib/MultiSplitPane/index.js","./lib/Panel":"/Users/jason/dev/projects/hudkit.js/lib/Panel/index.js","./lib/RootPane":"/Users/jason/dev/projects/hudkit.js/lib/RootPane/index.js","./lib/SplitPane":"/Users/jason/dev/projects/hudkit.js/lib/SplitPane/index.js","./lib/Toolbar":"/Users/jason/dev/projects/hudkit.js/lib/Toolbar/index.js","./lib/TreeView":"/Users/jason/dev/projects/hudkit.js/lib/TreeView/index.js","./lib/Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","./lib/core":"/Users/jason/dev/projects/hudkit.js/lib/core.js"}],"/Users/jason/dev/projects/hudkit.js/lib/Box/index.js":[function(require,module,exports){
+var ctx     = require('../core'),
+    Widget  = require('../Widget');
 
-var BlockWidget = module.exports = Widget.extend(function(_sc, _sm) {
+var d       = require('dom-build');
 
-	return [
-
-		function(hk, rect) {
-			
-			_sc.call(this, hk);
-			
-			du.addClass(this._root, 'hk-block-widget');
-
-			if (rect) {
-			    this.setBounds(rect.x, rect.y, rect.width, rect.height, true);
-			} else {
-			    var size = this._defaultSize();
-			    this.setBounds(0, 0, size.width, size.height);
-			}
-
-		},
-
-		'methods', {
-
-			setRect: function(rect) {
-			    return this.setBounds(rect.x, rect.y, rect.width, rect.height);
-			},
-
-			/**
-			 * Set the position and size of this widget
-			 * Of all the public methods for manipulating a widget's size, setBounds()
-			 * is the one that does the actual work. If you need to override resizing
-			 * behaviour in a subclass (e.g. see hk.RootPane), this is the only method
-			 * you need to override.
-			 */
-			setBounds: function(x, y, width, height) {
-			    this._setBounds(x, y, width, height);
-			    this._applyBounds();
-			},
-
-			_setBounds: function(x, y, width, height) {
-			    this.x = x;
-			    this.y = y;
-			    this.width = width;
-			    this.height = height;
-			},
-
-			_applyBounds: function() {
-			    this._applyPosition();
-			    this._applySize();
-			},
-
-			_applyPosition: function() {
-			    this._root.style.left = this.x + 'px';
-			    this._root.style.top = this.y + 'px';
-			},
-
-			_applySize: function() {
-			    this._root.style.width = this.width + 'px';
-			    this._root.style.height = this.height + 'px';
-			},
-
-			_defaultSize: function() {
-                return {width: 100, height: 100};
-            }
-
-		}
-
-	]
-
-});
-
-ctx.registerCSS(".hk-block-widget {\n\tdisplay: block;\n\tposition: absolute;\n\twidth: auto;\n\theight: auto;\n}");
-ctx.registerWidget('BlockWidget', BlockWidget);
-},{"../Widget":26,"../constants":27,"../core":28,"../theme":30,"domutil":34}],4:[function(require,module,exports){
-var ctx         = require('../core'),
-    theme       = require('../theme'),
-    k           = require('../constants'),
-    BlockWidget = require('../BlockWidget');
-
-var Box = module.exports = BlockWidget.extend(function(_sc, _sm) {
+var Box = module.exports = Widget.extend(function(_super) {
 
     return [
 
-        function(hk, rect, color) {
-            if (typeof rect === 'string') {
-                color = rect;
-                rect = null;
-            }
-            _sc.call(this, hk, rect);
+        function(hk, color) {
+            _super.constructor.call(this, hk);
             this.setBackgroundColor(color || 'white');
         },
 
@@ -135,8 +51,7 @@ var Box = module.exports = BlockWidget.extend(function(_sc, _sm) {
             },
 
             _buildStructure: function() {
-                this._root = this.document.createElement('div');
-                this._root.className = 'hk-box';
+                return d('.hk-box');
             }
 
         }
@@ -146,20 +61,21 @@ var Box = module.exports = BlockWidget.extend(function(_sc, _sm) {
 });
 
 ctx.registerWidget('Box', Box);
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30}],5:[function(require,module,exports){
-var ctx             = require('../core'),
-    theme           = require('../theme'),
-    k               = require('../constants'),
-    InlineWidget    = require('../InlineWidget'),
-    du              = require('domutil');
+},{"../Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","dom-build":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/Button/index.js":[function(require,module,exports){
+var ctx         = require('../core');
+var k           = require('../constants');
+var Widget      = require('../Widget');
 
-ctx.registerWidget('Button', module.exports = InlineWidget.extend(function(_sc, _sm) {
+var du          = require('domutil');
+var d           = require('dom-build');
+
+ctx.registerWidget('Button', module.exports = Widget.extend(function(_super) {
 
     return [
 
         function(hk, type) {
             
-            _sc.call(this, hk);
+            _super.constructor.call(this, hk);
 
             this._addSignal('onAction');
 
@@ -178,7 +94,7 @@ ctx.registerWidget('Button', module.exports = InlineWidget.extend(function(_sc, 
 
             dispose: function() {
                 this.setAction(null);
-                _sm.dispose.call(this);
+                _super.dispose.call(this);
             },
 
             //
@@ -266,14 +182,12 @@ ctx.registerWidget('Button', module.exports = InlineWidget.extend(function(_sc, 
             //
             
             _buildStructure: function() {
+                return d('a', {href: '#'}, d('span!text'));
+            },
+
+            _bindEvents: function() {
 
                 var self = this;
-                
-                this._root = this.document.createElement('a');
-                this._root.href = '#';
-                
-                this._text = this.document.createElement('span');
-                this._root.appendChild(this._text);
 
                 this._root.addEventListener('click', function(evt) {
                     
@@ -300,11 +214,6 @@ ctx.registerWidget('Button', module.exports = InlineWidget.extend(function(_sc, 
 
                 this._root.className = className;
 
-            },
-
-            _applySizeHints: function() {
-                this._applyHintedProperty(this._root, 'width');
-                this._applyHintedProperty(this._root, 'height');
             }
         
         }
@@ -312,20 +221,19 @@ ctx.registerWidget('Button', module.exports = InlineWidget.extend(function(_sc, 
     ];
 
 }));
+},{"../Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","../constants":"/Users/jason/dev/projects/hudkit.js/lib/constants.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","dom-build":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js","domutil":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/ButtonBar/index.js":[function(require,module,exports){
+var ctx     = require('../core'),
+    k       = require('../constants'),
+    Widget  = require('../Widget');
 
-ctx.registerCSS(".hk-button-common {\n\t\n\tfont-family: $HK_CONTROL_FONT;\n\tfont-size: 11px;\n\tline-height: 1;\n\tbackground: $HK_BUTTON_BG_COLOR;\n\tcolor: $HK_TEXT_COLOR;\n\ttext-align: center;\n\n\theight: 18px;\n\n}\n\n.hk-button-common > span {\n\tdisplay: block;\n\t\n\t/* vertically align label inside button */\n\tposition: relative;\n\ttop: 50%;\n\ttransform: translateY(-50%);\n    -webkit-transform: translateY(-50%);\n}\n\n.hk-button-common.disabled {\n\tcolor: #d0d0d0;\n}\n\n.hk-button-common:not(.disabled):active {\n\tbackground: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-rounded-button {\n\tpadding: 1px 10px 2px 10px;\n\tborder-radius: 7px;\n}\n");
-},{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34}],6:[function(require,module,exports){
-var ctx         = require('../core'),
-    theme       = require('../theme'),
-    k           = require('../constants'),
-    BlockWidget = require('../BlockWidget');
+var d       = require('dom-build');
 
-ctx.registerWidget('ButtonBar', module.exports = BlockWidget.extend(function(_sc, _sm) {
+ctx.registerWidget('ButtonBar', module.exports = Widget.extend(function(_super) {
 
     return [
 
-        function() {
-            _sc.apply(this, arguments);
+        function(hk) {
+            _super.constructor.call(this, hk);
             this._buttons = [];
         },
 
@@ -342,28 +250,27 @@ ctx.registerWidget('ButtonBar', module.exports = BlockWidget.extend(function(_sc
             },
             
             _buildStructure: function() {
-                this._root = this.document.createElement('div');
-                this._root.className = 'hk-button-bar';
+                return d('.hk-button-bar');
             }
         }
 
     ];
 
 }));
+},{"../Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","../constants":"/Users/jason/dev/projects/hudkit.js/lib/constants.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","dom-build":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/Canvas2D/index.js":[function(require,module,exports){
+var ctx     = require('../core');
+var k       = require('../constants');
+var Widget  = require('../Widget');
 
-ctx.registerCSS(".hk-button-bar {\n    \n}\n\n.hk-button-bar-button {\n    display: block;\n    width: 20px;\n    height: 20px;\n    border-radius: 10px;\n    margin: 0 4px 4px 0;\n}\n\n.hk-button-bar-button span {\n    display: none;\n}\n");
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30}],7:[function(require,module,exports){
-var ctx         = require('../core'),
-    theme       = require('../theme'),
-    k           = require('../constants'),
-    BlockWidget = require('../BlockWidget');
+var d       = require('dom-build');
 
-ctx.registerWidget('Canvas2D', module.exports = BlockWidget.extend(function(_sc, _sm) {
+ctx.registerWidget('Canvas2D', module.exports = Widget.extend(function(_super) {
 
     return [
 
-        function() {
-            _sc.apply(this, arguments);
+        function(hk) {
+            _super.constructor.call(this, hk);
+            this._context = this._root.getContext('2d');
         },
 
         'methods', {
@@ -375,16 +282,14 @@ ctx.registerWidget('Canvas2D', module.exports = BlockWidget.extend(function(_sc,
                 return this._root;
             },
 
-            _applySize: function() {
-                this._root.width = this.width;
-                this._root.height = this.height;
+            layout: function() {
+                var rect = this._root.getBoundingClientRect();
+                this._root.width = rect.width;
+                this._root.height = rect.height;
             },
             
             _buildStructure: function() {
-                this._root = this.document.createElement('canvas');
-                this._root.setAttribute('tabindex', 0);
-                this._root.className = 'hk-canvas hk-canvas-2d';
-                this._context = this._root.getContext('2d');
+                return d('canvas.hk-canvas.hk-canvas-2d', {tabindex: 0});
             }
         }
 
@@ -392,448 +297,73 @@ ctx.registerWidget('Canvas2D', module.exports = BlockWidget.extend(function(_sc,
 
 }));
 
-ctx.registerCSS(".hk-canvas-2d {\n    background-color: #121212;\n    border-radius: $HK_BLOCK_BORDER_RADIUS;\n}\n\n.hk-canvas-2d:focus {\n\toutline: none;\n}\n");
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30}],8:[function(require,module,exports){
-var ctx             = require('../core'),
-    theme           = require('../theme'),
-    k               = require('../constants'),
-    InlineWidget    = require('../InlineWidget'),
-    du              = require('domutil');
+},{"../Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","../constants":"/Users/jason/dev/projects/hudkit.js/lib/constants.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","dom-build":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/Console/index.js":[function(require,module,exports){
+var ctx         = require('../core');
+var Widget      = require('../Widget');
 
-var CHECKBOX_SIZE = 12;
+var CommandBox  = require('command-box');
+var d           = require('dom-build');
 
-ctx.registerWidget('Checkbox', module.exports = InlineWidget.extend(function(_sc, _sm) {
+var Console = module.exports = Widget.extend(function(_super) {
 
     return [
 
-        function(hk) {
-            _sc.call(this, hk);
-            this._addSignal('onChange');
-            this._value = false;
+        function(hk, color) {
+            
+            _super.constructor.call(this, hk);
+        
+            this._console = new CommandBox(this._root);
+
         },
 
-        'mixins', ['ValueWidget'],
+        'delegate', {
+            print           : '_console',
+            printText       : '_console',
+            printError      : '_console',
+            printSuccess    : '_console',
+            printHTML       : '_console',
+            printObject     : '_console',
+            setFormatter    : '_console',
+            setEvaluator    : '_console',
+            setPrompt       : '_console',
+            echoOn          : '_console',
+            echoOff         : '_console',
+            setEcho         : '_console',
+            notReady        : '_console',
+            ready           : '_console',
+            focus           : '_console',
+            clearCommand    : '_console',
+            newCommand      : '_console'
+        },
 
         'methods', {
 
-            dispose: function() {
-                _sm.dispose.call(this);
-            },
-
-            _setValue: function(v) {
-                v = !!v;
-                if (v !== this._value) {
-                    this._value = v;
-                    this._root.checked = v;
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            
             _buildStructure: function() {
-                
-                this._root = this.document.createElement('input');
-                this._root.type = 'checkbox'
-                this._root.className = 'hk-check-box';
-                
-                var self = this;
-                this._root.addEventListener('change', function(evt) {
-                    self._value = self._root.checked;
-                    self._broadcastChange();
-                });
-
+                return d('.hk-console');
             }
-        
+
         }
 
     ];
 
-}));
-
-function drawblob(doc, width, height, cb) {
-    var canvas = doc.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    var ctx = canvas.getContext('2d');
-    cb(ctx);
-    return canvas.toDataURL();
-}
-
-ctx.registerInitializer(function(instance) {
-
-    var unchecked = drawblob(instance.document, CHECKBOX_SIZE, CHECKBOX_SIZE, function(ctx) {
-        ctx.fillStyle = instance.theme.get('HK_BUTTON_BG_COLOR');
-        ctx.fillRect(0, 0, CHECKBOX_SIZE, CHECKBOX_SIZE);
-        ctx.strokeStyle = instance.theme.get('HK_TOOLBAR_ITEM_BORDER_COLOR');
-        ctx.strokeRect(0, 0, CHECKBOX_SIZE, CHECKBOX_SIZE);
-    });
-
-    var checked = drawblob(instance.document, CHECKBOX_SIZE, CHECKBOX_SIZE, function(ctx) {
-        ctx.fillStyle = instance.theme.get('HK_BUTTON_BG_COLOR');
-        ctx.fillRect(0, 0, CHECKBOX_SIZE, CHECKBOX_SIZE);
-        ctx.strokeStyle = instance.theme.get('HK_TOOLBAR_ITEM_BORDER_COLOR');
-        ctx.strokeRect(0, 0, CHECKBOX_SIZE, CHECKBOX_SIZE);
-        ctx.fillStyle = instance.theme.get('HK_CONTROL_ACTIVE_BG_COLOR');
-        ctx.fillRect(2, 2, CHECKBOX_SIZE - 4, CHECKBOX_SIZE - 4);
-    });
-
-    var style = [
-        ".hk-check-box {",
-        "  font-size: " + (CHECKBOX_SIZE) + "px;",
-        "  width: " + (CHECKBOX_SIZE) + "px;",
-        "  height: " + (CHECKBOX_SIZE) + "px;",
-        "  margin: 0;",
-        "  padding: 0;",
-        "  -webkit-appearance: none;",
-        "  background: url(\"" + unchecked + "\") no-repeat center center;",
-        "}",
-        ".hk-check-box:focus {",
-        "  outline: none;",
-        "}",
-        ".hk-check-box:checked {",
-        "  background-image: url(\"" + checked + "\");",
-        "}"
-    ].join("\n");
-
-    instance.appendCSS(style);
-
 });
-},{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34}],9:[function(require,module,exports){
+
+ctx.registerWidget('Console', Console);
+},{"../Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","command-box":"/Users/jason/dev/projects/hudkit.js/node_modules/command-box/index.js","dom-build":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/Container/index.js":[function(require,module,exports){
 var ctx         = require('../core'),
-    theme       = require('../theme'),
     k           = require('../constants'),
-    BlockWidget = require('../BlockWidget'),
-    du 			= require('domutil');
+    Widget      = require('../Widget');
 
-var DEFAULT_PROMPT = {text: '>'},
-    HISTORY_LENGTH = 500;
-
-ctx.registerWidget('Console', module.exports = BlockWidget.extend(function(_sc, _sm) {
+ctx.registerWidget('Container', module.exports = Widget.extend(function(_super) {
 
 	return [
 
-	    function() {
-
-	        _sc.apply(this, arguments);
-
-	        this._formatter = null;
-	        
-	        this._history = [];
-	        this._historyIx = null;
-	        
-	        this.echoOn();
-	        this.notReady();
-
-	    },
-
-	    'methods', {
-	        print: function(text, className) { this._appendOutputText(text, className); },
-	        printError: function(text) { this._appendOutputText(text, 'error'); },
-	        printSuccess: function(text) { this._appendOutputText(text, 'success'); },
-	        
-	        printHTML: function(html) {
-	            var ele = this.document.createElement('div');
-	            if (du.isElement(html)) {
-	                ele.appendChild(html);
-	            } else {
-	                ele.innerHTML = html;
-	            }
-	            this._appendOutputElement(ele);
-	        },
-	        
-	        printObject: function(obj) {
-	            var formatted = this._formatter(obj);
-	            if (formatted !== false)
-	                this.printHTML(formatted);
-	        },
-	        
-	        setObjectFormatter: function(formatter) {
-	        	this._formatter = formatter;
-	       	},
-	        
-	        /**
-	         * Set the evaluator function.
-	         * The evaluator function will be passed 2 arguments - the command to be
-	         * evaluated, and the terminal object.
-	         *
-	         * @param evaluator
-	         */
-	        setEvaluator: function(evaluator) {
-	        	this._evaluator = evaluator;
-	        },
-	        
-	        /**
-	         * Prompt can either be:
-	         * a string representing the prompt text
-	         * an object with any/all of the keys: text, color, className
-	         * a function returning any of the above
-	         *
-	         * @param prompt
-	         */
-	        setPrompt: function(prompt) {
-	            if (typeof prompt == 'string')
-	                prompt = {text: prompt};
-	                
-	            this._userPrompt = prompt;
-	        },
-	        
-	        echoOn: function() {
-	        	this.setEcho(true);
-	        },
-	        
-	        echoOff: function() {
-	        	this.setEcho(false);
-	        },
-	        
-	        setEcho: function(echo) {
-	        	this._echo = !!echo;
-	        },
-	        
-	        // terminal is not ready for input; command line is hidden.
-	        notReady: function() {
-	        	this._input.style.display = 'none';
-	        },
-	        
-	        // terminal is ready for input; command line is shown.
-	        ready: function() {
-	        	this._input.style.display = '-webkit-box';
-	        },
-	        
-	        /**
-	         * Clear's the user's current command.
-	         * Also cancels any active history navigation.
-	         */
-	        clearCommand: function() {
-	            this._command.value = '';
-	            this._historyIx = null;
-	        },
-	        
-	        // prepare for a new command - clear current input, generate
-	        // a new prompt and scroll to the bottom. set `makeReady` to
-	        // true to make the terminal ready at the same time.
-	        newCommand: function(makeReady) {
-	            if (makeReady) {
-	                this.ready();
-	            }
-	            
-	            var prompt = this._optionsForNewPrompt();
-	            this._prompt.innerText = prompt.text;
-	            
-	            if ('color' in prompt) {
-	                this._prompt.style.color = prompt.color;
-	            } else {
-	                this._prompt.style.color = '';
-	            }
-	            
-	            if ('className' in prompt) {
-	                this._prompt.className = 'prompt ' + prompt.className;
-	            } else {
-	                this._prompt.className = 'prompt';
-	            }
-	            
-	            this.clearCommand();
-	            this._scrollToBottom();
-	        },
-	        
-	        //
-	        // Private API
-	        
-	        _appendOutputText: function(text, className) {
-
-	            text = ('' + text);
-
-	            // TODO: text should be appended using a <pre> so we don't need to do
-	            // any of this replacement crap
-	            var ele = this.document.createElement('div');
-	            ele.className = 'text-line ' + (className || '');
-	            ele.innerHTML = text.replace(/\n/g, "<br/>")
-	                                .replace(/ /g,  "&nbsp;");
-	            
-	            this._appendOutputElement(ele);
-	        
-	        },
-	        
-	        _appendOutputElement: function(ele) {
-	            ele.className += ' output-item';
-	            this._output.appendChild(ele);
-	            this._scrollToBottom();
-	        },
-	        
-	        _getCommand: function() {
-	            return this._command.value;
-	        },
-	        
-	        _scrollToBottom: function() {
-	            this._root.scrollTop = this._root.scrollHeight;
-	        },
-	        
-	        _optionsForNewPrompt: function() {
-	            var prompt = (typeof this._userPrompt == 'function') ? this._userPrompt() : this._userPrompt;
-	            return prompt || DEFAULT_PROMPT;
-	        },
-	        
-	        _bell: function() {
-	            console.log("bell!");
-	        },
-	        
-	        _handlePaste: function(e) {
-	            var pastedText = undefined;
-	            if (e.clipboardData && e.clipboardData.getData) {
-	                pastedText = e.clipboardData.getData('text/plain');
-	            }
-	            if (pastedText !== undefined) {
-	                console.log(pastedText);
-	            }
-	        },
-	        
-	        _handleEnter: function() {
-	            if (this._echo) {
-	                this._echoCurrentCommand();
-	            }
-	            var command = this._getCommand();
-	            if (this._evaluator) {
-	                this.clearCommand();
-	                if (this._history.length == 0 || command != this._history[this._history.length - 1]) {
-	                    this._history.push(command);
-	                }
-	                this._evaluator(command, this);
-	            } else {
-	                this.newCommand();
-	            }
-	        },
-	        
-	        _handleClear: function() {
-	            this.clearCommand();
-	        },
-	        
-	        _handleHistoryNav: function(dir) {
-	            
-	            if (this._history.length == 0) {
-	                return;
-	            }
-	            
-	            var cmd = null;
-	            
-	            if (dir == 'prev') {
-	                if (this._historyIx === null) {
-	                    this._historyStash = this._command.value || '';
-	                    this._historyIx = this._history.length - 1;
-	                } else {
-	                    this._historyIx--;
-	                    if (this._historyIx < 0) {
-	                        this._historyIx = 0;
-	                    }
-	                }
-	            } else {
-	                if (this._historyIx === null) {
-	                    return;
-	                }
-	                this._historyIx++;
-	                if (this._historyIx == this._history.length) {
-	                    cmd = this._historyStash;
-	                    this._historyIx = null;
-	                }
-	            }
-	            
-	            if (cmd === null) {
-	                cmd = this._history[this._historyIx];
-	            }
-	            
-	            this._command.value = cmd;
-	            
-	        },
-	        
-	        _handleAutocomplete: function() {
-	            console.log("AUTO-COMPLETE");
-	        },
-	        
-	        _echoCurrentCommand: function() {
-	            var line = this.document.createElement('div');
-	            line.className = 'input-line';
-	            
-	            var prompt = this.document.createElement('span');
-	            prompt.className = this._prompt.className;
-	            prompt.style.color = this._prompt.style.color;
-	            prompt.textContent = this._prompt.textContent;
-	            
-	            var cmd = this.document.createElement('span');
-	            cmd.className = 'command';
-	            cmd.textContent = this._getCommand();
-	            
-	            line.appendChild(prompt);
-	            line.appendChild(cmd);
-	            
-	            this._appendOutputElement(line);
-	        },
-	        
-	        _buildStructure: function() {
-	            
-	            var self = this;
-	            
-	            var root        = this.document.createElement('div'),
-	                output      = this.document.createElement('output'),
-	                line        = this.document.createElement('div'),
-	                prompt      = this.document.createElement('span'),
-	                cmdWrapper  = this.document.createElement('span'),
-	                cmd         = this.document.createElement('input');
-	                    
-	            root.className        = 'hk-console';
-	            line.className        = 'input-line';
-	            cmdWrapper.className  = 'command-wrapper';
-	            cmd.type              = 'text';
-	            cmd.className         = 'command';
-	            
-	            cmdWrapper.appendChild(cmd);
-	            line.appendChild(prompt);
-	            line.appendChild(cmdWrapper);
-	            root.appendChild(output);
-	            root.appendChild(line);
-	            
-	            root.onclick = function() { cmd.focus(); }
-	            cmd.onpaste = function(evt) { self._handlePaste(evt); evt.preventDefault(); };
-	            cmd.onkeydown = function(evt) {
-	                switch (evt.which) {
-	                    case 8:  if (self._command.value.length == 0) self._bell();     break;
-	                    case 13: evt.preventDefault(); self._handleEnter();             break;
-	                    case 27: evt.preventDefault(); self._handleClear();             break;
-	                    case 38: evt.preventDefault(); self._handleHistoryNav('prev');  break;
-	                    case 40: evt.preventDefault(); self._handleHistoryNav('next');  break;
-	                    case 9:  evt.preventDefault(); self._handleAutocomplete();      break;
-	                }
-	            };
-	            
-	            this._root    = root;
-	            this._output  = output;
-	            this._input   = line;
-	            this._prompt  = prompt;
-	            this._command = cmd;
-	            
-	        }
-	    }
-
-	];
-
-}));
-
-ctx.registerCSS(".hk-console {\n    padding: 5px;\n    background: #AAB2B7;\n    border-radius: $HK_BLOCK_BORDER_RADIUS;\n    overflow: auto;\n    font: $HK_CONSOLE_FONT_SIZE/1.2 $HK_MONOSPACE_FONT;\n}\n\n.hk-console output {\n    \n}\n\n.hk-console .output-item {\n    display: -webkit-box;\n    -webkit-box-orient: horizontal;\n    -webkit-box-align: stretch;\n    clear: both;\n}\n\n.hk-console .input-line {\n    \n}\n    \n.hk-console .prompt {\n    white-space: nowrap;\n    margin-right: 5px;\n    display: -webkit-box;\n    -webkit-box-back: center;\n    -webkit-box-orient: vertical;\n}\n    \n.hk-console .command-wrapper {\n    display: block;\n    -webkit-box-flex: 1;\n}\n    \n.hk-console span.command {\n    display: inline-block;\n}\n\n.hk-console input.command {\n    border: none;\n    background: none;\n    padding: 0;\n    margin: 0;\n    width: 100%;\n    font: inherit;\n    -webkit-appearance: textfield;\n    -webkit-user-select: text;\n    cursor: auto;\n    display: inline-block;\n    text-align: start;\n}\n\n.hk-console input.command:focus {\n    outline: none;\n}\n");
-
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34}],10:[function(require,module,exports){
-var ctx         = require('../core'),
-    theme       = require('../theme'),
-    k           = require('../constants'),
-    BlockWidget = require('../BlockWidget');
-
-ctx.registerWidget('Container', module.exports = BlockWidget.extend(function(_sc, _sm) {
-
-	return [
-
-		function() {
+		function(hk) {
             
             this._layout = null;
             this._children = [];
-            
-            _sc.apply(this, arguments);
+
+            _super.constructor.call(this, hk);
         
             this._container = this._getContainer();
 
@@ -846,17 +376,17 @@ ctx.registerWidget('Container', module.exports = BlockWidget.extend(function(_sc
 
             setLayout: function(layout) {
                 this._layout = layout;
-                this.requestLayout();
+                this.layout();
             },
 
-            requestLayout: function() {
+            layout: function() {
                 // TODO: batch this stuff asynchronously
                 this.layoutImmediately();
             },
 
             layoutImmediately: function() {
                 if (this._layout) {
-                    this._layout(this, 0, 0, this.width, this.height);
+                    this._layout(this._root.getBoundingClientRect());
                 }
             },
 
@@ -878,7 +408,7 @@ ctx.registerWidget('Container', module.exports = BlockWidget.extend(function(_sc
                     widget.__container_tag__ = tag;
                 }
 
-                this.requestLayout();
+                this.layout();
 
                 return this;
             
@@ -898,7 +428,7 @@ ctx.registerWidget('Container', module.exports = BlockWidget.extend(function(_sc
                             delete widget.__container_tag__;
                         }
                         
-                        this.requestLayout();
+                        this.layout();
 
                         return true;
                     
@@ -926,48 +456,72 @@ ctx.registerWidget('Container', module.exports = BlockWidget.extend(function(_sc
             // Default is to return the root element.
             _getContainer: function() {
                 return this._root;
-            },
-
-            _applyBounds: function() {
-                _sm._applyBounds.call(this);
-                this.requestLayout();
             }
         }
 
-    ]
+    ];
 
 }));
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30}],11:[function(require,module,exports){
-var ctx             = require('../core'),
-    theme           = require('../theme'),
-    k               = require('../constants'),
-    InlineWidget    = require('../InlineWidget'),
-    du              = require('domutil'),
-    rattrap         = require('rattrap');
+},{"../Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","../constants":"/Users/jason/dev/projects/hudkit.js/lib/constants.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js"}],"/Users/jason/dev/projects/hudkit.js/lib/HorizontalSlider/index.js":[function(require,module,exports){
+var ctx         = require('../core'),
+    k           = require('../constants'),
+    Widget      = require('../Widget');
 
-ctx.registerWidget('HorizontalSlider', module.exports = InlineWidget.extend(function(_sc, _sm) {
+var du          = require('domutil'),
+    rattrap     = require('rattrap'),
+    d           = require('dom-build');
+
+ctx.registerWidget('HorizontalSlider', module.exports = Widget.extend(function(_super) {
 
     return [
 
         function(hk) {
 
-            _sc.call(this, hk);
+            _super.constructor.call(this, hk);
 
             this._minValue = 0;
             this._maxValue = 100;
-            this._value = 50;
             this._caption = '';
 
-            this._addSignal('onChange');
+            var self = this;
+            this._addProperty('value', 50, function(set, v, oldValue) {
+
+                if (v < self._minValue) v = self._minValue;
+                if (v > self._maxValue) v = self._maxValue;
+
+                if (v === oldValue) {
+                    return;
+                }
+
+                set(v);
+                self._redraw(v);
+
+            });
             
             this._bind();
-            this._update();
+            this._redraw(this.value.get());
 
         },
 
-        'mixins', ['ValueWidget', 'ValueRange'],
-
         'methods', {
+
+            setMinValue: function(min) {
+                this._minValue = min;
+                if (this.value.get() < min) {
+                    this.value.set(min);
+                } else {
+                    this._redraw(this.value.get());    
+                }
+            },
+
+            setMaxValue: function(max) {
+                this._maxValue = max;
+                if (this.value.get() > max) {
+                    this.value.set(max);
+                } else {
+                    this._redraw(this.value.get());    
+                }
+            },
 
             dispose: function() {
                 _sm.dispose.call(this);
@@ -1006,19 +560,10 @@ ctx.registerWidget('HorizontalSlider', module.exports = InlineWidget.extend(func
             },
             
             _buildStructure: function() {
-                
-                this._root = this.document.createElement('div');
-                this._root.className = 'hk-horizontal-slider';
-                
-                this._fill = this.document.createElement('div');
-                this._fill.className = 'fill';
-
-                this._captionEl = this.document.createElement('div');
-                this._captionEl.className = 'caption';
-
-                this._root.appendChild(this._fill);
-                this._root.appendChild(this._captionEl);
-
+                return d('.hk-horizontal-slider',
+                    d('.fill!fill'),
+                    d('.caption!captionEl')
+                );
             },
 
             _bind: function() {
@@ -1036,17 +581,15 @@ ctx.registerWidget('HorizontalSlider', module.exports = InlineWidget.extend(func
                         if (offset < 0) offset = 0;
                         if (offset > rect.width) offset = rect.width;
 
-                        if (self._setValue(self._offsetToValue(rect, offset))) {
-                            self._broadcastChange();
-                        }
+                        self.value.set(self._offsetToValue(rect, offset));
                         
                     }
                     
-                    var stopCapture = rattrap.startCapture(self.document, {
+                    var stopCapture = rattrap.startCapture(document, {
                         cursor: 'col-resize',
                         mousemove: function(evt) {
                             updateFromEvent(evt);
-                            self._updateCaption(self.getValue());
+                            self._updateCaption(self.value.get());
                         },
                         mouseup: function(evt) {
                             stopCapture();
@@ -1059,8 +602,8 @@ ctx.registerWidget('HorizontalSlider', module.exports = InlineWidget.extend(func
 
             },
 
-            _update: function() {
-                var percentage = ((this._value - this._minValue) / (this._maxValue - this._minValue)) * 100;
+            _redraw: function(value) {
+                var percentage = ((value - this._minValue) / (this._maxValue - this._minValue)) * 100;
                 this._fill.style.width = percentage + '%';
             },
 
@@ -1070,12 +613,12 @@ ctx.registerWidget('HorizontalSlider', module.exports = InlineWidget.extend(func
 
             _offsetToValue: function(rect, offset) {
                 return this._minValue + ((offset / rect.width) * (this._maxValue - this._minValue));
-            },
-
-            _applySizeHints: function() {
-                this._applyHintedProperty(this._root, 'width');
-                this._applyHintedProperty(this._root, 'height');
             }
+
+            // _applySizeHints: function() {
+            //     this._applyHintedProperty(this._root, 'width');
+            //     this._applyHintedProperty(this._root, 'height');
+            // }
         
         }
 
@@ -1083,135 +626,43 @@ ctx.registerWidget('HorizontalSlider', module.exports = InlineWidget.extend(func
 
 }));
 
-ctx.registerCSS(".hk-horizontal-slider {\n\tposition: relative;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    background: black;\n    background-color: $HK_BUTTON_BG_COLOR;\n    width: 200px;\n    height: 18px;\n}\n\n.hk-horizontal-slider > .fill {\n\theight: 100%;\n\tdisplay: block;\n\twidth: 0;\n\tbackground-color: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n\n.hk-horizontal-slider > .caption {\n\tposition: absolute;\n\ttop: 50%;\n\tleft: 0;\n\twidth: 100%;\n\tfont-size: 11px;\n\tline-height: 1;\n\tmargin-top: -5px;\n\ttext-align: center;\n}");
-},{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":38}],12:[function(require,module,exports){
-var ctx 	= require('../core'),
-	theme 	= require('../theme'),
-	k		= require('../constants'),
-	Widget 	= require('../Widget'),
-	du 		= require('domutil');
+},{"../Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","../constants":"/Users/jason/dev/projects/hudkit.js/lib/constants.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","dom-build":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js","domutil":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/index.js","rattrap":"/Users/jason/dev/projects/hudkit.js/node_modules/rattrap/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/Instance.js":[function(require,module,exports){
+var registry    = require('./registry');
+var constants   = require('./constants');
 
-var InlineWidget = module.exports = Widget.extend(function(_sc, _sm) {
-
-	return [
-
-		function(hk) {
-
-			this._layoutSizeHints = null;
-			this._userSizeHints = null;
-
-			_sc.call(this, hk);
-			du.addClass(this._root, 'hk-inline-widget');
-
-		},
-
-		'methods', {
-
-			setLayoutSizeHints: function(hints) {
-				this._layoutSizeHints = hints;
-				this._applySizeHints();
-			},
-
-			setUserSizeHints: function(hints) {
-				this._userSizeHints = hints;
-				this._applySizeHints();
-			},
-
-			_applySizeHints: function() {
-				// default implementation is no-op
-			},
-
-			_getHintedProperty: function(prop) {
-
-				if (this._layoutSizeHints && (prop in this._layoutSizeHints)) {
-					return this._layoutSizeHints[prop];
-				}
-
-				if (this._userSizeHints && (prop in this._userSizeHints)) {
-					return this._userSizeHints[prop];
-				}
-
-				return null;
-
-			},
-
-			// for a given style property, apply it to el based on supplied hints.
-			// layout hints take precedence over user hints, and if neither are set
-			// the style property is set to the empty string (i.e. fall back to
-			// whatever is specified in CSS)
-			_applyHintedProperty: function(el, prop) {
-				var val = this._getHintedProperty(prop);
-				if (val !== null) {
-					el.style[prop] = val + 'px';
-				} else {
-					el.style[prop] = '';
-				}
-			}
-
-		}
-
-	]
-
-});
-
-ctx.registerCSS(".hk-inline-widget {\n\tdisplay: inline-block;\n\twidth: auto;\n\theight: auto;\n}");
-ctx.registerWidget('InlineWidget', InlineWidget);
-},{"../Widget":26,"../constants":27,"../core":28,"../theme":30,"domutil":34}],13:[function(require,module,exports){
-var fs 			= require('fs'),
-	styleTag 	= require('style-tag'),
-    registry    = require('./registry'),
-    action      = require('hudkit-action'),
-    constants   = require('./constants'),
-    theme       = require('./theme');
+var action      = require('hudkit-action');
 
 module.exports  = Instance;
-
-var RESET_CSS   = "/* http://meyerweb.com/eric/tools/css/reset/ \n   v2.0 | 20110126\n   License: none (public domain)\n*/\n\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed, \nfigure, figcaption, footer, header, hgroup, \nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n\tmargin: 0;\n\tpadding: 0;\n\tborder: 0;\n\tfont-size: 100%;\n\tfont: inherit;\n\tvertical-align: baseline;\n}\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure, \nfooter, header, hgroup, menu, nav, section {\n\tdisplay: block;\n}\nbody {\n\tline-height: 1;\n}\nol, ul {\n\tlist-style: none;\n}\nblockquote, q {\n\tquotes: none;\n}\nblockquote:before, blockquote:after,\nq:before, q:after {\n\tcontent: '';\n\tcontent: none;\n}\ntable {\n\tborder-collapse: collapse;\n\tborder-spacing: 0;\n}",
-    BASE_CSS    = ".hk-root-pane {\n\t-webkit-user-select: none;\n\tcursor: default;\n\tbackground: #101010;\n\tfont: 12px $HK_CONTROL_FONT;\n}\n\n.hk-root-pane a {\n\ttext-decoration: none;\n}\n\n.hk-root-pane * {\n\t-webkit-user-select: none;\n\tcursor: default;\n}\n";
 
 function Instance(window) {
 
     this.window = window;
     this.document = window.document;
-    
-    this.appendCSS(RESET_CSS);
-    this.appendCSS(BASE_CSS);
 
     registry.initializers.forEach(function(init) {
         init(this)
     }, this);
 
-    this.root = this.rootPane();
-
     var body = this.document.body;
     body.className = 'hk';
-    body.appendChild(this.root.getRoot());
+
+    this.root = this.rootPane();
+    this.root.attachAsRootComponent(body);
 
 }
 
 Instance.prototype.action       = action;
 Instance.prototype.constants    = constants;
 Instance.prototype.k            = constants;
-Instance.prototype.theme        = theme;
 
-Instance.prototype.appendCSS = function(css) {
+},{"./constants":"/Users/jason/dev/projects/hudkit.js/lib/constants.js","./registry":"/Users/jason/dev/projects/hudkit.js/lib/registry.js","hudkit-action":"/Users/jason/dev/projects/hudkit.js/node_modules/hudkit-action/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/Knob/index.js":[function(require,module,exports){
+var ctx         = require('../core'),
+    k           = require('../constants'),
+    Widget      = require('../Widget');
 
-    css = css.replace(/\$(\w+)/g, function(m) {
-        return theme.get(RegExp.$1);
-    });
-
-    return styleTag(this.document, css);
-
-}
-
-},{"./constants":27,"./registry":29,"./theme":30,"fs":42,"hudkit-action":35,"style-tag":40}],14:[function(require,module,exports){
-var ctx             = require('../core'),
-    theme           = require('../theme'),
-    k               = require('../constants'),
-    InlineWidget    = require('../InlineWidget'),
-    du              = require('domutil'),
-    rattrap         = require('rattrap'),
-    signal          = require('signalkit');
+var du          = require('domutil'),
+    d           = require('dom-build'),
+    rattrap     = require('rattrap');
 
 var DEFAULT_SIZE    = 18,
     GAP_SIZE        = Math.PI / 6,
@@ -1219,7 +670,7 @@ var DEFAULT_SIZE    = 18,
     START_ANGLE     = Math.PI / 2 + GAP_SIZE,
     END_ANGLE       = Math.PI / 2 - GAP_SIZE;
 
-ctx.registerWidget('Knob', module.exports = InlineWidget.extend(function(_sc, _sm) {
+ctx.registerWidget('Knob', module.exports = Widget.extend(function(_super) {
 
     return [
 
@@ -1227,53 +678,59 @@ ctx.registerWidget('Knob', module.exports = InlineWidget.extend(function(_sc, _s
 
             this._size = DEFAULT_SIZE;
 
-            _sc.call(this, hk);
+            _super.constructor.call(this, hk);
 
             this._minValue = 0;
             this._maxValue = 100;
             this._dragDirection = k.HORIZONTAL;
-            this._value = 0;
             this._ctx = this._root.getContext('2d');
 
-            this._addSignal('onChange');
+            var self = this;
+            this._addProperty('value', 0, function(set, v, oldValue) {
+                
+                if (v < self._minValue) v = self._minValue;
+                if (v > self._maxValue) v = self._maxValue;
+
+                if (v === oldValue) {
+                    return;
+                }
+
+                set(v);
+                self._redraw(v);
+            
+            })
             
             this._bind();
-            this._update();
+            this._redraw(this.value.get());
 
         },
 
-        'mixins', ['ValueWidget', 'ValueRange'],
-
         'methods', {
+
+            setMinValue: function(min) {
+                this._minValue = min;
+                if (this.value.get() < min) {
+                    this.value.set(min);
+                } else {
+                    this._redraw(this.value.get());    
+                }
+            },
+
+            setMaxValue: function(max) {
+                this._maxValue = max;
+                if (this.value.get() > max) {
+                    this.value.set(max);
+                } else {
+                    this._redraw(this.value.get());    
+                }
+            },
 
             dispose: function() {
                 _sm.dispose.call(this);
             },
-
-            _setValue: function(v) {
-
-                if (v < this._minValue) v = this._minValue;
-                if (v > this._maxValue) v = this._maxValue;
-
-                if (v === this._value) {
-                    return false;
-                }
-
-                this._value = v;
-
-                this._update();
-
-                return true;
-
-            },
             
             _buildStructure: function() {
-                
-                this._root = this.document.createElement('canvas');
-                this._root.width = this._size;
-                this._root.height = this._size;
-                this._root.className = 'hk-knob';
-
+                return d('canvas.hk-knob', {width: this._size, height: this._size});
             },
 
             _bind: function() {
@@ -1284,10 +741,10 @@ ctx.registerWidget('Knob', module.exports = InlineWidget.extend(function(_sc, _s
 
                     var startX      = evt.pageX,
                         startY      = evt.pageY;
-                        startV      = self.getValue(),
+                        startV      = self.value.get(),
                         horizontal  = (self._dragDirection === k.HORIZONTAL);
 
-                    var stopCapture = rattrap.startCapture(self.document, {
+                    var stopCapture = rattrap.startCapture(document, {
                         cursor: horizontal ? 'col-resize' : 'row-resize',
                         mousemove: function(evt) {
 
@@ -1297,11 +754,9 @@ ctx.registerWidget('Knob', module.exports = InlineWidget.extend(function(_sc, _s
                             } else {
                                 delta = startY - evt.pageY;
                             }
-                            
-                            if (self._setValue(startV + delta)) {
-                                self._broadcastChange();
-                            }
 
+                            self.value.set(startV + delta);
+                        
                         },
                         mouseup: function(evt) {
                             stopCapture();
@@ -1312,10 +767,10 @@ ctx.registerWidget('Knob', module.exports = InlineWidget.extend(function(_sc, _s
 
             },
 
-            _update: function() {
+            _redraw: function(value) {
 
                 var ctx         = this._ctx,
-                    filledRatio = (this._value - this._minValue) / (this._maxValue - this._minValue),
+                    filledRatio = (value - this._minValue) / (this._maxValue - this._minValue),
                     fillAngle   = START_ANGLE + (filledRatio * RANGE),
                     cx          = this._size / 2,
                     cy          = this._size / 2;
@@ -1335,61 +790,64 @@ ctx.registerWidget('Knob', module.exports = InlineWidget.extend(function(_sc, _s
                 ctx.lineTo(cx, cy);
                 ctx.stroke();
 
-            },
-
-            _applySizeHints: function() {
-
-                var requestedWidth = this._getHintedProperty('width'),
-                    requestedHeight = this._getHintedProperty('height');
-
-                if (requestedWidth === null && requestedHeight === null) {
-                    this._size = DEFAULT_SIZE;
-                } else if (requestedWidth === null) {
-                    this._size = requestedHeight;
-                } else if (requestedHeight === null) {
-                    this._size = requestedWidth;
-                } else {
-                    this._size = Math.min(requestedWidth, requestedHeight);
-                }
-
-                this._root.width = this._size;
-                this._root.height = this._size;
-
-                this._update();
-
             }
+
+            // _applySizeHints: function() {
+
+            //     var requestedWidth = this._getHintedProperty('width'),
+            //         requestedHeight = this._getHintedProperty('height');
+
+            //     if (requestedWidth === null && requestedHeight === null) {
+            //         this._size = DEFAULT_SIZE;
+            //     } else if (requestedWidth === null) {
+            //         this._size = requestedHeight;
+            //     } else if (requestedHeight === null) {
+            //         this._size = requestedWidth;
+            //     } else {
+            //         this._size = Math.min(requestedWidth, requestedHeight);
+            //     }
+
+            //     this._root.width = this._size;
+            //     this._root.height = this._size;
+
+            //     this._update();
+
+            // }
         
         }
 
     ];
 
 }));
+},{"../Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","../constants":"/Users/jason/dev/projects/hudkit.js/lib/constants.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","dom-build":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js","domutil":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/index.js","rattrap":"/Users/jason/dev/projects/hudkit.js/node_modules/rattrap/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/MultiSplitPane/index.js":[function(require,module,exports){
+var ctx         = require('../core'),
+    k           = require('../constants'),
+    Widget      = require('../Widget');
 
-ctx.registerCSS(".hk-knob {\n    background-color: $HK_BUTTON_BG_COLOR;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n}");
-},{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":38,"signalkit":39}],15:[function(require,module,exports){
-var ctx             = require('../core'),
-    theme           = require('../theme'),
-    k               = require('../constants'),
-    BlockWidget     = require('../BlockWidget'),
-    du              = require('domutil'),
-    rattrap         = require('rattrap'),
-    signal          = require('signalkit');
+var du          = require('domutil'),
+    rattrap     = require('rattrap'),
+    d           = require('dom-build');
 
-var DIVIDER_SIZE = theme.getInt('HK_SPLIT_PANE_DIVIDER_SIZE');
+var DIVIDER_SIZE = 8;
 
-ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(function(_sc, _sm) {
+function unstyle(widget) {
+    var s = widget.getRoot().style;
+    s.top = s.left = s.width = s.height = '';
+}
+
+ctx.registerWidget('MultiSplitPane', module.exports = Widget.extend(function(_super) {
 
     return [
 
-        function() {
+        function(hk) {
 
             this._orientation   = k.SPLIT_PANE_HORIZONTAL;
             this._widgets       = [null];
             this._splits        = [];
 
-            this.onPaneResize   = signal('onPaneResize');
+            this._addSignal('onPaneResize');
             
-            _sc.apply(this, arguments);
+            _super.constructor.call(this, hk);
 
             this._bind();
 
@@ -1413,13 +871,8 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
                 du.removeClass(this._root, 'horizontal vertical');
                 du.addClass(this._root, this._orientation === k.SPLIT_PANE_HORIZONTAL ? 'horizontal' : 'vertical');
                 
-                this._layout();
+                this.layout();
             
-            },
-            
-            setBounds: function(x, y, w, h) {
-                _sm.setBounds.call(this, x, y, w, h);
-                this._layout();
             },
 
             setPaneSizes: function(sizes) {
@@ -1458,7 +911,7 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
                     last = r;
                 }
 
-                this._layout();
+                this.layout();
 
             },
 
@@ -1468,7 +921,7 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
                     throw new Error("ratio must be between 0 and 1");
                 }
 
-                var div = this.document.createElement('div');
+                var div = document.createElement('div');
                 div.className = 'hk-split-pane-divider';
                 this._root.appendChild(div);
 
@@ -1495,7 +948,7 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
                     this.setWidgetAtIndex(addedIx, widget);
                 }
 
-                this._layout();
+                this.layout();
 
             },
 
@@ -1513,6 +966,7 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
                 var widget = this._widgets[ix];
                 if (widget) {
                     this._removeChildViaElement(widget, this._root);    
+                    unstyle(widget);
                 }
 
                 this._widgets.splice(ix, 1);
@@ -1521,7 +975,7 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
                 this._root.removeChild(this._splits[victimSplit].divider);
                 this._splits.splice(victimSplit, 1);
                 
-                this._layout();
+                this.layout();
 
                 return widget;
                 
@@ -1556,7 +1010,7 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
                         this._attachChildViaElement(widget, this._root);
                     }
 
-                    this._layout();
+                    this.layout();
                 }
                     
                 return existingWidget;
@@ -1564,27 +1018,32 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
             },
             
             _buildStructure: function() {
-                
-                this._root = this.document.createElement('div');
-                this._root.className = 'hk-split-pane';
-                
-                this._ghost = this.document.createElement('div');
-                this._ghost.className = 'hk-split-pane-divider hk-split-pane-ghost';
-                
-                du.addClass(this._root, this._orientation === k.SPLIT_PANE_HORIZONTAL ? 'horizontal' : 'vertical');
+
+                var ui = d('.hk-split-pane');
+
+                this._ghost = d('.hk-split-pane-divider.hk-split-pane-ghost').root;
+
+                du.addClass(ui.root, this._orientation === k.SPLIT_PANE_HORIZONTAL ? 'horizontal' : 'vertical');
+
+                return ui;
             
             },
             
-            _layout: function() {
+            layout: function() {
 
-                var width       = this.width,
-                    height      = this.height,
+                var rect        = this._root.getBoundingClientRect(),
+                    width       = rect.width,
+                    height      = rect.height,
                     horizontal  = this._orientation === k.SPLIT_PANE_HORIZONTAL,
                     widgets     = this._widgets,
                     splits      = this._splits,
                     totalSpace  = (horizontal ? height : width) - (splits.length * DIVIDER_SIZE),
                     pos         = 0,
                     root        = this._root;
+
+                function setBounds(widget, x, y, w, h) {
+                    du.setRect(widget.getRoot(), x, y, w, h);
+                }
 
                 if (totalSpace < 0) {
 
@@ -1605,7 +1064,7 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
                             var paneHeight = Math.floor(totalSpace * (ratio - lastRatio));
 
                             if (widget) {
-                                widget.setBounds(0, pos, width, paneHeight);    
+                                setBounds(widget, 0, pos, width, paneHeight);    
                             }
                             
                             divider.style.top = (pos + paneHeight) + 'px';
@@ -1616,7 +1075,7 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
                             var paneWidth = Math.floor(totalSpace * (ratio - lastRatio));
 
                             if (widget) {
-                                widget.setBounds(pos, 0, paneWidth, height);    
+                                setBounds(widget, pos, 0, paneWidth, height);    
                             }
                                    
                             divider.style.left = (pos + paneWidth) + 'px';
@@ -1631,9 +1090,9 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
                     var lastWidget = widgets[widgets.length-1];
                     if (lastWidget) {
                         if (horizontal) {
-                            lastWidget.setBounds(0, pos, width, height - pos);
+                            setBounds(lastWidget, 0, pos, width, height - pos);
                         } else {
-                            lastWidget.setBounds(pos, 0, width - pos, height);
+                            setBounds(lastWidget, pos, 0, width - pos, height);
                         }    
                     }
 
@@ -1687,7 +1146,7 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
                         self._root.appendChild(self._ghost);
                         updateGhost();
 
-                        var stopCapture = rattrap.startCapture(self.document, {
+                        var stopCapture = rattrap.startCapture(document, {
                             cursor: (self._orientation === k.SPLIT_PANE_VERTICAL) ? 'col-resize' : 'row-resize',
                             mousemove: function(evt) {
                                 if (horizontal) {
@@ -1717,7 +1176,7 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
 
                                 self._splits[splitIx].ratio = minSplit + (maxSplit - minSplit) * p;
 
-                                self._layout();
+                                self.layout();
 
                                 self.onPaneResize.emit(self);
                             }
@@ -1734,285 +1193,53 @@ ctx.registerWidget('MultiSplitPane', module.exports = BlockWidget.extend(functio
     ];
 
 }));
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":38,"signalkit":39}],16:[function(require,module,exports){
-var ctx          = require('../core'),
-    theme        = require('../theme'),
-    k            = require('../constants'),
-    Container    = require('../Container');
+},{"../Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","../constants":"/Users/jason/dev/projects/hudkit.js/lib/constants.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","dom-build":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js","domutil":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/index.js","rattrap":"/Users/jason/dev/projects/hudkit.js/node_modules/rattrap/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/Panel/index.js":[function(require,module,exports){
+var ctx         = require('../core'),
+    k           = require('../constants'),
+    Container   = require('../Container');
 
-ctx.registerWidget('Panel', module.exports = Container.extend(function(_sc, _sm) {
+var d 			= require('dom-build');
+
+ctx.registerWidget('Panel', module.exports = Container.extend(function(_super) {
 
 	return [
 
-	    function() {
-	        _sc.apply(this, arguments);
+	    function(hk) {
+	        _super.constructor.call(this, hk);
 	    },
 
 	    'methods', {
 	        _buildStructure: function() {
-	            this._root = this.document.createElement('div');
-	            this._root.className = 'hk-panel';
+	        	return d('.hk-panel');
 	        }
 	    }
 
 	]
 
 }));
-},{"../Container":10,"../constants":27,"../core":28,"../theme":30}],17:[function(require,module,exports){
-var ctx             = require('../core'),
-    theme           = require('../theme'),
-    k               = require('../constants'),
-    BlockWidget     = require('../BlockWidget');
+},{"../Container":"/Users/jason/dev/projects/hudkit.js/lib/Container/index.js","../constants":"/Users/jason/dev/projects/hudkit.js/lib/constants.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","dom-build":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/RootPane/index.js":[function(require,module,exports){
+var ctx     = require('../core');
+var Widget  = require('../Widget');
 
-function makeSimpleEditor(hk, builder, get, set, config) {
+var d       = require('dom-build');
+var du      = require('domutil');
 
-    var widget = hk[builder]();
-
-    function sync() {
-        widget.setValue(get());
-    }
-
-    var cancel = widget.onChange.connect(function(src, val) {
-        if (!set(val)) {
-            widget.setValue(get());
-        };
-    });
-
-    for (var arg in config) {
-        var setter = 'set' + arg[0].toUpperCase() + arg.substring(1);
-        widget[setter](config[arg]);
-    }
-
-    return {
-        widget      : widget,
-        sync        : sync,
-        teardown    : cancel
-    };
-
+function style(el) {
+    el.style.width = '100%';
+    el.style.height = '100%';
 }
 
-var editors = {
-    checkbox: function(hk, get, set, options) {
-        return makeSimpleEditor(hk, 'checkbox', get, set, options);
-    },
-    knob: function(hk, get, set, options) {
-        return makeSimpleEditor(hk, 'knob', get, set, options);
-    },
-    text: function(hk, get, set, options) {
-        return makeSimpleEditor(hk, 'textField', get, set, options);
-    },
-    slider: function(hk, get, set, options) {
-        return makeSimpleEditor(hk, 'horizontalSlider', get, set, options);
-    }
-};
-
-var PropertyEditor = module.exports = BlockWidget.extend(function(_sc, _sm) {
-
-    return [
-
-        function(hk, rect) {
-
-            this._delegate = null;
-            this._properties = null;
-
-            _sc.call(this, hk, rect);
-
-        },
-
-        'methods', {
-
-            getDelegate: function() {
-                return this._delegate;
-            },
-
-            setDelegate: function(newDelegate) {
-                
-                if (newDelegate === this._delegate) {
-                    return;
-                }
-
-                this._table.innerHTML = '';
-                this._properties = null;
-
-                if (this._delegate) {
-                    this._teardown();
-                }
-
-                this._delegate = newDelegate || null;
-
-                if (this._delegate) {
-
-                    var self = this;
-                    
-                    // bind to receive notifications about property values changing
-                    var cancel1 = this._delegate.onPropertyChange(function(src, evt) {
-                        self._properties[evt.property].sync();
-                    });
-
-                    // TODO: bind to receive notifications of new/removed properties
-                    // var cancel2 = ...;
-
-                    this._delegateCancel = function() {
-                        cancel1();
-                        // cancel2();
-                    }
-
-                    this._rebuild();
-
-                }
-
-            },
-
-            _buildStructure: function() {
-                
-                this._root = this.document.createElement('div');
-                this._root.className = 'hk-property-editor';
-
-                this._table = this.document.createElement('table');
-
-                this._root.appendChild(this._table);
-
-            },
-
-            _rebuild: function() {
-
-                this._properties = {};
-                
-                var d = this._delegate;
-
-                var groupCount = (typeof d.getPropertyGroupCount === 'function')
-                                    ? d.getPropertyGroupCount()
-                                    : 1;
-
-                var useGroupHeaders = (typeof d.getPropertyGroupTitle === 'function');
-
-                var groupHeader = null;
-                for (var i = 0; i < groupCount; ++i) {
-                    
-                    if (useGroupHeaders && (groupHeader = this._buildGroupHeader(i))) {
-                        this._table.appendChild(groupHeader);
-                    }
-
-                    var tbody = this.document.createElement('tbody');
-                    this._table.appendChild(tbody);
-                    this._appendGroupEditors(tbody, i);
-
-                }
-
-            },
-
-            _buildGroupHeader: function(ix) {
-
-                var title = this._delegate.getPropertyGroupTitle(ix);
-                if (typeof title !== 'string') {
-                    return null;
-                }
-
-                var header = this.document.createElement('thead'),
-                    row = this.document.createElement('tr'),
-                    col = this.document.createElement('th');
-
-                col.setAttribute('colspan', 2);
-                col.textContent = title;
-
-                row.appendChild(col);
-                header.appendChild(row);
-
-                return header;
-
-            },
-
-            _appendGroupEditors: function(tbody, groupIx) {
-
-                var properties = this._delegate.getPropertyNames(groupIx);
-                properties.forEach(function(name) {
-
-                    var desc = this._delegate.getPropertyDescriptor(name);
-
-                    var row = this.document.createElement('tr');
-                    tbody.appendChild(row);
-
-                    var cap = this.document.createElement('th');
-                    row.appendChild(cap);
-                    cap.textContent = desc.caption || '';
-                    
-                    var cell = this.document.createElement('td');
-                    row.appendChild(cell);
-
-                    var editor = this._buildPropertyInput(
-                        name,
-                        desc.type || 'text',
-                        desc.config || {}
-                    );
-
-                    // store widget instance, sync fn etc
-                    this._properties[name] = editor;
-
-                    this._attachChildViaElement(editor.widget, cell);
-                    editor.sync();
-
-                }, this);
-
-                return tbody;
-
-            },
-
-            _buildPropertyInput: function(name, type, options) {
-
-                var d = this._delegate;
-
-                return editors[type](
-                    this._hk,
-                    function get() { return d.getPropertyValue(name); },
-                    function set(v) { return d.setPropertyValue(name, v); },
-                    options || {}
-                );
-
-            },
-
-            _teardown: function() {
-                this._delegateCancel();
-                for (var k in this._properties) {
-                    var prop = this._properties[k];
-                    prop.teardown();
-                    this._removeChild(prop.widget);
-                    prop.widget.dispose();
-                }
-            }
-        
-        }
-
-    ];
-
-});
-
-PropertyEditor.registerEditor = function(type, builder) {
-    if (type in editors) {
-        throw new Error("duplicate editor type: " + type);
-    }
-    editors[type] = builder;
+function unstyle(el) {
+    el.style.width = '';
+    el.style.height = '';
 }
 
-ctx.registerWidget('PropertyEditor', PropertyEditor);
-ctx.registerCSS(".hk-property-editor {\n\t\n}\n\n.hk-property-editor table {\n\twidth: 100%;\n}\n\n.hk-property-editor thead {\n\tbackground-color: #929DA8;\n}\n\n.hk-property-editor thead th {\n\ttext-align: left;\n\tpadding: 3px;\n\tcolor: black;\n}\n\n.hk-property-editor tbody th, td {\n\tpadding-top: 3px;\n\tpadding-bottom: 3px;\n\tvertical-align: middle;\n}\n\n.hk-property-editor tbody tr:first-child td,\n.hk-property-editor tbody tr:first-child th {\n\tpadding-top: 6px;\t\n}\n\n.hk-property-editor tbody tr:last-child td,\n.hk-property-editor tbody tr:last-child th {\n\tpadding-bottom: 6px;\t\n}\n\n.hk-property-editor tbody th {\n\ttext-align: left;\n\tpadding-right: 5px;\n\tcolor: white;\n\twhite-space: nowrap;\n}\n\n.hk-property-editor tbody td {\n\ttext-align: right;\n\twidth: 70%;\n}\n\n.hk-property-editor .hk-text-field,\n.hk-property-editor .hk-horizontal-slider {\n\twidth: 100%;\n}");
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30}],18:[function(require,module,exports){
-var ctx         = require('../core'),
-    theme       = require('../theme'),
-    k           = require('../constants'),
-    BlockWidget = require('../BlockWidget'),
-    trbl        = require('trbl');
-
-var DEFAULT_PADDING         = 8,
-    DEFAULT_TOOLBAR_HEIGHT  = 18;
-
-var RootPane = module.exports = BlockWidget.extend(function(_sc, _sm) {
+var RootPane = module.exports = Widget.extend(function(_sc, _sm) {
 
     return [
 
         function() {
 
-            this._padding           = [DEFAULT_PADDING, DEFAULT_PADDING, DEFAULT_PADDING, DEFAULT_PADDING];
-            this._toolbarHeight     = DEFAULT_TOOLBAR_HEIGHT;
             this._toolbarVisible    = true;
             this._toolbar           = null;
             this._rootWidget        = null;
@@ -2032,29 +1259,8 @@ var RootPane = module.exports = BlockWidget.extend(function(_sc, _sm) {
                 _sm.dispose.call(this);
             },
 
-            setPadding: function(padding) {
-                this._padding = trbl(padding);
-                this._layout();
-            },
-
             setBackgroundColor: function(color) {
                 this._root.style.backgroundColor = color;
-            },
-
-            setToolbarHeight: function(height) {
-
-                if (height === this._toolbarHeight) {
-                    return;
-                }
-
-                if (height === null) {
-                    this._toolbarHeight = DEFAULT_TOOLBAR_HEIGHT;
-                } else {
-                    this._toolbarHeight = parseInt(height, 10);
-                }
-
-                this._layout();
-
             },
 
             setToolbar: function(widget) {
@@ -2063,32 +1269,34 @@ var RootPane = module.exports = BlockWidget.extend(function(_sc, _sm) {
                     return;
 
                 if (this._toolbar) {
-                    this._removeChildViaElement(this._toolbar, this._root);
+                    this._removeChildViaElement(this._toolbar, this._toolbarWrapper);
+                    unstyle(this._toolbar.getRoot());
                     this._toolbar = null;
                 }
 
                 if (widget) {
                     this._toolbar = widget;
-                    this._attachChildViaElement(this._toolbar, this._root);
+                    style(this._toolbar.getRoot());
+                    this._attachChildViaElement(this._toolbar, this._toolbarWrapper);
                 }
 
-                this._layout();
+                this.layout();
 
             },
 
             showToolbar: function() {
                 this._toolbarVisible = true;
-                this._layout();
+                this.layout();
             },
             
             hideToolbar: function() {
                 this._toolbarVisible = false;
-                this._layout();
+                this.layout();
             },
             
             toggleToolbar: function() {
                 this._toolbarVisible = !this._toolbarVisible;
-                this._layout();
+                this.layout();
             },
             
             isToolbarVisible: function() {
@@ -2101,61 +1309,58 @@ var RootPane = module.exports = BlockWidget.extend(function(_sc, _sm) {
                     return;
 
                 if (this._rootWidget) {
-                    this._removeChildViaElement(this._rootWidget, this._root);
+                    this._removeChildViaElement(this._rootWidget, this._rootWrapper);
+                    unstyle(this._rootWidget.getRoot());
                     this._rootWidget = null;
                 }
 
                 if (widget) {
                     this._rootWidget = widget;
-                    this._attachChildViaElement(this._rootWidget, this._root);
+                    style(this._rootWidget.getRoot());
+                    this._attachChildViaElement(this._rootWidget, this._rootWrapper);
                 }
 
-                this._layout();
+                this.layout();
 
-            },
-
-            setBounds: function(x, y, width, height) {
-                /* no-op; root widget always fills its containing DOM element */
             },
 
             setResizeDelay: function(delay) {
                 this._resizeDelay = parseInt(delay, 10);
             },
 
-            _buildStructure: function() {
-                this._root = this.document.createElement('div');
-                this._root.className = 'hk-root-pane';
+            layout: function() {
+
+                if (this._toolbar && this._toolbarVisible) {
+                    du.removeClass(this.getRoot(), 'toolbar-hidden');
+                    this._toolbar.show();
+                } else {
+                    du.addClass(this.getRoot(), 'toolbar-hidden');
+                    if (this._toolbar) {
+                        this._toolbar.hide();    
+                    }
+                }
+
+                this._layoutChildren();
+
             },
 
-            _layout: function() {
-                
-                var rect        = this._root.getBoundingClientRect(),
-                    left        = this._padding[3],
-                    top         = this._padding[0],
-                    width       = rect.width - (this._padding[1] + this._padding[3]),
-                    rootTop     = top,
-                    rootHeight  = rect.height - (this._padding[0] + this._padding[2]);
-                
+            _buildStructure: function() {
+                return d('.hk-root-pane',
+                    d('.toolbar-wrapper!toolbarWrapper'),
+                    d('.root-wrapper!rootWrapper')
+                );
+            },
+
+            _layoutChildren: function() {
+
                 if (this._toolbar && this._toolbarVisible) {
-                    
-                    this._toolbar.setHidden(false);
-                    this._toolbar.setBounds(left,
-                                            top,
-                                            width,
-                                            this._toolbarHeight);
-                    
-                    var delta = this._toolbarHeight + theme.getInt('HK_TOOLBAR_MARGIN_BOTTOM');
-                    rootTop += delta;
-                    rootHeight -= delta;
-                
-                } else if (this._toolbar) {
-                    this._toolbar.setHidden(true);
+                    this._toolbar.layout();
                 }
-                
+
                 if (this._rootWidget) {
-                    this._rootWidget.setBounds(left, rootTop, width, rootHeight);
+                    this._rootWidget.layout();
                 }
-                
+
             },
 
             _setupResizeHandler: function() {
@@ -2163,17 +1368,15 @@ var RootPane = module.exports = BlockWidget.extend(function(_sc, _sm) {
                 var self    = this,
                     timeout = null;
 
-                // FIXME: stash this registration for later unbinding
-                // isn't this what basecamp is for?
-                this.window.addEventListener('resize', function() {
+                window.addEventListener('resize', function() {
                     if (self._resizeDelay <= 0) {
-                        self._layout();    
+                        self._layoutChildren();    
                     } else {
                         if (timeout) {
-                            self._clearTimeout(timeout);
+                            clearTimeout(timeout);
                         }
-                        timeout = self._setTimeout(function() {
-                            self._layout();
+                        timeout = setTimeout(function() {
+                            self._layoutChildren();
                         }, self._resizeDelay);
                     }
                 });
@@ -2186,81 +1389,42 @@ var RootPane = module.exports = BlockWidget.extend(function(_sc, _sm) {
 
 });
 
-ctx.registerCSS(".hk-root-pane {\n\ttop: 0;\n\tleft: 0;\n\tright: 0;\n\tbottom: 0;\n\toverflow: hidden;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}");
 ctx.registerWidget('RootPane', RootPane);
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"trbl":41}],19:[function(require,module,exports){
-var ctx             = require('../core'),
-    theme           = require('../theme'),
-    k               = require('../constants'),
-    InlineWidget    = require('../InlineWidget'),
-    du              = require('domutil');
+},{"../Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","dom-build":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js","domutil":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/SplitPane/index.js":[function(require,module,exports){
+var ctx         = require('../core');
+var k           = require('../constants');
+var Widget      = require('../Widget');
 
-ctx.registerWidget('Select', module.exports = InlineWidget.extend(function(_sc, _sm) {
+var du      	= require('domutil');
+var d           = require('dom-build');
+var rattrap 	= require('rattrap');
 
-    return [
-
-        function(hk) {
-            _sc.call(this, hk);
-        },
-
-        'methods', {
-
-            dispose: function() {
-                _sm.dispose.call(this);
-            },
-            
-            _buildStructure: function() {
-                this._root = this.document.createElement('select');
-                this._root.type = 'text'
-                this._root.className = 'hk-select';
-
-                this._root.innerHTML = "<option>Choice 1</option><option>Choice 2</option><option>Choice 3</option>";
-
-            }
-        
-        }
-
-    ];
-
-}));
-
-ctx.registerCSS(".hk-select {\n\theight: 18px;\n}");
-},{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34}],20:[function(require,module,exports){
-var ctx             = require('../core'),
-    theme           = require('../theme'),
-    k               = require('../constants'),
-    BlockWidget    	= require('../BlockWidget'),
-    du      		= require('domutil'),
-    rattrap 		= require('rattrap');
-
-var SPLIT_PANE_HORIZONTAL   = 'h',
-    SPLIT_PANE_VERTICAL     = 'v';
-
-//
-// Constants
+var SPLIT_PANE_HORIZONTAL   = 'h';
+var SPLIT_PANE_VERTICAL     = 'v';
 
 ctx.defineConstants({
-	HORIZONTAL 				: 'h',
-	VERTICAL 				: 'v',
-	SPLIT_PANE_HORIZONTAL   : SPLIT_PANE_HORIZONTAL,
+    SPLIT_PANE_HORIZONTAL   : SPLIT_PANE_HORIZONTAL,
     SPLIT_PANE_VERTICAL     : SPLIT_PANE_VERTICAL
 });
+
+// TODO: extract this from theme somehow
+var HK_SPLIT_PANE_DIVIDER_SIZE = 8;
 
 //
 // Widget
 
-ctx.registerWidget('SplitPane', module.exports = BlockWidget.extend(function(_sc, _sm) {
+ctx.registerWidget('SplitPane', module.exports = Widget.extend(function(_super) {
 
     return [
 
-        function() {
+        function(hk) {
 
             this._widgets       = [null, null];
             this._hiddenWidgets = [false, false];
             this._split         = 0.5;
             this._orientation   = SPLIT_PANE_HORIZONTAL;
             
-            _sc.apply(this, arguments);
+            _super.constructor.call(this, hk);
 
             this._bind();
 
@@ -2271,23 +1435,22 @@ ctx.registerWidget('SplitPane', module.exports = BlockWidget.extend(function(_sc
             dispose: function() {
                 this.setWidgetAtIndex(0, null);
                 this.setWidgetAtIndex(1, null);
-                _sm.dispose.call(this);
+                _super.dispose.call(this);
             },
             
             setOrientation: function(orientation) {
+
+                if (orientation !== SPLIT_PANE_HORIZONTAL && orientation !== SPLIT_PANE_VERTICAL) {
+                    throw new Error("invalid orientation: " + orientation);
+                }
                 
                 this._orientation = orientation;
                 
                 du.removeClass(this._root, 'horizontal vertical');
                 du.addClass(this._root, this._orientation === SPLIT_PANE_HORIZONTAL ? 'horizontal' : 'vertical');
                 
-                this._layout();
+                this.layout();
             
-            },
-            
-            setBounds: function(x, y, w, h) {
-                _sm.setBounds.call(this, x, y, w, h);
-                this._layout();
             },
 
             getSplit: function() {
@@ -2298,7 +1461,7 @@ ctx.registerWidget('SplitPane', module.exports = BlockWidget.extend(function(_sc
                 if (split < 0) split = 0;
                 if (split > 1) split = 1;
                 this._split = split;
-                this._layout();
+                this.layout();
             },
             
             setLeftWidget       : function(widget) { this.setWidgetAtIndex(0, widget); },
@@ -2308,17 +1471,17 @@ ctx.registerWidget('SplitPane', module.exports = BlockWidget.extend(function(_sc
 
             hideWidgetAtIndex: function(ix) {
                 this._hiddenWidgets[ix] = true;
-                this._layout();
+                this.layout();
             },
 
             showWidgetAtIndex: function(ix) {
                 this._hiddenWidgets[ix] = false;
-                this._layout();
+                this.layout();
             },
 
             toggleWidgetAtIndex: function(ix) {
                 this._hiddenWidgets[ix] = !this._hiddenWidgets[ix];
-                this._layout();
+                this.layout();
             },
             
             setWidgetAtIndex: function(ix, widget) {
@@ -2336,7 +1499,7 @@ ctx.registerWidget('SplitPane', module.exports = BlockWidget.extend(function(_sc
                         this._attachChildViaElement(widget, this._root);
                     }
 
-                    this._layout();
+                    this.layout();
                 }
                     
                 return existingWidget;
@@ -2344,28 +1507,31 @@ ctx.registerWidget('SplitPane', module.exports = BlockWidget.extend(function(_sc
             },
             
             _buildStructure: function() {
-                
-                this._root = this.document.createElement('div');
-                this._root.className = 'hk-split-pane';
-                
-                this._divider = this.document.createElement('div');
-                this._divider.className = 'hk-split-pane-divider';
-                
-                this._ghost = this.document.createElement('div');
-                this._ghost.className = 'hk-split-pane-divider hk-split-pane-ghost';
-                
-                this._root.appendChild(this._divider);
-                
-                du.addClass(this._root, this._orientation === SPLIT_PANE_HORIZONTAL ? 'horizontal' : 'vertical');
+
+                var ui = d('.hk-split-pane',
+                    d('.hk-split-pane-divider!divider')
+                );
+
+                this._ghost = d('.hk-split-pane-divider.hk-split-pane-ghost').root;
+
+                du.addClass(ui.root, this._orientation === SPLIT_PANE_HORIZONTAL ? 'horizontal' : 'vertical');
+
+                return ui;
             
             },
             
-            _layout: function() {
+            layout: function() {
 
-                var dividerSize = theme.getInt('HK_SPLIT_PANE_DIVIDER_SIZE');
+                var dividerSize = HK_SPLIT_PANE_DIVIDER_SIZE;
 
                 var hw = this._hiddenWidgets,
                     ws = this._widgets;
+
+                var rect = this._root.getBoundingClientRect();
+
+                function setBounds(widget, x, y, width, height) {
+                    du.setRect(widget.getRoot(), x, y, width, height);
+                }
 
                 if (ws[0]) ws[0].setHidden(hw[0]);
                 if (ws[1]) ws[1].setHidden(hw[1]);
@@ -2373,41 +1539,45 @@ ctx.registerWidget('SplitPane', module.exports = BlockWidget.extend(function(_sc
                 if (hw[0] || hw[1]) {
                     this._divider.style.display = 'none';
                     if (!hw[0] && ws[0]) {
-                        ws[0].setBounds(0, 0, this.width, this.height);
+                        setBounds(ws[0], 0, 0, rect.width, rect.height);
                     } else if (!hw[1] && ws[1]) {
-                        ws[1].setBounds(0, 0, this.width, this.height);
+                        setBounds(ws[1], 0, 0, rect.width, rect.height);
                     }
-                    return;
                 } else {
+
                     this._divider.style.display = 'block';
+
+                    if (this._orientation === SPLIT_PANE_HORIZONTAL) {
+                        
+                        var divt  = Math.floor(this._split * (rect.height - dividerSize)),
+                            w2t   = divt + dividerSize,
+                            w2h   = rect.height - w2t;
+                        
+                        this._divider.style.left = '';
+                        this._divider.style.top = divt + 'px';
+                        
+                        if (ws[0]) setBounds(ws[0], 0, 0, rect.width, divt);
+                        if (ws[1]) setBounds(ws[1], 0, w2t, rect.width, w2h);
+                    
+                    } else if (this._orientation === SPLIT_PANE_VERTICAL) {
+                        
+                        var divl  = Math.floor(this._split * (rect.width - dividerSize)),
+                            w2l   = divl + dividerSize,
+                            w2w   = rect.width - w2l;
+                            
+                        this._divider.style.left = divl + 'px';
+                        this._divider.style.top = '';
+                        
+                        if (ws[0]) setBounds(ws[0], 0, 0, divl, rect.height);
+                        if (ws[1]) setBounds(ws[1], w2l, 0, w2w, rect.height);
+                        
+                    }
+                
                 }
 
-                if (this._orientation === SPLIT_PANE_HORIZONTAL) {
-                    
-                    var divt  = Math.floor(this._split * (this.height - dividerSize)),
-                        w2t   = divt + dividerSize,
-                        w2h   = this.height - w2t;
-                    
-                    this._divider.style.left = '';
-                    this._divider.style.top = divt + 'px';
-                    
-                    if (ws[0]) ws[0].setBounds(0, 0, this.width, divt);
-                    if (ws[1]) ws[1].setBounds(0, w2t, this.width, w2h);
-                
-                } else if (this._orientation === SPLIT_PANE_VERTICAL) {
-                    
-                    var divl  = Math.floor(this._split * (this.width - dividerSize)),
-                        w2l   = divl + dividerSize,
-                        w2w   = this.width - w2l;
-                        
-                    this._divider.style.left = divl + 'px';
-                    this._divider.style.top = '';
-                    
-                    if (ws[0]) ws[0].setBounds(0, 0, divl, this.height);
-                    if (ws[1]) ws[1].setBounds(w2l, 0, w2w, this.height);
-                    
-                }
-            
+                if (ws[0] && !hw[0]) ws[0].layout();
+                if (ws[1] && !hw[1]) ws[1].layout();
+
             },
             
             _bind: function() {
@@ -2416,7 +1586,7 @@ ctx.registerWidget('SplitPane', module.exports = BlockWidget.extend(function(_sc
                 
                 this._divider.addEventListener('mousedown', function(evt) {
 
-                    var dividerSize     = theme.getInt('HK_SPLIT_PANE_DIVIDER_SIZE');
+                    var dividerSize     = HK_SPLIT_PANE_DIVIDER_SIZE;
                     
                     var rootPos         = self._root.getBoundingClientRect(),
                         lastValidSplit  = self._split;
@@ -2442,7 +1612,7 @@ ctx.registerWidget('SplitPane', module.exports = BlockWidget.extend(function(_sc
                     self._root.appendChild(self._ghost);
                     moveGhost();
                     
-                    var stopCapture = rattrap.startCapture(self.document, {
+                    var stopCapture = rattrap.startCapture(document, {
                         cursor: (self._orientation === SPLIT_PANE_VERTICAL) ? 'col-resize' : 'row-resize',
                         mousemove: function(evt) {
                             if (self._orientation === SPLIT_PANE_VERTICAL) {
@@ -2481,471 +1651,36 @@ ctx.registerWidget('SplitPane', module.exports = BlockWidget.extend(function(_sc
     ];
 
 }));
-
-ctx.registerCSS(".hk-split-pane > .hk-split-pane-divider {\n\tposition: absolute;\n\tbackground-color: $HK_ROOT_BG_COLOR;\n}\n\n.hk-split-pane > .hk-split-pane-ghost {\n\tbackground-color: #ff3300;\n\topacity: 0.7;\n}\n\n.hk-split-pane.horizontal > .hk-split-pane-divider {\n\tleft: 0; right: 0;\n\theight: $HK_SPLIT_PANE_DIVIDER_SIZE;\n\tcursor: row-resize;\n}\n\n.hk-split-pane.vertical > .hk-split-pane-divider {\n\ttop: 0; bottom: 0;\n\twidth: $HK_SPLIT_PANE_DIVIDER_SIZE;\n\tcursor: col-resize;\n}\n");
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34,"rattrap":38}],21:[function(require,module,exports){
-var ctx             = require('../core'),
-    theme           = require('../theme'),
-    k               = require('../constants'),
-    BlockWidget     = require('../BlockWidget'),
-    du              = require('domutil');
-
-function TextCell(doc) {
-    this.el = doc.createElement('div');
-    this.el.className = 'text cell';
-    this._text = '';
-}
-
-TextCell.prototype.setText = function(text) {
-    this._text = '' + (text || '');
-    this.el.textContent = this._text;
-    return this;
-}
-
-TextCell.prototype.setAlign = function(align) {
-    this.el.style.textAlign = align;
-    return this;
-}
-
-TextCell.prototype.setMinWidth = function(minWidth) {
-    this.el.style.minWidth = parseInt(minWidth, 10) + 'px';
-    return this;
-}
-
-TextCell.prototype.setMaxWidth = function(maxWidth) {
-    this.el.style.maxWidth = parseInt(maxWidth, 10) + 'px';
-    return this;
-}
-
-ctx.registerWidget('StatusBar', module.exports = BlockWidget.extend(function(_sc, _sm) {
-
-    return [
-
-        function() {
-            _sc.apply(this, arguments);
-
-            this._leftCells = [];
-            this._rightCells = [];
-        },
-
-        'methods', {
-            _buildStructure: function() {
-                
-                this._root = this.document.createElement('div');
-                this._root.className = 'hk-status-bar';
-            
-                this._left = this.document.createElement('div');
-                this._left.className = 'left-cells';
-                this._root.appendChild(this._left);
-
-                this._right = this.document.createElement('div');
-                this._right.className = 'right-cells';
-                this._root.appendChild(this._right);
-
-            },
-
-            addTextCell: function(position, text) {
-
-                var cell = new TextCell(this.document);
-                cell.setText(text);
-
-                if (position.charAt(0) === 'l') {
-                    this._leftCells.push(cell);
-                    this._left.appendChild(cell.el);
-                } else if (position.charAt(0) === 'r') {
-                    this._rightCells.push(cell);
-                    this._right.appendChild(cell.el);
-                } else {
-                    throw new Error("unknown status bar cell position: " + position);
-                }
-
-                return cell;
-
-            }
-        }
-
-    ];
-
-}));
-
-ctx.registerCSS(".hk-status-bar {\n    background: #595959;\n    border-top: 1px solid #7D7D7D;\n    box-sizing: border-box;\n    padding: 0 5px;\n}\n\n.hk-status-bar .left-cells {\n    float: left;\n}\n\n.hk-status-bar .right-cells {\n    float: right;\n}\n\n.hk-status-bar .cell {\n    float: left;\n    height: 20px;\n}\n\n.hk-status-bar .cell.text {\n    color: white;\n    font-size: 11px;\n    font-family: Helvetica;\n    padding-top: 3px;\n    text-shadow: #202020 0 -1px 1px;\n}");
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34}],22:[function(require,module,exports){
-var ctx             = require('../core'),
-    theme           = require('../theme'),
-    k               = require('../constants'),
-    BlockWidget    	= require('../BlockWidget'),
-    du 				= require('domutil');
-
-ctx.registerWidget('TabPane', module.exports = BlockWidget.extend(function(_sc, _sm) {
-
-	return [
-
-	    function() {
-	        this._tabs = [];
-	        _sc.apply(this, arguments);
-	        this._bind();
-	    },
-
-	    'methods', {
-
-	        setBounds: function() {
-	            _sm.setBounds.apply(this, arguments);
-	            this._redraw();
-	        },
-
-	        // Querying
-
-	        tabCount: function() {
-	            return this._tabs.length;
-	        },
-
-	        activeIndex: function() {
-	            for (var i = 0; i < this._tabs.length; ++i) {
-	                if (this._tabs[i].active) {
-	                    return i;
-	                }
-	            }
-	            return -1;
-	        },
-
-	        activeWidget: function() {
-	            var ix = this.activeIndex();
-	            return ix >= 0 ? this._tabs[ix].pane : null;
-	        },
-
-	        indexOfWidget: function(widget) {
-	            for (var i = 0; i < this._tabs.length; ++i) {
-	                if (this._tabs[i].pane === widget) {
-	                    return i;
-	                }
-	            }
-	            return -1;
-	        },
-
-	        //
-	        // Add/remove
-
-	        addTab: function(title, widget, selectTab) {
-	            
-	            var tab = this.document.createElement('a');
-	            tab.textContent = title;
-	            
-	            var newTab = {
-	                title   : title,
-	                ele     : tab,
-	                pane    : widget,
-	                active  : false
-	            };
-	            
-	            this._tabs.push(newTab);
-	            
-	            this._tabBar.appendChild(tab);
-	            
-	            widget.setHidden(true);
-	            this._attachChildViaElement(widget, this._tabContainer);
-	            
-	            if (this._tabs.length === 1 || selectTab) {
-	                this.selectTabAtIndex(this._tabs.length - 1);
-	            }
-	            
-	        },
-
-	        removeTabAtIndex: function(ix) {
-	            
-	            if (ix < 0 || ix >= this._tabs.length) {
-	                return null;
-	            }
-
-	            var tab = this._tabs[ix];
-	            this._tabBar.removeChild(tab.ele);
-	            this._removeChildViaElement(tab.pane, this._tabContainer);
-	            this._tabs.splice(ix, 1);
-
-	            if (tab.active && this._tabs.length > 0) {
-	                this.selectTabAtIndex(ix < this._tabs.length ? ix : ix - 1);
-	            }
-
-	        },
-
-	        removeActiveTab: function() {
-	            return this.removeTabAtIndex(this.activeIndex());
-	        },
-
-	        removeWidget: function(widget) {
-	            return this.removeTabAtIndex(this.indexOfWidget(widget));
-	        },
-
-	        //
-	        // Select
-
-	        selectTabAtIndex: function(ix) {
-	            for (var i = 0; i < this._tabs.length; ++i) {
-	                var tab = this._tabs[i];
-	                if (i === ix) {
-	                    du.addClass(tab.ele, 'active');
-	                    tab.active = true;
-	                    tab.pane.setHidden(false);
-	                } else {
-	                    du.removeClass(tab.ele, 'active');
-	                    tab.active = false;
-	                    tab.pane.setHidden(true);
-	                }
-	                this._redraw();
-	            }
-	        },
-
-	        //
-	        // Titles
-
-	        setActiveTabTitle: function(title) {
-	            this.setTitleAtIndex(this.activeIndex(), title);
-	        },
-
-	        setTitleForWidget: function(widget, title) {
-	            this.setTitleAtIndex(this.indexOfWidget(widget), title);
-	        },
-
-	        setTitleAtIndex: function(ix, title) {
-
-	            if (ix < 0 || ix >= this._tabs.length) {
-	                return;
-	            }
-
-	            title = ('' + title);
-	            this._tabs[ix].title = title;
-	            this._tabs[ix].ele.textContent = title;
-
-	            this._redraw();
-
-	        },
-
-	        //
-	        // 
-
-	        _buildStructure: function() {
-	            
-	            this._root = this.document.createElement('div');
-	            this._root.className = 'hk-tab-pane';
-	            
-	            this._tabBar = this.document.createElement('nav');
-	            this._tabBar.className = 'hk-tab-bar';
-	            
-	            this._tabContainer = this.document.createElement('div');
-	            this._tabContainer.className = 'hk-tab-container';
-	            
-	            this._canvas = this.document.createElement('canvas');
-	            this._canvas.className = 'hk-tab-canvas';
-	            this._canvas.height = theme.getInt('HK_TAB_SPACING') * 2;
-	            this._ctx = this._canvas.getContext('2d');
-	            
-	            this._root.appendChild(this._canvas);
-	            this._root.appendChild(this._tabBar);
-	            this._root.appendChild(this._tabContainer);
-	            
-	        },
-	        
-	        _bind: function() {
-	            
-	            var self = this;
-	            
-	            this._tabBar.addEventListener('click', function(evt) {
-	                evt.preventDefault();
-	                for (var i = 0; i < self._tabs.length; ++i) {
-	                    if (self._tabs[i].ele === evt.target) {
-	                        self.selectTabAtIndex(i);
-	                        break;
-	                    }
-	                }
-	            });
-	            
-	        },
-	        
-	        _redraw: function() {
-	            var self = this;
-
-	            var tabSpacing 	= theme.getInt('HK_TAB_SPACING'),
-	            	tabHeight 	= theme.getInt('HK_TAB_HEIGHT'),
-	            	tabRadius 	= theme.getInt('HK_TAB_BORDER_RADIUS'),
-	            	bgColor 	= theme.get('HK_TAB_BACKGROUND_COLOR');
-
-	            this._tabs.forEach(function(tab, i) {
-	                tab.pane.setBounds(tabSpacing,
-	                                   tabSpacing,
-	                                   self.width - (2 * tabSpacing),
-	                                   self.height - (3 * tabSpacing + tabHeight));
-	                                                     
-	                if (tab.active) {
-	                    var width       = tab.ele.offsetWidth,
-	                            height  = tab.ele.offsetHeight,
-	                            left    = tab.ele.offsetLeft,
-	                            top     = tab.ele.offsetTop,
-	                            ctx     = self._ctx;
-
-	                    width += tabRadius;
-
-	                    if (i > 0) {
-	                        left -= tabRadius;
-	                        width += tabRadius;
-	                    }
-
-	                    self._canvas.style.left = '' + left + 'px';
-	                    self._canvas.style.top = '' + (top + height) + 'px';
-	                    self._canvas.width = width;
-	                    
-	                    ctx.fillStyle = bgColor;
-
-	                    var arcY = tabSpacing - tabRadius;
-
-	                    if (i == 0) {
-	                        ctx.fillRect(0, 0, width - tabRadius, self._canvas.height);
-	                        ctx.beginPath();
-	                        ctx.arc(width, arcY, tabRadius, Math.PI, Math.PI / 2, true);
-	                        ctx.lineTo(width - tabRadius, tabSpacing);
-	                        ctx.lineTo(width - tabRadius, 0);
-	                        ctx.fill();
-	                    } else {
-	                        ctx.beginPath();
-	                        ctx.moveTo(tabRadius, 0);
-	                        ctx.lineTo(tabRadius, arcY);
-	                        ctx.arc(0, arcY, tabRadius, 0, Math.PI / 2, false);
-	                        ctx.lineTo(width, tabSpacing);
-	                        ctx.arc(width, arcY, tabRadius, Math.PI / 2, Math.PI, false);
-	                        ctx.lineTo(width - tabRadius, 0);
-	                        ctx.lineTo(tabRadius, 0);
-	                        ctx.fill();
-	                    }
-	                }
-	            });
-	        }
-
-	    }
-
-	];
-
-}));
-
-ctx.registerCSS(".hk-tab-pane .hk-tab-bar {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: $HK_TAB_HEIGHT;\n}\n\n.hk-tab-pane .hk-tab-bar > a {\n\n  /* control-font mixin */\n  font: $HK_CONTROL_FONT_SIZE $HK_CONTROL_FONT;\n  line-height: 1;\n\n  background: $HK_TAB_BACKGROUND_COLOR;\n  display: block;\n  float: left;\n  margin-right: $HK_TAB_SPACING;\n  color: $HK_TEXT_COLOR;\n  text-decoration: none;\n  font-weight: bold;\n  padding: $HK_TAB_PADDING;\n  border-radius: $HK_TAB_BORDER_RADIUS;\n  min-width: 30px;\n  text-align: center; \n  \n}\n\n.hk-tab-pane .hk-tab-bar > a.active {\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.hk-tab-pane .hk-tab-container {\n  position: absolute;\n  top: $HK_TAB_CONTAINER_TOP;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: $HK_TAB_BACKGROUND_COLOR;\n  border-radius: 8px;\n}\n\n.hk-tab-pane .hk-tab-canvas {\n  position: absolute;\n}\n");
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34}],23:[function(require,module,exports){
-var ctx             = require('../core'),
-    theme           = require('../theme'),
-    k               = require('../constants'),
-    InlineWidget    = require('../InlineWidget'),
-    du              = require('domutil');
-
-// TODO: do we need a way of handling escape key to reset
-// TODO: there are a whole pile of event handlers we could expose via signals:
-//       onKeyDown, onKeyUp, onKeyPress, onFocus, onBlur, onInput. That's a lot
-//       of overhead - worth investigating lazy-loading via getters?
-
-ctx.registerWidget('TextField', module.exports = InlineWidget.extend(function(_sc, _sm) {
-
-    return [
-
-        function(hk) {
-            _sc.call(this, hk);
-            this._addSignal('onChange');
-            this._addSignal('onAction');
-            this._value = '';
-        },
-
-        'mixins', ['ValueWidget'],
-
-        'methods', {
-
-            dispose: function() {
-                _sm.dispose.call(this);
-            },
-
-            _setValue: function(v) {
-                if (v !== this._value) {
-                    this._value = this._root.value = v;
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            
-            _buildStructure: function() {
-
-                var self = this;
-                
-                this._root = this.document.createElement('input');
-                this._root.type = 'text'
-                this._root.className = 'hk-text-field';
-
-                this._root.addEventListener('change', function(evt) {
-                    // normal rules don't apply here.
-                    // textfield value is guaranteed to have changed so
-                    // just sync property and broadcast the change.
-                    self._value = self._root.value;
-                    self._broadcastChange();
-                });
-
-                var ready = true;
-                
-                this._root.addEventListener('keydown', function(evt) {
-                    if (ready && evt.which === 13) {
-                        ready = false;
-                        // sync the value here before firing action because
-                        // keydown is fired before "change" (enter key causes
-                        // change event)
-                        self._value = self._root.value;
-                        self.onAction.emit(this, self._value);
-                    }
-                    evt.stopPropagation();
-                });
-
-                this._root.addEventListener('keyup', function(evt) {
-                    ready = true;
-                    evt.stopPropagation();
-                });
-
-                this._root.addEventListener('keypress', function(evt) {
-                    evt.stopPropagation();
-                });
-            },
-
-            _applySizeHints: function() {
-                this._applyHintedProperty(this._root, 'width');
-                this._applyHintedProperty(this._root, 'height');
-            }
-        
-        }
-
-    ];
-
-}));
-
-ctx.registerCSS(".hk-text-field {\n\tpadding: 0 4px;\n    line-height: 1;\n    font-size: 10px;\n    background-color: $HK_BUTTON_BG_COLOR;\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    width: 200px;\n    height: 18px;\n}\n\n.hk-text-field:focus {\n\toutline: none;\n\tborder-color: $HK_CONTROL_ACTIVE_BG_COLOR;\n}\n");
-},{"../InlineWidget":12,"../constants":27,"../core":28,"../theme":30,"domutil":34}],24:[function(require,module,exports){
-var ctx         = require('../core'),
-    theme       = require('../theme'),
-    k           = require('../constants'),
-    BlockWidget = require('../BlockWidget'),
-    du  		= require('domutil');
+},{"../Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","../constants":"/Users/jason/dev/projects/hudkit.js/lib/constants.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","dom-build":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js","domutil":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/index.js","rattrap":"/Users/jason/dev/projects/hudkit.js/node_modules/rattrap/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/Toolbar/index.js":[function(require,module,exports){
+var ctx     = require('../core');
+var k 		= require('../constants');
+var Widget 	= require('../Widget');
+
+var du  	= require('domutil');
+var d 		= require('dom-build');
 
 ctx.defineConstants({
 	TOOLBAR_ALIGN_LEFT	: 'left',
 	TOOLBAR_ALIGN_RIGHT	: 'right'
 });
 
-ctx.registerWidget('Toolbar', module.exports = BlockWidget.extend(function(_sc, _sm) {
+ctx.registerWidget('Toolbar', module.exports = Widget.extend(function(_super) {
 
 	return [
 
-        function() {
+        function(hk) {
 
         	this._leftWidgets = [];
         	this._rightWidgets = [];
 
-            _sc.apply(this, arguments);
+            _super.constructor.call(this, hk);
 
         },
 
         'methods', {
             
             addAction: function(action, align) {
-				var button = this._hk.button('toolbar');
+				var button = this.hk.button('toolbar');
 				button.bindAction(action);
 				return this.addWidget(button, align);
             },
@@ -2969,34 +1704,12 @@ ctx.registerWidget('Toolbar', module.exports = BlockWidget.extend(function(_sc, 
 
 			},
 
-			setBounds: function(x, y, width, height) {
-				
-				_sm.setBounds.call(this, x, y, width, height);
-
-				function applyHints(widget) {
-					widget.setLayoutSizeHints({height: height});
-				}
-
-				this._leftWidgets.forEach(applyHints);
-				this._rightWidgets.forEach(applyHints);
-
-			},
-
             _buildStructure: function() {
-
-                this._root = this.document.createElement('div');
-                
-                this._left = this.document.createElement('div');
-                this._left.className = 'hk-toolbar-items hk-toolbar-items-left';
-                this._root.appendChild(this._left);
-                
-                this._right = this.document.createElement('div');
-                this._right.className = 'hk-toolbar-items hk-toolbar-items-right';
-                this._root.appendChild(this._right);
-                
-                this._root.className = 'hk-toolbar';
-
-            }
+				return d('.hk-toolbar',
+            		d('.hk-toolbar-items.hk-toolbar-items-left!left'),
+            		d('.hk-toolbar-items.hk-toolbar-items-left!right')
+            	);
+			}
 
         }
 
@@ -3004,13 +1717,13 @@ ctx.registerWidget('Toolbar', module.exports = BlockWidget.extend(function(_sc, 
 
 }));
 
-ctx.registerCSS(".hk-toolbar {\n    \n}\n\n.hk-toolbar-items {\n\n}\n\n.hk-toolbar-items.hk-toolbar-items-left {\n    float: left;\n}\n\n.hk-toolbar-items.hk-toolbar-items-right {\n    float: right;\n}\n\n.hk-toolbar-items > * {\n    margin-right: 2px !important;\n    vertical-align: top;\n}\n\n.hk-toolbar-button {\n    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;\n    padding-left: 3px;\n    padding-right: 3px;\n}\n");
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34}],25:[function(require,module,exports){
+},{"../Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","../constants":"/Users/jason/dev/projects/hudkit.js/lib/constants.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","dom-build":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js","domutil":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/TreeView/index.js":[function(require,module,exports){
 var ctx         = require('../core'),
-    theme       = require('../theme'),
     k           = require('../constants'),
-    BlockWidget = require('../BlockWidget'),
-    du          = require('domutil');
+    Widget      = require('../Widget');
+
+var du          = require('domutil'),
+    d           = require('dom-build');
 
 // TODO: refresh
 // TODO: context menu
@@ -3037,7 +1750,7 @@ function cancellable(fn, ifCancelled) {
     return [fn, function() { cancelled = true; }];
 }
 
-var TreeView = module.exports = BlockWidget.extend(function(_sc, _sm) {
+ctx.registerWidget('TreeView', module.exports = Widget.extend(function(_sc, _sm) {
 
     return [
 
@@ -3075,15 +1788,15 @@ var TreeView = module.exports = BlockWidget.extend(function(_sc, _sm) {
             },
 
             _buildStructure: function() {
+                return d('.hk-tree-view',
+                    d('ul.hk-tree-view-items!wrapper')
+                );
+            },
+
+            _bindEvents: function() {
 
                 var self = this;
 
-                this._root = this.document.createElement('div');
-                this._root.className = 'hk-tree-view';
-
-                this._wrapper = this.document.createElement('ul');
-                this._wrapper.className = 'hk-tree-view-items';
-                
                 this._wrapper.addEventListener('click', function(evt) {
 
                     evt.preventDefault();
@@ -3130,8 +1843,6 @@ var TreeView = module.exports = BlockWidget.extend(function(_sc, _sm) {
                 
                 });
 
-                this._root.appendChild(this._wrapper);
-
             },
 
             _loadRootItems: function() {
@@ -3167,7 +1878,7 @@ var TreeView = module.exports = BlockWidget.extend(function(_sc, _sm) {
                         self._busy = false;
                     } else {
 
-                        var list = self.document.createElement('ul');
+                        var list = document.createElement('ul');
                         li.appendChild(list);
                         li.treeViewChildrenLoaded = true;
 
@@ -3185,7 +1896,7 @@ var TreeView = module.exports = BlockWidget.extend(function(_sc, _sm) {
 
             _createNodeForItem: function(item) {
 
-                var li          = this.document.createElement('li'),
+                var li          = document.createElement('li'),
                     isContainer = this._delegate.itemIsContainer(item);
 
                 du.addClass(li, isContainer ? 'hk-tree-view-container' : 'hk-tree-view-leaf');
@@ -3195,25 +1906,25 @@ var TreeView = module.exports = BlockWidget.extend(function(_sc, _sm) {
                     du.addClass(li, itemClass);
                 }
 
-                var itemEl = this.document.createElement('div');
+                var itemEl = document.createElement('div');
                 itemEl.className = 'item';
 
-                var icon = this.document.createElement('span');
+                var icon = document.createElement('span');
                 icon.className = 'icon';
                 icon.innerHTML = '&nbsp;';
                 itemEl.appendChild(icon);
 
-                var title = this.document.createElement('span');
+                var title = document.createElement('span');
                 title.className = 'title';
                 title.textContent = this._delegate.itemTitle(item);
                 itemEl.appendChild(title);
 
                 var flair = this._delegate.itemFlair(item);
                 if (flair.length > 0) {
-                    var flairWrapper = this.document.createElement('div');
+                    var flairWrapper = document.createElement('div');
                     flairWrapper.className = 'hk-tree-view-flair';
                     flair.forEach(function(f) {
-                        var flairEl = this.document.createElement('span');
+                        var flairEl = document.createElement('span');
                         flairEl.className = f.className;
                         if ('text' in f) {
                             flairEl.textContent = f.text;
@@ -3309,256 +2020,333 @@ var TreeView = module.exports = BlockWidget.extend(function(_sc, _sm) {
 
     ];
 
+}));
+},{"../Widget":"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js","../constants":"/Users/jason/dev/projects/hudkit.js/lib/constants.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","dom-build":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js","domutil":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/Widget/index.js":[function(require,module,exports){
+var ctx 		= require('../core');
+
+var Component 	= require('../component').Component;
+var du 			= require('domutil');
+var signal 		= require('hudkit-values').signal;
+var property 	= require('hudkit-values').property;
+
+var nextWidgetId = 1;
+
+ctx.registerWidget('Widget', module.exports = Component.extend(function(_super) {
+
+	return [
+
+		function(hk) {
+
+			this.hk = hk;
+
+			_super.constructor.call(this, nextWidgetId++);
+
+			this._ui = this._buildStructure();
+			for (var k in this._ui) {
+				this['_' + k] = this._ui[k];
+			}
+			
+			this._root.component = this;
+			this._root.setAttribute('data-cid', this.cid);
+			du.addClass(this._root, 'hk-widget');
+
+
+			this._bindEvents();
+			this._buildChildren();
+		
+		},
+
+		'methods', {
+
+			/**
+			 * Call on a widget when you're done with it and never want to use it again.
+			 *
+			 * There is no need to remove this widget's root from the DOM, this guaranteed
+			 * to have happened by the time dispose() is called. However, container widgets
+			 * *must* remove all of their children (non-recursively).
+			 *
+			 * Subclasses should override this method to unregister listeners, remove child
+			 * widgets and nullify any references likely to cause memory leaks.
+			 */
+			dispose: function() {
+			    this._root = null;
+			},
+
+			getRoot: function() {
+				return this._root;
+			},
+
+			layout: function() {
+
+			},
+
+			//
+			//
+
+			_buildStructure: function() {
+				throw new Error("you must override SimpleComponent::_buildComponent()");
+			},
+
+			_bindEvents: function() {
+
+			},
+			
+			_buildChildren: function() {
+
+			},
+
+			_addSignal: function(name) {
+				this[name] = signal(name);
+			},
+
+			_addProperty: function(name, value, transformer) {
+				this[name] = property(name, value, transformer);
+			}
+			
+		}
+
+	]
+
+}));
+
+},{"../component":"/Users/jason/dev/projects/hudkit.js/lib/component.js","../core":"/Users/jason/dev/projects/hudkit.js/lib/core.js","domutil":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/index.js","hudkit-values":"/Users/jason/dev/projects/hudkit.js/node_modules/hudkit-values/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/component.js":[function(require,module,exports){
+var Class = require('classkit').Class;
+
+var du = require('domutil');
+
+var Component = exports.Component = Class.extend(function(_super) {
+
+	return [
+
+		function(cid) {
+			this.cid = cid;
+			this._parent = null;
+			this._hidden = false;
+			this._isRootComponent = false;
+			this._childComponents = [];
+		},
+
+		'methods', {
+
+			attachAsRootComponent: function(el) {
+				this._isRootComponent = true;
+				this.willMount();
+				el.appendChild(this.getRoot());
+				this.didMount();
+			},
+
+			isHidden: function() {
+				return this._hidden;
+			},
+
+			hide: function() {
+				if (!this._hidden) {
+					this.getRoot().style.display = 'none';
+					this._hidden = true;	
+				}
+			},
+
+			show: function() {
+				if (this._hidden) {
+					this.getRoot().style.display = '';
+					this._hidden = false;	
+				}
+			},
+
+			setHidden: function(hidden) {
+				if (hidden) {
+					this.hide();
+				} else {
+					this.show();
+				}
+			},
+
+			isMounted: function() {
+				return this._isRootComponent || (this._parent && this._parent.isMounted());
+			},
+
+			getRoot: function() {
+				throw new Error("component must have a root");
+			},
+
+			getParent: function() {
+				return this._parent;
+			},
+
+			willMount: function() {
+				this._callOnChildren('willMount');
+			},
+
+			didMount: function() {
+				this._callOnChildren('didMount');
+			},
+
+			willUnmount: function() {
+				this._callOnChildren('willUnmount');
+			},
+
+			didUnmount: function() {
+				this._callOnChildren('didUnmount');
+			},
+
+			//
+			//
+
+			_setParent: function(parent) {
+				this._parent = parent;
+			},
+
+			_attachChildViaElement: function(component, el) {
+
+				if (typeof el === 'string') {
+					el = this.getRoot().querySelector(el);
+				}
+
+				if (component.getParent()) {
+					throw new Error("can't attach component - already has parent");
+				}
+
+				var mounted = this.isMounted();
+
+				if (mounted) {
+					component.willMount();
+				}
+
+				var self = this;
+
+				// this.dom.appendChild(el, component.getRoot());
+				// this.dom.call(function() {
+				// 	self._childComponents.push(component);
+				// 	component._setParent(this);
+
+				// 	if (mounted) {
+				// 		component.didMount();
+				// 	}
+
+				// 	if (cb) cb();
+				// });
+
+				el.appendChild(component.getRoot());
+				this._childComponents.push(component);
+				component._setParent(this);
+
+				if (mounted) {
+					component.didMount();
+				}
+
+				return component;
+
+			},
+
+			_attachChildByReplacingElement: function(component, el) {
+
+				if (typeof el === 'string') {
+					el = this.getRoot().querySelector(el);
+				}
+
+				if (component.getParent()) {
+					throw new Error("can't attach component - already has parent");	
+				}
+
+				var mounted = this.isMounted();
+
+				if (mounted) {
+					component.willMount();
+				}
+
+				du.replace(el, component.getRoot());
+				this._childComponents.push(component);
+				component._setParent(this);
+
+				if (mounted) {
+					component.didMount();
+				}
+
+				return component;
+
+			},
+
+			_removeChildViaElement: function(component, el) {
+
+				if (typeof el === 'string') {
+					el = this.getRoot().querySelector(el);
+				}
+
+				var ix = this._childComponents.indexOf(component);
+				if (ix < 0) {
+					throw new Error("can't remove component - not a child");
+				}
+
+				component.willUnmount();
+
+				el.removeChild(component.getRoot());
+				this._childComponents.splice(ix, 1);
+				component._setParent(null);
+
+				component.didUnmount();
+
+				return component;
+
+			},
+
+			_callOnChildren: function(method) {
+				if (this._childComponents.length) {
+					this._childComponents.forEach(function(c) {
+						c[method]();
+					});	
+				}
+			}
+
+		}
+
+	];
+
 });
 
-ctx.registerCSS(".hk-tree-view {\n\tbackground: #202020;\n\toverflow: auto;\n}\n\n.hk-tree-view .item {\n\tdisplay: block;\n\tpadding: 3px;\n}\n\n.hk-tree-view .icon {\n\tdisplay: inline-block;\n\twidth: 16px;\n\tbackground: blue;\n}\n\n.hk-tree-view .title {\n\tdisplay: inline-block;\n\tmargin-left: 5px;\n\tcolor: white;\n}\n\n.hk-tree-view ul {\n\tdisplay: block;\n\tlist-style: none;\n\tmargin: 0;\n\tpadding: 0;\n}\n\n.hk-tree-view li {\n\tdisplay: block;\n\tlist-style: none;\n\tmargin: 0;\n\tpadding: 0;\n}\n\n.hk-tree-view ul ul {\n\tmargin-left: 20px;\n}\n\n.hk-tree-view li > ul {\n\tdisplay: none;\n}\n\n/* Flair */\n\n.hk-tree-view-flair {\n\tfloat: right;\n}\n\n.hk-tree-view-flair > * {\n\tdisplay: inline-block;\n\ttext-align: center;\n\tmargin-left: 3px;\n}\n\n/* Expanded State */\n\n.hk-tree-view li.expanded > ul {\n\tdisplay: block;\n}\n\n.hk-tree-view li.expanded > .item > .icon {\n\tbackground: green;\n}\n\n/* Selected State */\n\n.hk-tree-view li.selected > .item {\n\tbackground: red;\n}");
-ctx.registerWidget('TreeView', TreeView);
-},{"../BlockWidget":3,"../constants":27,"../core":28,"../theme":30,"domutil":34}],26:[function(require,module,exports){
-var ctx     = require('../core'),
-    theme   = require('../theme'),
-    k       = require('../constants'),
-    Class   = require('classkit').Class,
-    du      = require('domutil'),
-    signal  = require('signalkit');
+exports.SimpleComponent = Component.extend(function(_super) {
 
-var Mixins = {};
+	return [
 
-var Widget = module.exports = Class.extend(function(_sc, _sm) {
+		function(cid) {
 
-    return [
+			_super.constructor.call(this, cid);
 
-        function(hk) {
+			this.ui = this._buildComponent();
+			
+			this._root = this.ui.root;
+			this._root.component = this;
 
-            this._hk = hk;
-            
-            this._parent = null;
-            this._hidden = false;
-            
-            var root = this._buildStructure();
-            if (root) this._root = root;
-            if (!this._root) throw new Error("widget root not built");
-            du.addClass(this._root, 'hk-widget');
+			this._bindEvents();
+			this._buildChildren();
 
-        },
+		},
 
-        'properties', {
-            window: {
-                get: function() { return this._hk.window; }
-            },
-            document: {
-                get: function() { return this._hk.document; }
-            }
-        },
+		'methods', {
 
-        'methods', {
-            /**
-             * Call on a widget when you're done with it and never want to use it again.
-             *
-             * There is no need to remove this widget's root from the DOM, this guaranteed
-             * to have happened by the time dispose() is called. However, container widgets
-             * *must* remove all of their children (non-recursively).
-             *
-             * Subclasses should override this method to unregister listeners, remove child
-             * widgets and nullify any references likely to cause memory leaks.
-             */
-            dispose: function() {
-                this._root = null;
-            },
+			getRoot: function() {
+				return this._root;
+			},
 
-            getRoot: function() { return this._root; },
+			_buildComponent: function() {
+				throw new Error("you must override SimpleComponent::_buildComponent()");
+			},
 
-            getParent: function() { return this._parent; },
-            setParent: function(p) { this._parent = p; },
+			_bindEvents: function() {},
+			_buildChildren: function() {}
 
-            isHidden: function() { return this._hidden; },
-            setHidden: function(hidden) {
-                this._hidden = !!hidden;
-                this._root.style.display = this._hidden ? 'none' : '';
-            },
+		}
 
-            /**
-             * A widget's implementation of this method should create that widget's
-             * HTML structure and either assign it to this.root or return it. There
-             * is no need to assign the CSS class `hk-widget`; this is done by the
-             * widget initialiser, but any additional CSS classes must be added by
-             * your code.
-             *
-             * Shortly after it has called _buildStructure(), the initialiser will
-             * call setBounds() - a method you may have overridden to perform
-             * additional layout duties - so ensure that the HTML structure is
-             * set up sufficiently for this call to complete.
-             */
-            _buildStructure: function() {
-                throw new Error("widgets must override Widget.prototype._buildStructure()");
-            },
-
-            _attachChildViaElement: function(childWidget, ele) {
-
-                // TODO: it would probably be better if we just asked the
-                // child to remove itself from the its current parent here
-                // but that pre-supposes a standard interface for removing
-                // elements from "containers", which we don't have yet. And
-                // I'm not willing to commit to an interface that hasn't yet
-                // proven to be required...
-                var existingParent = childWidget.getParent();
-                if (existingParent) {
-                    throw new Error("can't attach child widget - child already has a parent!");
-                }
-
-                ele = ele || this.getRoot();
-                ele.appendChild(childWidget.getRoot());
-                childWidget.setParent(this);
-
-            },
-
-            _removeChild: function(childWidget) {
-                return this._removeChildViaElement(childWidget, childWidget.getRoot().parentNode);
-            },
-
-            _removeChildViaElement: function(childWidget, ele) {
-                ele.removeChild(childWidget.getRoot());
-                childWidget.setParent(null);
-            },
-
-            //
-            // Timeout/intervals
-
-            _setTimeout: function(fn, timeout) {
-                return this._hk.window.setTimeout(fn, timeout);
-            },
-
-            _clearTimeout: function(id) {
-                return this._hk.window.clearTimeout(id);
-            },
-
-            _setInterval: function(fn, interval) {
-                return this._hk.window.setInterval(fn, interval);
-            },
-
-            _clearInterval: function(id) {
-                return this._hk.window.clearInterval(id);
-            },
-
-            //
-            // Signals/properties
-
-            _addSignal: function(name) {
-                this[name] = signal(name);
-            }
-        
-        }
-    
-    ];
+	];
 
 });
-
-Widget.registerMixin = function(name, obj) {
-    if (name in Mixins) {
-        throw new Error("duplicate mixin: " + name);
-    }
-    Mixins[name] = obj;
-}
-
-Widget.Features.mixins = function(ctor, mixinList) {
-    mixinList.forEach(function(m) {
-        var mixin = Mixins[m];
-        if (!mixin) {
-            throw new Error("unknown mixin: " + m);
-        }
-        for (var k in mixin) {
-            ctor.prototype[k] = mixin[k];
-        }
-    });
-}
-
-//
-// Default mixins
-
-/*
- * ValueWidget mixin denotes any widget that represents a value.
- * This mixin requires that the implementing widget have the following:
- *
- *   _value => the widget's current value
- *   onChange => a signal for broadcasting requested changes
- * 
- * Additionally, the private _setValue() function may be overridden to
- * apply custom transform/display update logic. This should return true
- * if the value did in fact change.
- *
- * The onChange signal should only be emitted in response to user
- * interaction with the widget, and not in response to external requests
- * to change the widget's displayed value.
- */
-Widget.registerMixin('ValueWidget', {
-    getValue: function() {
-        return this._value;
-    },
-
-    setValue: function(value) {
-        return this._setValue(value);
-    },
-
-    _setValue: function(v) {
-        this._value = v;
-        // we'll just assume the value has changed here; best not to
-        // assume that values can be compared with == or ===.
-        return true;
-    },
-
-    _broadcastChange: function() {
-        this.onChange.emit(this, this.getValue());
-    }
-});
-
-Widget.registerMixin('ValueRange', {
-    getMinValue: function() {
-        return this._minValue;
-    },
-
-    getMaxValue: function() {
-        return this._maxValue;
-    },
-
-    setMinValue: function(min) {
-        if (min === this._minValue) {
-            return;
-        }
-
-        this._minValue = min;
-        if (this._value < min) {
-            this._value = min;
-        }
-            
-        this._update();
-    },
-
-    setMaxValue: function(max) {
-        if (max === this._maxValue) {
-            return;
-        }
-            
-        this._maxValue = max;
-        if (this._value > max) {
-            this._value = max;
-        }
-            
-        this._update();
-    }
-});
-
-ctx.registerCSS(".hk-widget {\n\toverflow: hidden;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n}\n");
-ctx.registerWidget('Widget', Widget);
-},{"../constants":27,"../core":28,"../theme":30,"classkit":31,"domutil":34,"signalkit":39}],27:[function(require,module,exports){
+},{"classkit":"/Users/jason/dev/projects/hudkit.js/node_modules/classkit/index.js","domutil":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/index.js"}],"/Users/jason/dev/projects/hudkit.js/lib/constants.js":[function(require,module,exports){
 module.exports = {};
-},{}],28:[function(require,module,exports){
+},{}],"/Users/jason/dev/projects/hudkit.js/lib/core.js":[function(require,module,exports){
 var registry				= require('./registry'),
-	theme 					= require('./theme'),
 	constants 				= require('./constants'),
 	Instance 				= require('./Instance');
 
-exports.theme 				= theme;
 exports.k 					= constants;
-
 exports.defineConstant 		= defineConstant;
 exports.defineConstants		= defineConstants;
 exports.getWidget 			= getWidget;
@@ -3566,7 +2354,6 @@ exports.registerWidget		= registerWidget;
 exports.registerInitializer	= registerInitializer;
 exports.registerCSS 		= registerCSS;
 exports.instance 			= instance;
-exports.init 				= init;
 
 function defineConstant(name, value) {
 	Object.defineProperty(constants, name, {
@@ -3637,72 +2424,12 @@ function instance(doc) {
 	return new Instance(doc);
 }
 
-function init() {
-	// no-op, backwards compatibility only
-}
-},{"./Instance":13,"./constants":27,"./registry":29,"./theme":30}],29:[function(require,module,exports){
-exports.widgets 		= {};
-exports.initializers	= [];
-},{}],30:[function(require,module,exports){
-// TODO: this is eventually to be handled by Unwise,
-// with live updating when themes change.
+},{"./Instance":"/Users/jason/dev/projects/hudkit.js/lib/Instance.js","./constants":"/Users/jason/dev/projects/hudkit.js/lib/constants.js","./registry":"/Users/jason/dev/projects/hudkit.js/lib/registry.js"}],"/Users/jason/dev/projects/hudkit.js/lib/registry.js":[function(require,module,exports){
+exports.widgets         = {};
+exports.initializers    = [];
+},{}],"/Users/jason/dev/projects/hudkit.js/node_modules/classkit/index.js":[function(require,module,exports){
+exports.Class = Class;
 
-var theme = {
-    'HK_MONOSPACE_FONT'             : 'Menlo, Monaco, "Liberation Mono", monospace',
-    'HK_TEXT_COLOR'                 : '#121729',
-
-    'HK_CONTROL_FONT'               : 'Helvetica, sans-serif',
-    'HK_CONTROL_FONT_SIZE'          : '10px',
-    'HK_CONTROL_BORDER_COLOR'       : '#455366',
-    'HK_CONTROL_ACTIVE_BG_COLOR'    : '#EAF20F',
-    
-    'HK_BUTTON_BG_COLOR'            : '#929DA8',
-
-    'HK_ROOT_BG_COLOR'              : '#181E23',
-
-    'HK_CONSOLE_FONT_SIZE'          : '13px',
-
-    'HK_SPLIT_PANE_DIVIDER_SIZE'    : '8px',
-    
-    'HK_TAB_SPACING'                : '7px',
-    'HK_TAB_PADDING'                : '7px',
-
-    // control font size + 2 * tab padding
-    'HK_TAB_HEIGHT'                 : '24px',
-    'HK_TAB_BORDER_RADIUS'          : '5px',
-    'HK_TAB_BACKGROUND_COLOR'       : '#67748C',
-
-    // $HK_TAB_HEIGHT + $HK_TAB_SPACING
-    'HK_TAB_CONTAINER_TOP'          : '31px',
-
-    'HK_BLOCK_BORDER_RADIUS'        : '10px',
-
-    'HK_TOOLBAR_ITEM_BORDER_COLOR'  : '#A6B5BB',
-
-    'HK_TOOLBAR_V_PADDING'          : '3px',
-
-    'HK_TOOLBAR_MARGIN_TOP'         : '8px',
-    'HK_TOOLBAR_MARGIN_RIGHT'       : '8px',
-    'HK_TOOLBAR_MARGIN_BOTTOM'      : '8px',
-    'HK_TOOLBAR_MARGIN_LEFT'        : '8px',
-
-    // Unused currently...
-    'HK_DIALOG_PADDING'             : '6px',
-    'HK_DIALOG_BORDER_RADIUS'       : '6px',
-    'HK_DIALOG_HEADER_HEIGHT'       : '24px',
-    'HK_DIALOG_TRANSITION_DURATION' : '200'
-};
-
-module.exports = {
-    get: function(k) {
-        return theme[k];
-    },
-    getInt: function(k) {
-        return parseInt(theme[k], 10);
-    }
-};
-
-},{}],31:[function(require,module,exports){
 function Class() {};
   
 Class.prototype.method = function(name) {
@@ -3717,10 +2444,23 @@ Class.prototype.lateBoundMethod = function(name) {
 
 Class.extend = function(fn) {
 
-  var features = fn ? fn(this, this.prototype) : [function() {}];
+  var features;
+
+  if (fn) {
+    // backwards compatibility
+    if (fn.length > 1) {
+      features = fn(this, this.prototype);
+    } else {
+      features = fn(this.prototype);
+    }
+  } else {
+    features = [function() {}];
+  }
   
   var ctor = features[0];
+  ctor._super = this;
   ctor.prototype = Object.create(this.prototype);
+  ctor.prototype.constructor = ctor;
   
   ctor.extend = this.extend;
   ctor.Features = Object.create(this.Features);
@@ -3741,157 +2481,1097 @@ Class.Features = {
   },
   properties: function(ctor, properties) {
     Object.defineProperties(ctor.prototype, properties);
+  },
+  delegate: function(ctor, delegates) {
+    for (var methodName in delegates) {
+      var target = delegates[methodName];
+      if (Array.isArray(target)) {
+        ctor.prototype[methodName] = makeDelegate(target[0], target[1]);
+      } else {
+        ctor.prototype[methodName] = makeDelegate(target, methodName);
+      }
+    }
   }
 };
 
-exports.Class = Class;
+function makeDelegate(member, method) {
+  return function() {
+    var target = this[member];
+    return target[method].apply(target, arguments);
+  }
+}
+},{}],"/Users/jason/dev/projects/hudkit.js/node_modules/command-box/index.js":[function(require,module,exports){
+module.exports = CommandBox;
 
-},{}],32:[function(require,module,exports){
-exports.hasClass = hasClass;
-exports.addClass = addClass;
-exports.removeClass = removeClass;
-exports.toggleClass = toggleClass;
+var bind = require('dom-bind').bind;
 
-function hasClass(el, className) {
-    return el.classList.contains(className);
+//
+// utilities
+
+function defaultFormatter(object) {
+    throw new Error("no object formatter specified");
 }
 
-function addClass(el, classes) {
-    if (classes.indexOf(' ') >= 0) {
-        classes.split(/\s+/).forEach(function(c) {
-            el.classList.add(c);
-        });
+function defaultEvaluator(command, console) {
+    console.notReady();
+    setTimeout(function() {
+        console.print('evaluate: `' + command + '`');
+        console.newCommand(true);
+        console.focus();
+    }, 200);
+}
+
+var defaultPrompt = { text: '> ' };
+
+function isElement(x) {
+    return x && x.nodeType === 1;
+}
+
+//
+//
+
+function CommandBox(el, opts) {
+    
+    this.root = el;
+
+    opts = opts || {};
+    
+    this._format    = opts.format || defaultFormatter;
+    this._evaluate  = opts.evaluate || defaultEvaluator;
+    this._prompt    = opts.prompt || defaultPrompt;
+    this._echo      = ('echo' in opts) ? (!!opts.echo) : true;
+
+    this._history = [];
+    this._historyIx = null;
+    this._historyStash = null;
+    
+    this._buildStructure();
+
+    this.notReady();
+    this.newCommand();
+
+}
+
+//
+// Public Interface
+
+CommandBox.prototype.print = function(thing, className) {
+    if (isElement(thing) || (typeof thing === 'string' && thing[0] === '<')) {
+        this.printHTML(thing);
+    } else if (typeof text === 'object') {
+        this.printObject(thing);
     } else {
-        el.classList.add(classes);
+        this.printText(thing, className)
     }
 }
 
-function removeClass(el, classes) {
-    if (classes.indexOf(' ') >= 0) {
-        classes.split(/\s+/).forEach(function(c) {
-            el.classList.remove(c);
-        });
+CommandBox.prototype.printText = function(text, className) {
+    this._appendOutputText(text, className);
+}
+
+CommandBox.prototype.printError = function(text) {
+    this._appendOutputText(text, 'error');
+}
+
+CommandBox.prototype.printSuccess = function(text) {
+    this._appendOutputText(text, 'success');
+}
+
+CommandBox.prototype.printHTML = function(html) {
+    var el = this.document.createElement('div');
+    if (isElement(html)) {
+        el.appendChild(html);
     } else {
-        el.classList.remove(classes);
+        el.innerHTML = html;
     }
+    this._appendOutputElement(el);
 }
 
-function toggleClass(el, classes) {
-    if (classes.indexOf(' ') >= 0) {
-        classes.split(/\s+/).forEach(function(c) {
-            el.classList.toggle(c);
-        });
+CommandBox.prototype.printObject = function(obj) {
+    var formatted = this._format(obj);
+    if (formatted !== false)
+        this.printHTML(formatted);
+}
+
+CommandBox.prototype.setFormatter = function(formatter) {
+    this._format = formatter;
+}
+
+/**
+ * Set the evaluator function.
+ * The evaluator function will be passed 2 arguments - the command to be
+ * evaluated, and the CommandBox object.
+ *
+ * @param evaluator
+ */
+CommandBox.prototype.setEvaluator = function(evaluator) {
+    this._evaluate = evaluator;
+}
+
+/**
+ * Prompt can either be:
+ * a string representing the prompt text
+ * an object with any/all of the keys: text, color, className
+ * a function returning any of the above
+ *
+ * @param prompt
+ */
+CommandBox.prototype.setPrompt = function(prompt) {
+    if (typeof prompt == 'string')
+        prompt = { text: prompt };
+        
+    this._prompt = prompt;
+}
+
+CommandBox.prototype.echoOn = function() {
+    this.setEcho(true);
+}
+
+CommandBox.prototype.echoOff = function() {
+    this.setEcho(false);
+}
+
+CommandBox.prototype.setEcho = function(echo) {
+    this._echo = !!echo;
+}
+
+// terminal is not ready for input; command line is hidden.
+CommandBox.prototype.notReady = function() {
+    // this._command.setAttribute('disabled', 'disabled');
+    this._input.style.display = 'none';
+}
+
+// terminal is ready for input; command line is shown.
+CommandBox.prototype.ready = function() {
+    // this._command.removeAttribute('disabled');
+    this._input.style.display = '-webkit-box';
+}
+
+CommandBox.prototype.focus = function() {
+    this._command.focus();
+}
+
+/**
+ * Clear's the user's current command.
+ * Also cancels any active history navigation.
+ */
+CommandBox.prototype.clearCommand = function() {
+    this._command.value = '';
+    this._historyIx = null;
+}
+
+// prepare for a new command - clear current input, generate
+// a new prompt and scroll to the bottom. set `makeReady` to
+// true to make the terminal ready at the same time.
+CommandBox.prototype.newCommand = function(makeReady) {
+
+    this.clearCommand();
+    
+    var prompt = this._optionsForNewPrompt();
+    this._inputPrompt.textContent = prompt.text;
+    
+    if ('color' in prompt) {
+        this._inputPrompt.style.color = prompt.color;
+    }
+
+    this._inputPrompt.className = 'prompt';
+    if (prompt.className) {
+        this._inputPrompt.className += ' ' + prompt.className;
+    }
+    
+    // TODO: not sure if this belongs here
+    this._scrollToBottom();
+
+    if (makeReady) {
+        this.ready();
+    }
+
+}
+
+//
+// Private API
+
+CommandBox.prototype._appendOutputText = function(text, className) {
+
+    text = ('' + text);
+
+    // TODO: text should be appended using a <pre> so we don't need to do
+    // any of this replacement crap
+    var el = document.createElement('div');
+    el.className = 'text-line ' + (className || '');
+    el.innerHTML = text.replace(/\n/g, "<br/>")
+                       .replace(/ /g,  "&nbsp;");
+    
+    this._appendOutputElement(el);
+
+}
+
+CommandBox.prototype._appendOutputElement = function(el) {
+    el.className += ' output-item';
+    this._output.appendChild(el);
+    this._scrollToBottom();
+}
+
+CommandBox.prototype._getCommand = function() {
+    return this._command.value;
+}
+
+CommandBox.prototype._scrollToBottom = function() {
+    this.root.scrollTop = this.root.scrollHeight;
+}
+
+CommandBox.prototype._optionsForNewPrompt = function() {
+    var prompt = this._prompt;
+    if (typeof prompt === 'function') prompt = prompt();
+    return prompt || defaultPrompt;
+}
+
+CommandBox.prototype._bell = function() {
+    // TODO: beep or something
+}
+
+CommandBox.prototype._handleEnter = function() {
+    
+    if (this._echo) {
+        this._echoCurrentCommand();
+    }
+    
+    var command = this._getCommand();
+    if (this._evaluate) {
+        this.clearCommand();
+        if (this._history.length == 0 || command != this._history[this._history.length - 1]) {
+            this._history.push(command);
+        }
+        this._evaluate(command, this);
     } else {
-        el.classList.toggle(classes);
+        this.newCommand();
     }
-}
-},{}],33:[function(require,module,exports){
-exports.hasClass = hasClass;
-exports.addClass = addClass;
-exports.removeClass = removeClass;
-exports.toggleClass = toggleClass;
 
-// Constants from jQuery
-var rclass = /[\t\r\n]/g;
-var core_rnotwhite = /\S+/g;
-
-// from jQuery
-function hasClass(ele, className) {
-    className = " " + className + " ";
-    return (" " + ele.className + " ").replace(rclass, " ").indexOf(className) >= 0;
 }
 
-function addClass(ele, value) {
-    var classes = (value || "").match(core_rnotwhite) || [],
-            cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
+CommandBox.prototype._handleClear = function() {
+    this.clearCommand();
+}
 
-    if (cur) {
-        var j = 0, clazz;
-        while ((clazz = classes[j++])) {
-            if (cur.indexOf(" " + clazz + " ") < 0) {
-                cur += clazz + " ";
+CommandBox.prototype._handleHistoryNav = function(dir) {
+    
+    if (this._history.length == 0) {
+        return;
+    }
+    
+    var cmd = null;
+    
+    if (dir == 'prev') {
+        if (this._historyIx === null) {
+            this._historyStash = this._command.value || '';
+            this._historyIx = this._history.length - 1;
+        } else {
+            this._historyIx--;
+            if (this._historyIx < 0) {
+                this._historyIx = 0;
             }
         }
-        ele.className = cur.trim();
-    }
-}
-
-function removeClass(ele, value) {
-    var classes = (value || "").match(core_rnotwhite) || [],
-            cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
-
-    if (cur) {
-        var j = 0, clazz;
-        while ((clazz = classes[j++])) {
-            while (cur.indexOf(" " + clazz + " ") >= 0) {
-                cur = cur.replace(" " + clazz + " ", " ");
-            }
-            ele.className = value ? cur.trim() : "";
+    } else {
+        if (this._historyIx === null) {
+            return;
+        }
+        this._historyIx++;
+        if (this._historyIx == this._history.length) {
+            cmd = this._historyStash;
+            this._historyIx = null;
         }
     }
-}
-
-function toggleClass(ele, value) {
-    var classes = (value || "").match(core_rnotwhite) || [],
-            cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
-
-    if (cur) {
-        var j = 0, clazz;
-        while ((clazz = classes[j++])) {
-            var removeCount = 0;
-            while (cur.indexOf(" " + clazz + " ") >= 0) {
-                cur = cur.replace(" " + clazz + " ", " ");
-                removeCount++;
-            }
-            if (removeCount === 0) {
-                cur += clazz + " ";
-            }
-            ele.className = cur.trim();
-        }
+    
+    if (cmd === null) {
+        cmd = this._history[this._historyIx];
     }
+    
+    this._command.value = cmd;
+    
 }
-},{}],34:[function(require,module,exports){
-var clazz;
 
-if (typeof DOMTokenList !== 'undefined') {
-    clazz = require('./impl/classes-classlist.js');
+CommandBox.prototype._handleAutocomplete = function() {
+    console.log("AUTO-COMPLETE");
+}
+
+CommandBox.prototype._echoCurrentCommand = function() {
+    
+    var line = document.createElement('div');
+    line.className = 'input-line';
+
+    var prompt = this._inputPrompt.cloneNode(true);
+    
+    var cmd = document.createElement('span');
+    cmd.className = 'command';
+    cmd.textContent = this._getCommand();
+    
+    line.appendChild(prompt);
+    line.appendChild(cmd);
+    
+    this._appendOutputElement(line);
+}
+
+//
+// Internals
+
+CommandBox.prototype._buildStructure = function() {
+
+    var self = this;
+
+    if (!this.root.hasAttribute('tabindex')) {
+        this.root.setAttribute('tabindex', 0);
+    }
+
+    this._output      = document.createElement('output');
+    this._input       = document.createElement('div');
+    this._inputPrompt = document.createElement('span');
+    this._cmdWrapper  = document.createElement('span');
+    this._command     = document.createElement('input');
+    
+    this._input.className       = 'input-line';
+    this._cmdWrapper.className  = 'command-wrapper';
+    this._command.type          = 'text';
+    this._command.className     = 'command';
+    
+    this._cmdWrapper.appendChild(this._command);
+    this._input.appendChild(this._inputPrompt);
+    this._input.appendChild(this._cmdWrapper);
+    this.root.appendChild(this._output);
+    this.root.appendChild(this._input);
+
+    bind(this.root, 'focus', function() {
+        self._command.focus();
+    });
+
+    bind(this._command, 'keydown', function(evt) {
+        switch (evt.which) {
+            case 8:  if (self._command.value.length == 0) self._bell();     break;
+            case 13: evt.preventDefault(); self._handleEnter();             break;
+            case 27: evt.preventDefault(); self._handleClear();             break;
+            case 38: evt.preventDefault(); self._handleHistoryNav('prev');  break;
+            case 40: evt.preventDefault(); self._handleHistoryNav('next');  break;
+            case 9:  evt.preventDefault(); self._handleAutocomplete();      break;
+        }
+    });
+
+}
+},{"dom-bind":"/Users/jason/dev/projects/hudkit.js/node_modules/command-box/node_modules/dom-bind/index.js"}],"/Users/jason/dev/projects/hudkit.js/node_modules/command-box/node_modules/dom-bind/index.js":[function(require,module,exports){
+var matches = require('dom-matchesselector');
+
+var bind = null, unbind = null;
+
+if (typeof window.addEventListener === 'function') {
+
+	bind = function(el, evtType, cb, useCapture) {
+		el.addEventListener(evtType, cb, useCapture || false);
+		return cb;
+	}
+
+	unbind = function(el, evtType, cb, useCapture) {
+		el.removeEventListener(evtType, cb, useCapture || false);
+		return cb;
+	}
+
+} else if (typeof window.attachEvent === 'function') {
+
+	bind = function(el, evtType, cb, useCapture) {
+		
+		function handler(evt) {
+			evt = evt || window.event;
+			
+			if (!evt.preventDefault) {
+				evt.preventDefault = function() { evt.returnValue = false; }
+			}
+			
+			if (!evt.stopPropagation) {
+				evt.stopPropagation = function() { evt.cancelBubble = true; }
+			}
+
+			cb.call(el, evt);
+		}
+		
+		el.attachEvent('on' + evtType, handler);
+		return handler;
+	
+	}
+
+	unbind = function(el, evtType, cb, useCapture) {
+		el.detachEvent('on' + evtType, cb);
+		return cb;
+	}
+
+}
+
+function delegate(el, evtType, selector, cb, useCapture) {
+	return bind(el, evtType, function(evt) {
+		var currTarget = evt.target;
+		while (currTarget && currTarget !== el) {
+			if (matches(selector, currTarget)) {
+				evt.delegateTarget = currTarget;
+				cb.call(el, evt);
+				break;
+			}
+			currTarget = currTarget.parentNode;
+		}
+	}, useCapture);
+}
+
+function bind_c(el, evtType, cb, useCapture) {
+	cb = bind(el, evtType, cb, useCapture);
+
+	var removed = false;
+	return function() {
+		if (removed) return;
+		removed = true;
+		unbind(el, evtType, cb, useCapture);
+		el = cb = null;
+	}
+}
+
+function delegate_c(el, evtType, selector, cb, useCapture) {
+	cb = delegate(el, evtType, selector, cb, useCapture);
+
+	var removed = false;
+	return function() {
+		if (removed) return;
+		removed = true;
+		unbind(el, evtType, cb, useCapture);
+		el = cb = null;
+	}
+}
+
+exports.bind = bind;
+exports.unbind = unbind;
+exports.delegate = delegate;
+exports.bind_c = bind_c;
+exports.delegate_c = delegate_c;
+},{"dom-matchesselector":"/Users/jason/dev/projects/hudkit.js/node_modules/command-box/node_modules/dom-bind/node_modules/dom-matchesselector/index.js"}],"/Users/jason/dev/projects/hudkit.js/node_modules/command-box/node_modules/dom-bind/node_modules/dom-matchesselector/index.js":[function(require,module,exports){
+var proto = window.Element.prototype;
+var nativeMatch = proto.webkitMatchesSelector
+					|| proto.mozMatchesSelector
+					|| proto.msMatchesSelector
+					|| proto.oMatchesSelector;
+
+if (nativeMatch) {
+	
+	module.exports = function(selector, el) {
+		return nativeMatch.call(el, selector);
+	}
+
 } else {
-    clazz = require('./impl/classes-string.js');
+
+	console.warn("Warning: using slow matchesSelector()");
+	
+	var indexOf = Array.prototype.indexOf;
+	module.exports = function(selector, el) {
+		return indexOf.call(document.querySelectorAll(selector), el) >= 0;
+	}
+
 }
 
-module.exports = {
-    hasClass: clazz.hasClass,
-    addClass: clazz.addClass,
-    removeClass: clazz.removeClass,
-    toggleClass: clazz.toggleClass,
+},{}],"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/index.js":[function(require,module,exports){
+module.exports = dombuild;
 
-    viewportSize: function(doc) {
-        return {
-            width: doc.documentElement.clientWidth,
-            height: doc.documentElement.clientHeight
-        };
-    },
+var bind = require('dom-bind').bind;
 
-    stop: function(evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
-    },
+var PIXELS = {
 
-    setPosition: function(el, x, y) {
-        el.style.left = x + 'px';
-        el.style.top = y + 'px';
-    },
+    fontSize            : true,
 
-    setSize: function(width, height) {
-        el.style.width = width + 'px';
-        el.style.height = height + 'px';
-    },
+    top                 : true,
+    right               : true,
+    bottom              : true,
+    left                : true,
 
-    isElement: function(el) {
-        return el && el.nodeType === 1;
-    }
+    width               : true,
+    minWidth            : true,
+    maxWidth            : true,
+
+    height              : true,
+    minHeight           : true,
+    maxHeight           : true,
+
+    outlineWidth        : true,
+
+    margin              : true,
+    marginTop           : true,
+    marginRight         : true,
+    marginBottom        : true,
+    marginLeft          : true,
+
+    padding             : true,
+    paddingTop          : true,
+    paddingRight        : true,
+    paddingBottom       : true,
+    paddingLeft         : true,
+
+    borderTopWidth      : true,
+    borderRightWidth    : true,
+    borderBottomWidth   : true,
+    borderLeftWidth     : true
+    
 };
-},{"./impl/classes-classlist.js":32,"./impl/classes-string.js":33}],35:[function(require,module,exports){
+
+function Result() {}
+
+function dombuild(tag) {
+    var state = new Result();
+    state.root = builder(state, arguments);
+    return state;
+}
+
+function builder(state, args) {
+    var el = createElement(state, args[0]);
+    append(state, el, args, 1);
+    return el;
+}
+
+function append(state, el, items, startOffset) {
+    for (var i = startOffset, len = items.length; i < len; ++i) {
+        var item = items[i];
+        if (typeof item === 'string' || typeof item === 'number') {
+            el.appendChild(document.createTextNode(item));
+        } else if (item instanceof Result) {
+            for (var k in item) {
+                if (k === 'root') {
+                    el.appendChild(item[k]);
+                } else {
+                    state[k] = item[k];
+                }
+            }
+        } else if (Array.isArray(item)) {
+            append(state, el, item, 0);
+        } else if (!item) {
+            continue;
+        } else {
+            for (var k in item) {
+                var v = item[k];
+                if (typeof v === 'function' && k[0] === 'o' && k[1] === 'n') {
+                    bind(el, k.substr(2), v);
+                } else if (k === 'style') {
+                    if (typeof v === 'string') {
+                        el.style.cssText = v;
+                    } else {
+                        for (var prop in v) {
+                            var propVal = v[prop];
+                            if (typeof propVal === 'number' && PIXELS[prop]) {
+                                propVal += 'px';
+                            }
+                            el.style[prop] = propVal;
+                        }   
+                    }
+                } else {
+                    el.setAttribute(k, v);
+                }
+            }
+        }
+    }
+}
+
+function createElement(state, tag) {
+
+    var m;
+    if (!tag.length || !(m = /^([\w-]+)?(#[\w-]+)?((\.[\w-]+)*)(\![\w-]+)?$/.exec(tag))) {
+        throw new Error("invalid tag");
+    }
+
+    var el = document.createElement(m[1] || 'div');
+
+    if (m[2]) el.id = m[2].substr(1);
+    if (m[3]) el.className = m[3].replace(/\./g, ' ').trim();
+    if (m[5]) state[m[5].substr(1)] = el;
+
+    return el;
+
+}
+},{"dom-bind":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/node_modules/dom-bind/index.js"}],"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/node_modules/dom-bind/index.js":[function(require,module,exports){
+var matches = require('dom-matchesselector');
+
+var bind = null, unbind = null;
+
+if (typeof window.addEventListener === 'function') {
+
+	bind = function(el, evtType, cb, useCapture) {
+		el.addEventListener(evtType, cb, useCapture || false);
+		return cb;
+	}
+
+	unbind = function(el, evtType, cb, useCapture) {
+		el.removeEventListener(evtType, cb, useCapture || false);
+		return cb;
+	}
+
+} else if (typeof window.attachEvent === 'function') {
+
+	bind = function(el, evtType, cb, useCapture) {
+		
+		function handler(evt) {
+			evt = evt || window.event;
+			
+			if (!evt.preventDefault) {
+				evt.preventDefault = function() { evt.returnValue = false; }
+			}
+			
+			if (!evt.stopPropagation) {
+				evt.stopPropagation = function() { evt.cancelBubble = true; }
+			}
+
+			cb.call(el, evt);
+		}
+		
+		el.attachEvent('on' + evtType, handler);
+		return handler;
+	
+	}
+
+	unbind = function(el, evtType, cb, useCapture) {
+		el.detachEvent('on' + evtType, cb);
+		return cb;
+	}
+
+}
+
+function delegate(el, evtType, selector, cb, useCapture) {
+	return bind(el, evtType, function(evt) {
+		var currTarget = evt.target;
+		while (currTarget && currTarget !== el) {
+			if (matches(selector, currTarget)) {
+				evt.delegateTarget = currTarget;
+				cb.call(el, evt);
+				break;
+			}
+			currTarget = currTarget.parentNode;
+		}
+	}, useCapture);
+}
+
+function bind_c(el, evtType, cb, useCapture) {
+	cb = bind(el, evtType, cb, useCapture);
+
+	var removed = false;
+	return function() {
+		if (removed) return;
+		removed = true;
+		unbind(el, evtType, cb, useCapture);
+		el = cb = null;
+	}
+}
+
+function delegate_c(el, evtType, selector, cb, useCapture) {
+	cb = delegate(el, evtType, selector, cb, useCapture);
+
+	var removed = false;
+	return function() {
+		if (removed) return;
+		removed = true;
+		unbind(el, evtType, cb, useCapture);
+		el = cb = null;
+	}
+}
+
+exports.bind = bind;
+exports.unbind = unbind;
+exports.delegate = delegate;
+exports.bind_c = bind_c;
+exports.delegate_c = delegate_c;
+},{"dom-matchesselector":"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/node_modules/dom-bind/node_modules/dom-matchesselector/index.js"}],"/Users/jason/dev/projects/hudkit.js/node_modules/dom-build/node_modules/dom-bind/node_modules/dom-matchesselector/index.js":[function(require,module,exports){
+var proto = window.Element.prototype;
+var nativeMatch = proto.webkitMatchesSelector
+					|| proto.mozMatchesSelector
+					|| proto.msMatchesSelector
+					|| proto.oMatchesSelector;
+
+if (nativeMatch) {
+	
+	module.exports = function(selector, el) {
+		return nativeMatch.call(el, selector);
+	}
+
+} else {
+
+	console.warn("Warning: using slow matchesSelector()");
+	
+	var indexOf = Array.prototype.indexOf;
+	module.exports = function(selector, el) {
+		return indexOf.call(document.querySelectorAll(selector), el) >= 0;
+	}
+
+}
+
+},{}],"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/classes.js":[function(require,module,exports){
+if (typeof window.DOMTokenList === 'undefined') {
+
+	// Constants from jQuery
+	var rclass = /[\t\r\n]/g;
+	var core_rnotwhite = /\S+/g;
+
+	// from jQuery
+	exports.hasClass = function(ele, className) {
+	    className = " " + className + " ";
+	    return (" " + ele.className + " ").replace(rclass, " ").indexOf(className) >= 0;
+	}
+
+	exports.addClass = function(ele, value) {
+	    var classes = (value || "").match(core_rnotwhite) || [],
+	            cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
+
+	    if (cur) {
+	        var j = 0, clazz;
+	        while ((clazz = classes[j++])) {
+	            if (cur.indexOf(" " + clazz + " ") < 0) {
+	                cur += clazz + " ";
+	            }
+	        }
+	        ele.className = cur.trim();
+	    }
+	}
+
+	exports.removeClass = function(ele, value) {
+	    var classes = (value || "").match(core_rnotwhite) || [],
+	            cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
+
+	    if (cur) {
+	        var j = 0, clazz;
+	        while ((clazz = classes[j++])) {
+	            while (cur.indexOf(" " + clazz + " ") >= 0) {
+	                cur = cur.replace(" " + clazz + " ", " ");
+	            }
+	            ele.className = value ? cur.trim() : "";
+	        }
+	    }
+	}
+
+	exports.toggleClass = function(ele, value) {
+	    var classes = (value || "").match(core_rnotwhite) || [],
+	            cur = ele.className ? (" " + ele.className + " ").replace(rclass, " ") : " ";
+
+	    if (cur) {
+	        var j = 0, clazz;
+	        while ((clazz = classes[j++])) {
+	            var removeCount = 0;
+	            while (cur.indexOf(" " + clazz + " ") >= 0) {
+	                cur = cur.replace(" " + clazz + " ", " ");
+	                removeCount++;
+	            }
+	            if (removeCount === 0) {
+	                cur += clazz + " ";
+	            }
+	            ele.className = cur.trim();
+	        }
+	    }
+	}
+
+} else {
+
+	exports.hasClass = function(el, className) {
+	    return el.classList.contains(className);
+	}
+
+	exports.addClass = function(el, classes) {
+	    if (classes.indexOf(' ') >= 0) {
+	        classes.split(/\s+/).forEach(function(c) {
+	            el.classList.add(c);
+	        });
+	    } else {
+	        el.classList.add(classes);
+	    }
+	}
+
+	exports.removeClass = function(el, classes) {
+	    if (classes.indexOf(' ') >= 0) {
+	        classes.split(/\s+/).forEach(function(c) {
+	            el.classList.remove(c);
+	        });
+	    } else {
+	        el.classList.remove(classes);
+	    }
+	}
+
+	exports.toggleClass = function(el, classes) {
+	    if (classes.indexOf(' ') >= 0) {
+	        classes.split(/\s+/).forEach(function(c) {
+	            el.classList.toggle(c);
+	        });
+	    } else {
+	        el.classList.toggle(classes);
+	    }
+	}
+
+}
+
+exports.removeMatchingClasses = function(el, regex) {
+	var out = '';
+	el.className.split(/\s+/).forEach(function(cn) {
+		if (!cn.match(regex)) {
+			if (out.length) {
+				out += ' ';
+			}
+			out += cn;
+		}
+	});
+	el.className = out;
+}
+
+},{}],"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/events.js":[function(require,module,exports){
+module.exports = exports = require('dom-bind');
+
+exports.stop = stop;
+function stop(evt) {
+	evt.preventDefault();
+	evt.stopPropagation();
+}
+
+},{"dom-bind":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/node_modules/dom-bind/index.js"}],"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/layout.js":[function(require,module,exports){
+exports.setRect = function(el, x, y, width, height) {
+	el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.width = width + 'px';
+    el.style.height = height + 'px';
+}
+
+exports.setPosition = function(el, x, y) {
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+}
+
+exports.setSize = function(el, width, height) {
+    el.style.width = width + 'px';
+    el.style.height = height + 'px';
+}
+
+exports.isHidden = function(el) {
+    return el.offsetWidth <= 0 || el.offsetHeight <= 0;
+}
+
+exports.isVisible = function(el) {
+    return !(el.offsetWidth <= 0 || el.offsetHeight <= 0);
+}
+},{}],"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/matches_selector.js":[function(require,module,exports){
+module.exports = require('dom-matchesselector');
+},{"dom-matchesselector":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/node_modules/dom-matchesselector/index.js"}],"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/node.js":[function(require,module,exports){
+exports.append = append;
+function append(el, content) {
+	if (Array.isArray(content)) {
+		for (var i = 0, l = content.length; i < l; ++i) {
+			append(el, content[i]);
+		}
+	} else if (typeof content === 'string') {
+		if (content.charAt(0) === '<') {
+			el.innerHTML += content;
+		} else {
+			el.appendChild(document.createTextNode(content));
+		}
+	} else {
+		el.appendChild(content);
+	}
+}
+
+exports.clear = clear;
+function clear(el) {
+	el.innerHTML = '';
+}
+
+exports.isElement = function(el) {
+	return el && el.nodeType === 1;
+}
+
+exports.replace = function(oldEl, newEl) {
+	oldEl.parentNode.replaceChild(newEl, oldEl);
+}
+
+exports.content = function(el, content) {
+	if (typeof content === 'string') {
+		el.innerHTML = content;
+	} else{
+		clear(el);
+		append(el, content);	
+	}
+}
+},{}],"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/style.js":[function(require,module,exports){
+function v(val) {
+    if (typeof val === 'number') {
+        return val + 'px';
+    } else {
+        return val;
+    }
+}
+
+exports.style = function(el, attribute, value) {
+    if (typeof attribute === 'string') {
+        el.style[attribute] = v(value);
+    } else {
+        for (var k in attribute) {
+            el.style[k] = v(attribute[k]);
+        }
+    }
+}
+
+exports.removeStyle = function(el, attribute) {
+    el.style[attribute] = '';
+}
+},{}],"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/text.js":[function(require,module,exports){
+if ('textContent' in document.createElement('span')) {
+    
+    exports.getText = function(el) {
+        return el.textContent;
+    }
+
+    exports.text = function(el, text) {
+        el.textContent = text;
+    }
+
+} else {
+
+    exports.getText = function(el) {
+        return el.innerText;
+    }
+
+    exports.text = function(el, text) {
+        el.innerText = text;
+    }
+
+}
+},{}],"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/viewport.js":[function(require,module,exports){
+// http://stackoverflow.com/questions/1248081/get-the-browser-viewport-dimensions-with-javascript
+exports.viewportSize = function() {
+	return {
+	    width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+	    height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+	};
+}
+},{}],"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/index.js":[function(require,module,exports){
+var du = module.exports = {};
+
+extend(require('./impl/classes'));
+extend(require('./impl/events'));
+extend(require('./impl/layout'));
+extend(require('./impl/matches_selector'));
+extend(require('./impl/node'));
+extend(require('./impl/style'));
+extend(require('./impl/text'));
+extend(require('./impl/viewport'));
+
+function extend(things) {
+    for (var k in things) {
+        du[k] = things[k];
+    }
+}
+
+},{"./impl/classes":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/classes.js","./impl/events":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/events.js","./impl/layout":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/layout.js","./impl/matches_selector":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/matches_selector.js","./impl/node":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/node.js","./impl/style":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/style.js","./impl/text":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/text.js","./impl/viewport":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/impl/viewport.js"}],"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/node_modules/dom-bind/index.js":[function(require,module,exports){
+var matches = require('dom-matchesselector');
+
+var bind = null, unbind = null;
+
+if (typeof window.addEventListener === 'function') {
+
+	bind = function(el, evtType, cb, useCapture) {
+		el.addEventListener(evtType, cb, useCapture || false);
+		return cb;
+	}
+
+	unbind = function(el, evtType, cb, useCapture) {
+		el.removeEventListener(evtType, cb, useCapture || false);
+		return cb;
+	}
+
+} else if (typeof window.attachEvent === 'function') {
+
+	bind = function(el, evtType, cb, useCapture) {
+		
+		function handler(evt) {
+			evt = evt || window.event;
+			
+			if (!evt.preventDefault) {
+				evt.preventDefault = function() { evt.returnValue = false; }
+			}
+			
+			if (!evt.stopPropagation) {
+				evt.stopPropagation = function() { evt.cancelBubble = true; }
+			}
+
+			cb.call(el, evt);
+		}
+		
+		el.attachEvent('on' + evtType, handler);
+		return handler;
+	
+	}
+
+	unbind = function(el, evtType, cb, useCapture) {
+		el.detachEvent('on' + evtType, cb);
+		return cb;
+	}
+
+}
+
+function delegate(el, evtType, selector, cb, useCapture) {
+	return bind(el, evtType, function(evt) {
+		var currTarget = evt.target;
+		while (currTarget && currTarget !== el) {
+			if (matches(selector, currTarget)) {
+				evt.delegateTarget = currTarget;
+				cb.call(el, evt);
+				break;
+			}
+			currTarget = currTarget.parentNode;
+		}
+	}, useCapture);
+}
+
+function bind_c(el, evtType, cb, useCapture) {
+	cb = bind(el, evtType, cb, useCapture);
+
+	var removed = false;
+	return function() {
+		if (removed) return;
+		removed = true;
+		unbind(el, evtType, cb, useCapture);
+		el = cb = null;
+	}
+}
+
+function delegate_c(el, evtType, selector, cb, useCapture) {
+	cb = delegate(el, evtType, selector, cb, useCapture);
+
+	var removed = false;
+	return function() {
+		if (removed) return;
+		removed = true;
+		unbind(el, evtType, cb, useCapture);
+		el = cb = null;
+	}
+}
+
+exports.bind = bind;
+exports.unbind = unbind;
+exports.delegate = delegate;
+exports.bind_c = bind_c;
+exports.delegate_c = delegate_c;
+},{"dom-matchesselector":"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/node_modules/dom-matchesselector/index.js"}],"/Users/jason/dev/projects/hudkit.js/node_modules/domutil/node_modules/dom-matchesselector/index.js":[function(require,module,exports){
+var proto = window.Element.prototype;
+var nativeMatch = proto.webkitMatchesSelector
+					|| proto.mozMatchesSelector
+					|| proto.msMatchesSelector
+					|| proto.oMatchesSelector;
+
+if (nativeMatch) {
+	
+	module.exports = function(selector, el) {
+		return nativeMatch.call(el, selector);
+	}
+
+} else {
+
+	console.warn("Warning: using slow matchesSelector()");
+	
+	var indexOf = Array.prototype.indexOf;
+	module.exports = function(selector, el) {
+		return indexOf.call(document.querySelectorAll(selector), el) >= 0;
+	}
+
+}
+
+},{}],"/Users/jason/dev/projects/hudkit.js/node_modules/hudkit-action/index.js":[function(require,module,exports){
 var signal = require('signalkit');
 
 var ActionProto = Object.create(Function.prototype);
@@ -3931,208 +3611,82 @@ module.exports = function(fn, opts) {
 
 }
 
-},{"signalkit":39}],36:[function(require,module,exports){
-var signal = require('signalkit');
+},{"signalkit":"/Users/jason/dev/projects/hudkit.js/node_modules/signalkit/index.js"}],"/Users/jason/dev/projects/hudkit.js/node_modules/hudkit-values/index.js":[function(require,module,exports){
+exports.property = function(name, value, transformer) {
 
-module.exports = function() {
-	return new PropertyObject();
-}
+	transformer = transformer || function(set, v) { set(v); };
 
-function PropertyObject() {
-	
-	this._values 		= {};
-	this._groups 		= [];
-	this._properties	= {};
+	var listeners = [];
 
-	// onChange is exposed for convenience only, the official interface
-	// (for use in a PropertyEditor widget) is onPropertyChange(fn)
-	this.onChange = signal('onChange');
+	return {
 
-}
-
-PropertyObject.prototype.group = function(title) {
-
-	var po 		= this,
-		gix		= this._groups.length,
-		names 	= [];
-
-	var group = {
-		title: title,
-		propertyNames: names,
-		add: function(name, type, initialValue, options) {
-
-			if (name in po._properties) {
-				throw new Error("duplicate property: " + name);
-			}
-
-			options = options || {};
-			options.type = type;
-
-			if (!('caption' in options)) {
-				// TODO: humanize name
-				options.caption = name;
-			}
-
-			names.push(name);
-			po._values[name] = initialValue;
-			po._properties[name] = options;
-
-			return this;
-
+		name: name,
+		
+		get: function() {
+			return value;
 		},
-		back: function() {
-			return po;
+
+		set: function(newValue) {
+			transformer(function(actualValue) {
+				value = actualValue;
+				for (var i = 0, len = listeners.length; i < len; i += 2) {
+					listeners[i].call(listeners[i+1], value);
+				}
+			}, newValue, value);
+		},
+
+		connect: function(fn, ctx) {
+			ctx = ctx || null;
+			listeners.push(fn, ctx);
+			fn.call(ctx, value);
+			return remover(listeners, fn, ctx);
 		}
+
 	};
 
-	this._groups.push(group);
-
-	return group;
-
 }
 
-PropertyObject.prototype.getPropertyGroupCount = function() {
-	return this._groups.length;
-}
+exports.signal = function(name) {
 
-PropertyObject.prototype.getPropertyGroupTitle = function(groupIx) {
-	return this._groups[groupIx].title;
-}
+	var listeners = [];
+    
+	return {
 
-PropertyObject.prototype.getPropertyNames = function(groupIx) {
-	return this._groups[groupIx].propertyNames;
-}
+		name: name,
 
-PropertyObject.prototype.getPropertyDescriptor = function(name) {
-	return this._properties[name];
-}
+		emit: function() {
+			for (var i = 0, len = listeners.length; i < len; i += 2) {
+				listeners[i].apply(listeners[i+1], arguments);
+			}
+		},
 
-PropertyObject.prototype.getPropertyValue = function(key) {
+		connect: function(fn, ctx) {
+			ctx = ctx || null;
+			listeners.push(fn, ctx);
+			return remover(listeners, fn, ctx);
+		}
 
-	if (!(key in this._values)) {
-		throw new Error("no such property: " + key);
 	}
 
-	return this._values[key];
-
 }
 
-PropertyObject.prototype.setPropertyValue = function(key, newValue) {
-
-	if (!(key in this._values)) {
-		throw new Error("no such property: " + key);
-	}
-
-	var oldValue = this._values[key];
-	
-	this._values[key] = newValue;
-	
-	this.onChange.emit(this, {
-		property 	: key,
-		oldValue	: oldValue,
-		newValue	: newValue,
-		values 		: this._values
-	});
-
-	return true;
-
-}
-
-PropertyObject.prototype.onPropertyChange = function(cb) {
-	return this.onChange.connect(cb);
-}
-
-// again, these are just convenience methods for the end-user; not part
-// of the official PropertyEditor delegate interface
-PropertyObject.prototype.get = PropertyObject.prototype.getPropertyValue;
-PropertyObject.prototype.set = PropertyObject.prototype.setPropertyValue;
-
-},{"signalkit":37}],37:[function(require,module,exports){
-(function (process){//
+//
 // Helpers
 
-if (typeof process !== 'undefined') {
-    var nextTick = process.nextTick;
-} else {
-    var nextTick = function(fn) { setTimeout(fn, 0); }
+function remover(lst, fn, ctx) {
+	var removed = false;
+	return function() {
+		if (removed) return;
+		removed = true;
+		for (var i = lst.length - 2; i >= 0; i -= 2) {
+			if (lst[i] === fn && lst[i+1] === ctx) {
+				lst.splice(i, 2);
+				return;
+			}
+		}
+	}
 }
-
-function makeUnsubscriber(listeners, handlerFn) {
-    var cancelled = false;
-    return function() {
-        if (cancelled) return;
-        for (var i = listeners.length - 1; i >= 0; --i) {
-            if (listeners[i] === handlerFn) {
-                listeners.splice(i, 1);
-                cancelled = true;
-                break;
-            }
-        }
-    }
-}
-
-//
-// Signals
-
-function Signal(name) {
-    this.name = name;
-    this._listeners = [];
-}
-
-Signal.prototype.onError = function(err) {
-    nextTick(function() { throw err; });
-}
-
-Signal.prototype.emit = function() {
-    for (var ls = this._listeners, i = ls.length - 1; i >= 0; --i) {
-        try {
-            ls[i].apply(null, arguments);
-        } catch (err) {
-            if (this.onError(err) === false) {
-                break;
-            }
-        }
-    }
-}
-
-Signal.prototype.connect = function(target, action) {
-    if (target && action) {
-        var handler = function() {
-            target[action].apply(target, arguments);
-        }
-    } else if (typeof target === 'function') {
-        var handler = target;
-    } else {
-        throw "signal connect expects either handler function or target/action pair";
-    }
-    this._listeners.push(handler);
-    return makeUnsubscriber(this._listeners, handler);
-}
-
-Signal.prototype.once = function(target, action) {
-    var cancel = this.connect(function() {
-        if (target && action) {
-            target[action].apply(target, arguments);
-        } else if (typeof target === 'function') {
-            target.apply(null, arguments);
-        } else {
-            throw "signal connect expects either handler function or target/action pair";
-        }
-        cancel();
-    });
-    return cancel;
-}
-
-Signal.prototype.clear = function() {
-    this._listeners = [];
-}
-
-//
-// Exports
-
-module.exports = function(name) { return new Signal(name); }
-module.exports.Signal = Signal;}).call(this,require("/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":43}],38:[function(require,module,exports){
+},{}],"/Users/jason/dev/projects/hudkit.js/node_modules/rattrap/index.js":[function(require,module,exports){
 var activeCaptures = [];
 
 function createOverlay(doc) {
@@ -4190,8 +3744,9 @@ exports.startCapture = function(doc, events) {
 
 }
 
-},{}],39:[function(require,module,exports){
-(function (process){//
+},{}],"/Users/jason/dev/projects/hudkit.js/node_modules/signalkit/index.js":[function(require,module,exports){
+(function (process){
+//
 // Helpers
 
 if (typeof process !== 'undefined') {
@@ -4260,95 +3815,9 @@ Signal.prototype.clear = function() {
 // Exports
 
 module.exports = function(name) { return new Signal(name); }
-module.exports.Signal = Signal;}).call(this,require("/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":43}],40:[function(require,module,exports){
-// adapted from
-// http://stackoverflow.com/questions/524696/how-to-create-a-style-tag-with-javascript
-module.exports = function(doc, initialCss) {
-    
-    if (typeof doc === 'string') {
-        initialCss = doc;
-        doc = null;
-    }
-
-    doc = doc || document;
-
-    var head    = doc.getElementsByTagName('head')[0],
-        style   = doc.createElement('style');
-
-    style.type = 'text/css';
-    head.appendChild(style);
-
-    function set(css) {
-        css = '' + (css || '');
-        if (style.styleSheet) {
-            style.styleSheet.cssText = css;
-        } else {
-            while (style.childNodes.length) {
-                style.removeChild(style.firstChild);
-            }
-            style.appendChild(doc.createTextNode(css));
-        }
-    }
-
-    set(initialCss || '');
-
-    set.el = style;
-    set.destroy = function() {
-        head.removeChild(style);
-    }
-
-    return set;
-
-}
-},{}],41:[function(require,module,exports){
-// [a] => [a,a,a,a]
-// [a,b] => [a,b,a,b]
-// [a,b,c] => [a,b,c,b]
-// [a,b,c,d] => [a,b,c,d]
-// a => [(int)a, (int)a, (int)a, (int)a]
-module.exports = function(thing) {
-    if (Array.isArray(thing)) {
-        switch (thing.length) {
-            case 1:
-                return [
-                    parseInt(thing[0], 10),
-                    parseInt(thing[0], 10),
-                    parseInt(thing[0], 10),
-                    parseInt(thing[0], 10)
-                ];
-            case 2:
-                return [
-                    parseInt(thing[0], 10),
-                    parseInt(thing[1], 10),
-                    parseInt(thing[0], 10),
-                    parseInt(thing[1], 10)
-                ];
-            case 3:
-                return [
-                    parseInt(thing[0], 10),
-                    parseInt(thing[1], 10),
-                    parseInt(thing[2], 10),
-                    parseInt(thing[1], 10)
-                ];
-            case 4:
-                return [
-                    parseInt(thing[0], 10),
-                    parseInt(thing[1], 10),
-                    parseInt(thing[2], 10),
-                    parseInt(thing[3], 10)
-                ];
-            default:
-                throw new Error("trbl - array must have 1-4 elements");
-        }
-    } else {
-        var val = parseInt(thing);
-        return [val, val, val, val];
-    }
-}
-},{}],42:[function(require,module,exports){
-
-},{}],43:[function(require,module,exports){
+module.exports.Signal = Signal;
+}).call(this,require('_process'))
+},{"_process":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/process/browser.js"}],"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -4393,6 +3862,16 @@ process.browser = true;
 process.env = {};
 process.argv = [];
 
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
 }
@@ -4403,4 +3882,4 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}]},{},[1])
+},{}]},{},["/Users/jason/dev/projects/hudkit.js/demo/hk.js"]);

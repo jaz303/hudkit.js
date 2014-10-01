@@ -1,0 +1,71 @@
+.hk-tree-view {
+	background: #202020;
+	overflow: auto;
+
+	.item {
+		display: block;
+		padding: 3px;
+	}
+
+	.icon {
+		display: inline-block;
+		width: 16px;
+		background: blue;
+	}
+
+	.title {
+		display: inline-block;
+		margin-left: 5px;
+		color: white;
+	}
+
+	ul {
+		display: block;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		display: block;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	ul ul {
+		margin-left: 20px;
+	}
+
+	li > ul {
+		display: none;
+	}
+
+	//
+	// Expanded
+
+	li.expanded > ul {
+		display: block;
+	}
+
+	li.expanded > .item > .icon {
+		background: green;
+	}
+
+	li.selected > .item {
+		background: red;
+	}
+
+}
+
+/* Flair */
+
+.hk-tree-view-flair {
+	float: right;
+
+	> * {
+		display: inline-block;
+		text-align: center;
+		margin-left: 3px;
+	}
+}

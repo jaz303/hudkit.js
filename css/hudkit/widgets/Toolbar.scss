@@ -1,0 +1,31 @@
+.hk-toolbar {
+    
+}
+
+.hk-toolbar-items {
+	
+	&.hk-toolbar-items-left {
+    	float: left;
+	}
+
+	&.hk-toolbar-items-right {
+    	float: right;
+	}
+
+	> * {
+	    margin-right: 2px !important;
+	    vertical-align: top;
+	}
+
+	> .hk-widget {
+		display: inline-block;
+		height: $HK_TOOLBAR_HEIGHT;
+	}
+
+}
+
+.hk-toolbar-button {
+    border: 1px solid $HK_TOOLBAR_ITEM_BORDER_COLOR;
+    padding-left: 3px;
+    padding-right: 3px;
+}

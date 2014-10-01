@@ -1,3 +1,7 @@
+.hk-split-pane > .hk-widget {
+	position: absolute;
+}
+
 .hk-split-pane > .hk-split-pane-divider {
 	position: absolute;
 	background-color: $HK_ROOT_BG_COLOR;

@@ -1,6 +1,0 @@
-.hk-block-widget {
-	display: block;
-	position: absolute;
-	width: auto;
-	height: auto;
-}

@@ -1,8 +1,6 @@
 module.exports = require('./lib/core');
 
 require('./lib/Widget');
-require('./lib/InlineWidget');
-require('./lib/BlockWidget');
 require('./lib/RootPane');
 require('./lib/Box');
 require('./lib/SplitPane');
@@ -13,13 +11,13 @@ require('./lib/Container');
 require('./lib/Panel');
 require('./lib/Button');
 require('./lib/ButtonBar');
-require('./lib/TabPane');
+// require('./lib/TabPane');
 require('./lib/Toolbar');
-require('./lib/StatusBar');
+// require('./lib/StatusBar');
 require('./lib/TreeView');
 require('./lib/Knob');
-require('./lib/Select');
+// require('./lib/Select');
 require('./lib/HorizontalSlider');
-require('./lib/PropertyEditor');
-require('./lib/Checkbox');
-require('./lib/TextField');
+// require('./lib/PropertyEditor');
+// require('./lib/Checkbox');
+// require('./lib/TextField');

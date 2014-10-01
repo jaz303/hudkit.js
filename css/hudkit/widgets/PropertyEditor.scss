@@ -1,0 +1,47 @@
+.hk-property-editor {
+	table {
+		width: 100%;
+	}
+	thead {
+		background-color: #929DA8;
+	}
+
+	thead th {
+		text-align: left;
+		padding: 3px;
+		color: black;
+	}
+
+	tbody th, td {
+		padding-top: 3px;
+		padding-bottom: 3px;
+		vertical-align: middle;
+	}
+
+	tbody tr:first-child td,
+	tbody tr:first-child th {
+		padding-top: 6px;	
+	}
+
+	tbody tr:last-child td,
+	tbody tr:last-child th {
+		padding-bottom: 6px;	
+	}
+
+	tbody th {
+		text-align: left;
+		padding-right: 5px;
+		color: white;
+		white-space: nowrap;
+	}
+
+	tbody td {
+		text-align: right;
+		width: 70%;
+	}
+
+	.hk-text-field,
+	.hk-horizontal-slider {
+		width: 100%;
+	}
+}

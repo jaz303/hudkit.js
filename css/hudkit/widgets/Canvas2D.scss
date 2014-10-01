@@ -1,8 +1,8 @@
 .hk-canvas-2d {
     background-color: #121212;
     border-radius: $HK_BLOCK_BORDER_RADIUS;
-}
 
-.hk-canvas-2d:focus {
-	outline: none;
+    &:focus {
+    	outline: none;	
+    }
 }

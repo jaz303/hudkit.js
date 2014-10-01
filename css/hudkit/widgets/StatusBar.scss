@@ -1,0 +1,27 @@
+.hk-status-bar {
+    background: #595959;
+    border-top: 1px solid #7D7D7D;
+    box-sizing: border-box;
+    padding: 0 5px;
+
+    .left-cells {
+        float: left;
+    }
+
+    .right-cells {
+        float: right;
+    }
+
+    .cell {
+        float: left;
+        height: 20px;
+    }
+
+    .cell.text {
+        color: white;
+        font-size: 11px;
+        font-family: Helvetica;
+        padding-top: 3px;
+        text-shadow: #202020 0 -1px 1px;
+    }
+}
